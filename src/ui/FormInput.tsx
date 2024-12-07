@@ -72,7 +72,7 @@ function FormInput({
       </div>
       {type === "password" && (
         <p className="text-xs pl-4 text-secondary-400">
-          {info}
+          {showPasswordStrength && value ? "Password strength:" : info}
           {showPasswordStrength && value && (
             <span
               className={

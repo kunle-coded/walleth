@@ -3,6 +3,7 @@ import Wallet from "../components/icons/Wallet";
 import ImportOption from "../components/setup/ImportOption";
 import CreatePassword from "../components/setup/CreatePassword";
 import ProgressBar from "../ui/ProgressBar";
+import SecureWallet from "../components/setup/SecureWallet";
 
 function Onboarding() {
   const [setupSteps, setSetupSteps] = useState(0);
@@ -14,17 +15,17 @@ function Onboarding() {
     setProgressWidth(width);
   }, [setupSteps]);
 
-  function handleNextStep(step: number) {
-    setSetupSteps((prevStep) => (prevStep === step ? prevStep : step));
+  function handleNextStep() {
+    setSetupSteps((prevStep) => prevStep + 1);
   }
 
   function handleClose() {
-    setSetupSteps(0);
+    setSetupSteps((prevStep) => prevStep - 1);
   }
 
   return (
     <main className="h-screen w-screen bg-secondary-100 relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pt-6 pb-6 pr-6 pl-6 bg-white md:min-h-96 md:min-w-[400px] md:max-w-[450px] rounded-md">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pt-6 pb-6 pr-6 pl-6 bg-white md:min-h-96 md:min-w-[400px] md:max-w-[450px] rounded-md ">
         {setupSteps >= 1 && (
           <ProgressBar
             currentStep={setupSteps}
@@ -36,12 +37,11 @@ function Onboarding() {
         {setupSteps === 0 && (
           <>
             <Wallet />
-            <ImportOption onClick={() => handleNextStep(1)} />
+            <ImportOption onClick={handleNextStep} />
           </>
         )}
-        {setupSteps === 1 && (
-          <CreatePassword onClick={() => handleNextStep(2)} />
-        )}
+        {setupSteps === 1 && <CreatePassword onClick={handleNextStep} />}
+        {setupSteps === 2 && <SecureWallet onClick={handleNextStep} />}
       </div>
     </main>
   );
