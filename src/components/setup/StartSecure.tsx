@@ -18,7 +18,7 @@ function StartSecure({ onClick }: CreatePasswordProps) {
 
         <div className="flex justify-start items-center gap-3 my-4">
           <Info />
-          <a href="" className="text-xs font-bold text-blue-600 underline">
+          <a href="" className="text-xs font-bold text-blue-700 underline">
             Why is it important?
           </a>
         </div>

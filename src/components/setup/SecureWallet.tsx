@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
-import Secure from "../icons/Secure";
 import Terms from "../../ui/Terms";
+import SecureOpen from "../icons/SecureOpen";
 
 interface CreatePasswordProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -36,7 +36,7 @@ function SecureWallet({ onClick }: CreatePasswordProps) {
       </div>
 
       <div className="block">
-        <Secure />
+        <SecureOpen />
       </div>
 
       <div className="flex justify-start items-start mt-8">

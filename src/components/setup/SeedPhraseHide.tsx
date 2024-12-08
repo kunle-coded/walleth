@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
-import ViewPassword from "../icons/ViewPassword";
 import Hidden from "../icons/Hidden";
 
 interface CreatePasswordProps {
@@ -31,7 +30,7 @@ function SeedPhraseHide({ onClick }: CreatePasswordProps) {
           {Array.from({ length: 12 }, (_, i) => (
             <li
               key={i}
-              className="w-28 px-2 py-2 bg-secondary-100 text-left rounded"
+              className="w-28 px-2 py-2 bg-secondary-200 text-left rounded"
             >
               {i + 1}. flex
             </li>

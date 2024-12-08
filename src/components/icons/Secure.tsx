@@ -1,6 +1,6 @@
 function Secure() {
   return (
-    <div className="w-full flex justify-center mb-20">
+    <div className="w-full flex justify-center mb-8">
       <div className="relative w-28 h-28">
         <svg
           viewBox="0 0 384 417"

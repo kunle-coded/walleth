@@ -21,6 +21,7 @@ function Button({
               ? "bg-gray-200 text-secondary-300 cursor-not-allowed"
               : "text-white cursor-pointer hover:bg-brand-400"
           }`}
+          disabled={isDisabled}
           onClick={onClick}
         >
           {children}
