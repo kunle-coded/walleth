@@ -39,7 +39,7 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
   }
 
   return (
-    <div className="mt-6 w-full flex flex-col">
+    <div className="w-full flex flex-col">
       <div className="mb-16">
         <p className="text-lg font-bold mb-2">Create Password</p>
         <p className="text-secondary-500">

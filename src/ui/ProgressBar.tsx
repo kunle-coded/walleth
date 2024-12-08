@@ -10,7 +10,7 @@ function ProgressBar({
   onClose,
 }: ProgressBarProps) {
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full flex justify-between items-center mb-8">
       {currentStep <= 1 ? (
         <button className="appearance-none" onClick={onClose}>
           <div className="relative h-[24px] w-[24px] appearance-none">

@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { useField } from "../../hooks/useField";
+import { useState } from "react";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
-import FormInput from "../../ui/FormInput";
 import Secure from "../icons/Secure";
 import Terms from "../../ui/Terms";
 
@@ -29,11 +27,10 @@ function SecureWallet({ onClick }: CreatePasswordProps) {
   }
 
   return (
-    <div className="mt-6 w-full flex flex-col overflow-hidden">
-      {isSkip ||
-        (isSecureOption && (
-          <div className="absolute top-0 left-0 bottom-0 right-0 bg-black opacity-60 z-20"></div>
-        ))}
+    <div className="w-full flex flex-col overflow-hidden">
+      {(isSkip || isSecureOption) && (
+        <div className="absolute top-0 left-0 bottom-0 right-0 bg-black opacity-60 z-20"></div>
+      )}
       <div className="mb-16">
         <p className="text-lg font-bold mb-2">Secure Your Wallet</p>
       </div>
@@ -120,9 +117,7 @@ function SecureWallet({ onClick }: CreatePasswordProps) {
               <Button type="secondary" onClick={onClick}>
                 Secure now
               </Button>
-              <Button type="primary" onClick={onClick}>
-                Skip
-              </Button>
+              <Button type="primary">Skip</Button>
             </div>
           </div>
         )}

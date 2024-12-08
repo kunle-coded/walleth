@@ -16,8 +16,10 @@ function Button({
     <>
       {type === "primary" ? (
         <button
-          className={`bg-brand-500 text-white text-center font-medium capitalize cursor-pointer px-5 py-3 rounded-md w-full focus:outline-none appearance-none transition-all ${
-            isDisabled ? "bg-gray-200 cursor-not-allowed" : "hover:bg-brand-400"
+          className={`bg-brand-500 text-center font-medium capitalize px-5 py-3 rounded-md w-full focus:outline-none appearance-none transition-all ${
+            isDisabled
+              ? "bg-gray-200 text-secondary-300 cursor-not-allowed"
+              : "text-white cursor-pointer hover:bg-brand-400"
           }`}
           onClick={onClick}
         >
