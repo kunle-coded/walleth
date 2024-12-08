@@ -1,8 +1,6 @@
-import { useState } from "react";
-
 interface ViewPasswordProps {
   showPassword: boolean;
-  toggleShowPassword: () => void;
+  toggleShowPassword?: () => void;
 }
 
 function ViewPassword({ showPassword, toggleShowPassword }: ViewPasswordProps) {
