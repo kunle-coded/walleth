@@ -8,6 +8,8 @@ import StartSecure from "../components/setup/StartSecure";
 import SeedPhraseHide from "../components/setup/SeedPhraseHide";
 import SeedPhraseConfirm from "../components/setup/SeedPhraseConfirm";
 import SecureComplete from "../components/setup/SecureComplete";
+import { useAccount } from "../contexts/AccountContext";
+import NotSecureComplete from "../components/setup/NotSecureComplete";
 
 function Onboarding() {
   const [setupSteps, setSetupSteps] = useState(0);
@@ -17,30 +19,38 @@ function Onboarding() {
   const [isSeedPhraseConfirm, setIsSeedPhraseConfirm] = useState(false);
   const [isSeedPhraseComplete, setIsSeedPhraseComplete] = useState(false);
 
+  const {
+    stepCounter,
+    setupSteps: steps,
+    handleNextStep,
+    handleSetupStep,
+    handlePrevious,
+  } = useAccount();
+
   useEffect(() => {
     const totalSteps = 3;
-    const width = `${Math.min((setupSteps / totalSteps) * 100, 100)}%`;
+    const width = `${Math.min((stepCounter / totalSteps) * 100, 100)}%`;
     setProgressWidth(width);
-  }, [setupSteps]);
+  }, [stepCounter]);
 
-  function handleNextStep(step: number) {
-    setSetupSteps(step);
-  }
+  function handleSteps(step: string) {
+    if (step === "create_password") {
+      handleNextStep();
+    } else if (step === "secure_wallet") {
+      handleNextStep();
+    } else if (step === "confirm_seed_phrase") {
+      handleNextStep();
+    }
 
-  function handleSecureStart() {
-    setIsSecureStart(true);
-  }
-  function handleSeedPhrase() {
-    setIsSeedPhrase(true);
-  }
-  function handleSeedPhraseConfirm() {
-    handleNextStep(3);
-    setIsSeedPhraseConfirm(true);
+    handleSetupStep(step);
   }
 
-  function handleComplete() {
-    setIsSeedPhraseComplete(true);
+  function handleSecureSkip() {
+    handleNextStep();
+    handleSetupStep("complete_unsecure");
   }
+
+  // localStorage.removeItem("stepCounter");
 
   function handleClose() {
     setSetupSteps((prevStep) => prevStep - 1);
@@ -49,37 +59,45 @@ function Onboarding() {
   return (
     <main className="h-screen w-screen bg-secondary-100 relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pt-6 pb-6 pr-6 pl-6 bg-white md:min-h-96 md:min-w-[400px] md:max-w-[450px] rounded-md ">
-        {setupSteps >= 1 && (
+        {stepCounter >= 1 && (
           <ProgressBar
-            currentStep={setupSteps}
+            currentStep={stepCounter}
             progressWidth={progressWidth}
-            onClose={handleClose}
+            onClose={handlePrevious}
           />
         )}
 
-        {setupSteps === 0 && (
+        {stepCounter === 0 && (
           <>
             <Wallet />
-            <ImportOption onClick={() => handleNextStep(1)} />
+            <ImportOption onClick={() => handleSteps("create_password")} />
           </>
         )}
-        {setupSteps === 1 && (
-          <CreatePassword onClick={() => handleNextStep(2)} />
+        {steps.currentStep === "create_password" && (
+          <CreatePassword onClick={() => handleSteps("secure_wallet")} />
         )}
-        {setupSteps === 2 && !isSecureStart && !isSeedPhrase && (
-          <SecureWallet onClick={handleSecureStart} />
+        {steps.currentStep === "secure_wallet" && (
+          <SecureWallet
+            onClick={() => handleSteps("start_secure_process")}
+            onSkip={handleSecureSkip}
+          />
         )}
-        {setupSteps === 2 && isSecureStart && !isSeedPhrase && (
-          <StartSecure onClick={handleSeedPhrase} />
+        {steps.currentStep === "start_secure_process" && (
+          <StartSecure onClick={() => handleSteps("hidden_seed_phrase")} />
         )}
-        {setupSteps === 2 && isSeedPhrase && !isSeedPhraseConfirm && (
-          <SeedPhraseHide onClick={handleSeedPhraseConfirm} />
+        {steps.currentStep === "hidden_seed_phrase" && (
+          <SeedPhraseHide onClick={() => handleSteps("confirm_seed_phrase")} />
         )}
-        {setupSteps === 3 && isSeedPhraseConfirm && !isSeedPhraseComplete && (
-          <SeedPhraseConfirm onClick={handleComplete} />
+        {steps.currentStep === "confirm_seed_phrase" && (
+          <SeedPhraseConfirm onClick={() => handleSteps("complete_setup")} />
         )}
-        {setupSteps === 3 && isSeedPhraseComplete && (
-          <SecureComplete onClick={handleSeedPhraseConfirm} />
+        {steps.currentStep === "complete_setup" && (
+          <SecureComplete onClick={() => handleSteps("complete_setup_final")} />
+        )}
+        {steps.currentStep === "complete_unsecure" && (
+          <NotSecureComplete
+            onClick={() => handleSteps("complete_setup_final")}
+          />
         )}
       </div>
     </main>

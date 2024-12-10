@@ -1,16 +1,7 @@
-import { useState } from "react";
-import Button from "../ui/Button";
 import Brand from "../components/icons/Brand";
 import LinkButton from "../ui/LinkButton";
 
 function Welcome() {
-  const [isStarted, setIsStarted] = useState(false);
-
-  function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    setIsStarted(false);
-    console.log(isStarted);
-  }
-
   return (
     <main className="h-screen w-screen bg-secondary-100 relative overflow-hidden">
       <img
@@ -32,7 +23,7 @@ function Welcome() {
 
         <div className="mt-16 w-full flex flex-col items-center">
           <div className="w-1/2 flex flex-col items-center gap-3">
-            <LinkButton type="primary" href="/setup" onClick={handleClick}>
+            <LinkButton type="primary" href="/setup">
               Get Started
             </LinkButton>
           </div>

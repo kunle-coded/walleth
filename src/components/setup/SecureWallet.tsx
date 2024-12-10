@@ -6,9 +6,10 @@ import SecureOpen from "../icons/SecureOpen";
 
 interface CreatePasswordProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSkip: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function SecureWallet({ onClick }: CreatePasswordProps) {
+function SecureWallet({ onClick, onSkip }: CreatePasswordProps) {
   const [isSkip, setIsSkip] = useState(false);
   const [isSecureOption, setIsSecureOption] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -117,7 +118,9 @@ function SecureWallet({ onClick }: CreatePasswordProps) {
               <Button type="secondary" onClick={onClick}>
                 Secure now
               </Button>
-              <Button type="primary">Skip</Button>
+              <Button type="primary" onClick={onSkip}>
+                Skip
+              </Button>
             </div>
           </div>
         )}
