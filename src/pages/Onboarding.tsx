@@ -12,20 +12,10 @@ import { useAccount } from "../contexts/AccountContext";
 import NotSecureComplete from "../components/setup/NotSecureComplete";
 
 function Onboarding() {
-  const [setupSteps, setSetupSteps] = useState(0);
   const [progressWidth, setProgressWidth] = useState("0%");
-  const [isSecureStart, setIsSecureStart] = useState(false);
-  const [isSeedPhrase, setIsSeedPhrase] = useState(false);
-  const [isSeedPhraseConfirm, setIsSeedPhraseConfirm] = useState(false);
-  const [isSeedPhraseComplete, setIsSeedPhraseComplete] = useState(false);
 
-  const {
-    stepCounter,
-    setupSteps: steps,
-    handleNextStep,
-    handleSetupStep,
-    handlePrevious,
-  } = useAccount();
+  const { stepCounter, setupSteps, handleNextStep, handleSetupStep } =
+    useAccount();
 
   useEffect(() => {
     const totalSteps = 3;
@@ -50,22 +40,10 @@ function Onboarding() {
     handleSetupStep("complete_unsecure");
   }
 
-  // localStorage.removeItem("stepCounter");
-
-  function handleClose() {
-    setSetupSteps((prevStep) => prevStep - 1);
-  }
-
   return (
     <main className="h-screen w-screen bg-secondary-100 relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pt-6 pb-6 pr-6 pl-6 bg-white md:min-h-96 md:min-w-[400px] md:max-w-[450px] rounded-md ">
-        {stepCounter >= 1 && (
-          <ProgressBar
-            currentStep={stepCounter}
-            progressWidth={progressWidth}
-            onClose={handlePrevious}
-          />
-        )}
+        {stepCounter >= 1 && <ProgressBar />}
 
         {stepCounter === 0 && (
           <>
@@ -73,28 +51,28 @@ function Onboarding() {
             <ImportOption onClick={() => handleSteps("create_password")} />
           </>
         )}
-        {steps.currentStep === "create_password" && (
+        {setupSteps.currentStep === "create_password" && (
           <CreatePassword onClick={() => handleSteps("secure_wallet")} />
         )}
-        {steps.currentStep === "secure_wallet" && (
+        {setupSteps.currentStep === "secure_wallet" && (
           <SecureWallet
             onClick={() => handleSteps("start_secure_process")}
             onSkip={handleSecureSkip}
           />
         )}
-        {steps.currentStep === "start_secure_process" && (
+        {setupSteps.currentStep === "start_secure_process" && (
           <StartSecure onClick={() => handleSteps("hidden_seed_phrase")} />
         )}
-        {steps.currentStep === "hidden_seed_phrase" && (
+        {setupSteps.currentStep === "hidden_seed_phrase" && (
           <SeedPhraseHide onClick={() => handleSteps("confirm_seed_phrase")} />
         )}
-        {steps.currentStep === "confirm_seed_phrase" && (
+        {setupSteps.currentStep === "confirm_seed_phrase" && (
           <SeedPhraseConfirm onClick={() => handleSteps("complete_setup")} />
         )}
-        {steps.currentStep === "complete_setup" && (
+        {setupSteps.currentStep === "complete_setup" && (
           <SecureComplete onClick={() => handleSteps("complete_setup_final")} />
         )}
-        {steps.currentStep === "complete_unsecure" && (
+        {setupSteps.currentStep === "complete_unsecure" && (
           <NotSecureComplete
             onClick={() => handleSteps("complete_setup_final")}
           />

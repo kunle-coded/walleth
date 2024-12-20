@@ -1,8 +1,15 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type AccountType = {
   stepCounter: number;
   setupSteps: { previousStep: string; currentStep: string };
+  stepRecord: string[];
   handleNextStep: () => void;
   handleSetupStep: (step: string) => void;
   handlePrevious: () => void;
@@ -21,6 +28,16 @@ function AccountProvider({ children }: PropsWithChildren) {
       ? JSON.parse(localStorage.getItem("steps") as string)
       : { previousStep: "", currentStep: "" }
   );
+  const [stepRecord, setStepRecord] = useState(
+    localStorage.getItem("stepsList") !== null
+      ? JSON.parse(localStorage.getItem("stepsList") as string)
+      : []
+  );
+  const [stepsLength, setStepLength] = useState(stepRecord.length - 1);
+
+  useEffect(() => {
+    setStepLength(stepRecord.length - 1);
+  }, [stepRecord]);
 
   function handleNextStep() {
     setStepCounter((prevStep: number) => {
@@ -41,19 +58,65 @@ function AccountProvider({ children }: PropsWithChildren) {
         return newSteps;
       }
     );
+
+    if (stepRecord.length <= 6) {
+      const isInRecord: string = stepRecord.find(
+        (record: string) => record === step
+      );
+
+      if (!isInRecord) {
+        setStepRecord((prevSteps: string[]) => {
+          const newStep = [...prevSteps, step];
+          localStorage.setItem("stepsList", JSON.stringify(newStep));
+          return newStep;
+        });
+      }
+    }
   }
 
   function handlePrevious() {
-    setSetupSteps(
-      (prevSteps: { previousStep: string; currentStep: string }) => {
-        const newSteps = {
-          previousStep: prevSteps.previousStep,
-          currentStep: prevSteps.previousStep,
-        };
-        localStorage.setItem("steps", JSON.stringify(newSteps));
-        return newSteps;
-      }
-    );
+    setStepLength((prevLength) => (prevLength >= 0 ? prevLength - 1 : 0));
+
+    setStepRecord((prevSteps: string[]) => {
+      const newSteps = prevSteps.filter(
+        (step) => step !== stepRecord[stepsLength]
+      );
+      localStorage.setItem("stepsList", JSON.stringify(newSteps));
+      return newSteps;
+    });
+
+    setSetupSteps(() => {
+      const newSteps = {
+        previousStep: stepRecord[stepsLength - 2],
+        currentStep: stepRecord[stepsLength - 1],
+      };
+      localStorage.setItem("steps", JSON.stringify(newSteps));
+      return newSteps;
+    });
+
+    if (setupSteps.currentStep === "confirm_seed_phrase") {
+      setStepCounter((prevStep: number) => {
+        const previous = prevStep - 1;
+        localStorage.setItem("stepCounter", JSON.stringify(previous));
+        return previous;
+      });
+    } else if (setupSteps.currentStep === "secure_wallet") {
+      setStepCounter((prevStep: number) => {
+        const previous = prevStep - 1;
+        localStorage.setItem("stepCounter", JSON.stringify(previous));
+        return previous;
+      });
+    } else if (setupSteps.currentStep === "create_password") {
+      setStepCounter((prevStep: number) => {
+        const previous = prevStep - 1;
+        localStorage.setItem("stepCounter", JSON.stringify(previous));
+        return previous;
+      });
+      // localStorage.setItem(
+      //   "steps",
+      //   JSON.stringify({ previousStep: "", currentStep: "start_setup" })
+      // );
+    }
   }
 
   return (
@@ -61,6 +124,7 @@ function AccountProvider({ children }: PropsWithChildren) {
       value={{
         stepCounter,
         setupSteps,
+        stepRecord,
         handleNextStep,
         handleSetupStep,
         handlePrevious,

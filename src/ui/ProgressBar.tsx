@@ -1,18 +1,20 @@
-interface ProgressBarProps {
-  currentStep: number;
-  progressWidth: string;
-  onClose: () => void;
-}
+import { useEffect, useState } from "react";
+import { useAccount } from "../contexts/AccountContext";
 
-function ProgressBar({
-  currentStep,
-  progressWidth,
-  onClose,
-}: ProgressBarProps) {
+function ProgressBar() {
+  const [progressWidth, setProgressWidth] = useState("0%");
+  const { stepCounter, handlePrevious } = useAccount();
+
+  useEffect(() => {
+    const totalSteps = 3;
+    const width = `${Math.min((stepCounter / totalSteps) * 100, 100)}%`;
+    setProgressWidth(width);
+  }, [stepCounter]);
+
   return (
     <div className="w-full flex justify-between items-center mb-8">
-      {currentStep <= 1 ? (
-        <button className="appearance-none" onClick={onClose}>
+      {stepCounter <= 1 ? (
+        <button className="appearance-none" onClick={handlePrevious}>
           <div className="relative h-[24px] w-[24px] appearance-none">
             <svg
               viewBox="0 0 24 24"
@@ -42,7 +44,7 @@ function ProgressBar({
           </div>
         </button>
       ) : (
-        <button className="appearance-none" onClick={onClose}>
+        <button className="appearance-none" onClick={handlePrevious}>
           <div className="relative h-[14px] w-[10px] appearance-none">
             <svg
               viewBox="0 0 6 10"
@@ -72,7 +74,7 @@ function ProgressBar({
           style={{ width: progressWidth }}
         ></span>
       </div>
-      <div className="text-xs font-bold">{`${currentStep}/3`}</div>
+      <div className="text-xs font-bold">{`${stepCounter}/3`}</div>
     </div>
   );
 }
