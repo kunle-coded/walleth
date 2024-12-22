@@ -112,10 +112,6 @@ function AccountProvider({ children }: PropsWithChildren) {
         localStorage.setItem("stepCounter", JSON.stringify(previous));
         return previous;
       });
-      // localStorage.setItem(
-      //   "steps",
-      //   JSON.stringify({ previousStep: "", currentStep: "start_setup" })
-      // );
     }
   }
 

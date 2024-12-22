@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Wallet from "../components/icons/Wallet";
 import ImportOption from "../components/setup/ImportOption";
 import CreatePassword from "../components/setup/CreatePassword";
@@ -12,16 +11,8 @@ import { useAccount } from "../contexts/AccountContext";
 import NotSecureComplete from "../components/setup/NotSecureComplete";
 
 function Onboarding() {
-  const [progressWidth, setProgressWidth] = useState("0%");
-
   const { stepCounter, setupSteps, handleNextStep, handleSetupStep } =
     useAccount();
-
-  useEffect(() => {
-    const totalSteps = 3;
-    const width = `${Math.min((stepCounter / totalSteps) * 100, 100)}%`;
-    setProgressWidth(width);
-  }, [stepCounter]);
 
   function handleSteps(step: string) {
     if (step === "create_password") {
