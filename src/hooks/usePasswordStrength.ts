@@ -5,7 +5,7 @@ function usePasswordStrength({
   showPasswordStrength,
 }: {
   value: string;
-  showPasswordStrength: boolean;
+  showPasswordStrength: boolean | undefined;
 }) {
   const [strength, setStrength] = useState("Poor");
 

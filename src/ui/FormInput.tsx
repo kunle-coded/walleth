@@ -8,7 +8,7 @@ interface FormInputProps {
   type: string;
   value: string;
   info?: string;
-  showPasswordStrength: boolean;
+  showPasswordStrength?: boolean;
   isPasswordMatch?: boolean;
 }
 
@@ -56,7 +56,7 @@ function FormInput({
         </span>
         <input
           type={type === "password" ? inputType : type}
-          className="w-full bg-transparent px-4 pb-2 pt-6 z-20 focus:outline-none"
+          className="w-full bg-transparent text-secondary-900 px-4 pb-2 pt-6 z-20 focus:outline-none"
           onFocus={handleFocus}
           onBlur={handleBlur}
           {...props}

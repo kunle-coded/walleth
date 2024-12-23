@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useField } from "../../hooks/useField";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import FormInput from "../../ui/FormInput";
 import Terms from "../../ui/Terms";
+import { useAccount } from "../../contexts/AccountContext";
 
 interface CreatePasswordProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -13,6 +14,7 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
+  const { handlePassword } = useAccount();
   const password = useField("password");
   const confirmPassword = useField("password");
   const { value, type, ...passwordProps } = password;
@@ -23,7 +25,7 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
   } = confirmPassword;
 
   useEffect(() => {
-    if (value != "" && confirmPasswordValue != "") {
+    if (value !== "" && confirmPasswordValue !== "") {
       if (value === confirmPasswordValue) {
         setPasswordMatch(true);
       } else {
@@ -33,6 +35,13 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
       setPasswordMatch(false);
     }
   }, [value, confirmPasswordValue]);
+
+  function handleCreatePassword(event: React.MouseEvent<HTMLButtonElement>) {
+    if (value === confirmPasswordValue) {
+      handlePassword(value);
+      onClick(event);
+    }
+  }
 
   function toggleCheck() {
     setIsChecked((checked) => !checked);
@@ -77,8 +86,8 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
       <ButtonWrapper>
         <Button
           type="primary"
-          isDisabled={passwordMatch && isChecked}
-          onClick={onClick}
+          isDisabled={!(passwordMatch && isChecked)}
+          onClick={handleCreatePassword}
         >
           Create Password
         </Button>

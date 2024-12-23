@@ -10,9 +10,13 @@ type AccountType = {
   stepCounter: number;
   setupSteps: { previousStep: string; currentStep: string };
   stepRecord: string[];
+  password: string;
+  isSkipped: boolean;
+  handlePassword: (password: string) => void;
   handleNextStep: () => void;
   handleSetupStep: (step: string) => void;
   handlePrevious: () => void;
+  setIsSkipped: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AccountContext = createContext<AccountType | undefined>(undefined);
@@ -33,11 +37,22 @@ function AccountProvider({ children }: PropsWithChildren) {
       ? JSON.parse(localStorage.getItem("stepsList") as string)
       : []
   );
+  const [password, setPassword] = useState(
+    localStorage.getItem("password") !== null
+      ? (localStorage.getItem("password") as string)
+      : ""
+  );
   const [stepsLength, setStepLength] = useState(stepRecord.length - 1);
+  const [isSkipped, setIsSkipped] = useState(false);
 
   useEffect(() => {
     setStepLength(stepRecord.length - 1);
-  }, [stepRecord]);
+  }, [stepRecord.length]);
+
+  function handlePassword(userPass: string) {
+    setPassword(userPass);
+    localStorage.setItem("password", userPass);
+  }
 
   function handleNextStep() {
     setStepCounter((prevStep: number) => {
@@ -94,7 +109,13 @@ function AccountProvider({ children }: PropsWithChildren) {
       return newSteps;
     });
 
-    if (setupSteps.currentStep === "confirm_seed_phrase") {
+    if (setupSteps.currentStep === "complete_unsecure") {
+      setStepCounter((prevStep: number) => {
+        const previous = prevStep - 1;
+        localStorage.setItem("stepCounter", JSON.stringify(previous));
+        return previous;
+      });
+    } else if (setupSteps.currentStep === "confirm_seed_phrase") {
       setStepCounter((prevStep: number) => {
         const previous = prevStep - 1;
         localStorage.setItem("stepCounter", JSON.stringify(previous));
@@ -121,9 +142,13 @@ function AccountProvider({ children }: PropsWithChildren) {
         stepCounter,
         setupSteps,
         stepRecord,
+        password,
+        isSkipped,
+        handlePassword,
         handleNextStep,
         handleSetupStep,
         handlePrevious,
+        setIsSkipped,
       }}
     >
       {children}

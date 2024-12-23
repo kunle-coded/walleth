@@ -4,9 +4,10 @@ import ButtonWrapper from "../../ui/ButtonWrapper";
 
 interface ImportProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onImport: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function ImportOption({ onClick }: ImportProps) {
+function ImportOption({ onClick, onImport }: ImportProps) {
   return (
     <div className="mt-24 w-full flex flex-col items-center">
       <h2 className="text-4xl mb-2">Setup Wallet</h2>
@@ -15,7 +16,9 @@ function ImportOption({ onClick }: ImportProps) {
       </p>
 
       <ButtonWrapper>
-        <Button type="secondary">Import using seed phrase</Button>
+        <Button type="secondary" onClick={onImport}>
+          Import using seed phrase
+        </Button>
         <Button type="primary" onClick={onClick}>
           Create a new wallet
         </Button>

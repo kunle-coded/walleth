@@ -3,16 +3,19 @@ import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Terms from "../../ui/Terms";
 import SecureOpen from "../icons/SecureOpen";
+import { useAccount } from "../../contexts/AccountContext";
 
 interface CreatePasswordProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onSkip: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSkip: (isTermsChecked: boolean) => void;
 }
 
 function SecureWallet({ onClick, onSkip }: CreatePasswordProps) {
   const [isSkip, setIsSkip] = useState(false);
   const [isSecureOption, setIsSecureOption] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const { isSkipped, setIsSkipped } = useAccount();
 
   function handleSkip() {
     setIsSkip(true);
@@ -25,6 +28,7 @@ function SecureWallet({ onClick, onSkip }: CreatePasswordProps) {
 
   function toggleCheck() {
     setIsChecked((checked) => !checked);
+    setIsSkipped((prevState) => !prevState);
   }
 
   return (
@@ -96,7 +100,7 @@ function SecureWallet({ onClick, onSkip }: CreatePasswordProps) {
         )}
       </div>
       <div
-        className={`absolute top-[420px] left-0 px-6 pt-6 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
+        className={`absolute top-[400px] left-0 px-6 pt-6 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
           isSecureOption
             ? "opacity-100 translate-y-0 bottom-0 z-30"
             : "opacity-0 translate-y-full"
@@ -114,11 +118,21 @@ function SecureWallet({ onClick, onSkip }: CreatePasswordProps) {
               onToggle={toggleCheck}
             />
 
+            <p
+              className={`mt-4 text-xs text-wrap text-red-600 transition-all ${
+                isSkipped
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-1"
+              }`}
+            >
+              To skip, please click the checkbox to agree to the terms
+            </p>
+
             <div className="w-full mt-12 flex items-center gap-3">
               <Button type="secondary" onClick={onClick}>
                 Secure now
               </Button>
-              <Button type="primary" onClick={onSkip}>
+              <Button type="primary" onClick={() => onSkip(isChecked)}>
                 Skip
               </Button>
             </div>

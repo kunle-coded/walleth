@@ -61,11 +61,11 @@ function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
   function handleReset(value: React.MouseEvent<HTMLButtonElement>) {
     const target = value.target as HTMLElement;
 
-    if (target.textContent === "Try again") {
+    if (target.textContent === "Try again" && !isPhraseMatched) {
       setMatchedIndices(() => []);
       setSelected(() => []);
       setIsPhraseMatched(false);
-    } else if (target.textContent === "Continue") {
+    } else if (target.textContent === "Continue" && isPhraseMatched) {
       onClick(value);
     }
   }

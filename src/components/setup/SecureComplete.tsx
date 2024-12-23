@@ -1,13 +1,12 @@
-import React from "react";
-import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Secure from "../icons/Secure";
+import LinkButton from "../../ui/LinkButton";
 
-interface CreatePasswordProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
+// interface CreatePasswordProps {
+//   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+// }
 
-function SecureComplete({ onClick }: CreatePasswordProps) {
+function SecureComplete() {
   return (
     <div className="w-full flex flex-col overflow-hidden">
       <div className="block mt-8">
@@ -34,9 +33,9 @@ function SecureComplete({ onClick }: CreatePasswordProps) {
       </div>
 
       <ButtonWrapper>
-        <Button type="primary" onClick={onClick}>
+        <LinkButton type="primary" href="/home">
           Continue
-        </Button>
+        </LinkButton>
       </ButtonWrapper>
     </div>
   );
