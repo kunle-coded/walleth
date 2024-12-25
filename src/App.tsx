@@ -3,6 +3,7 @@ import AppLayout from "./pages/AppLayout";
 import Welcome from "./pages/Welcome";
 import Onboarding from "./pages/Onboarding";
 import { AccountProvider } from "./contexts/AccountContext";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <AppLayout />,
+    element: <Home />,
   },
 ]);
 

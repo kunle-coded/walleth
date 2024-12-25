@@ -12,6 +12,7 @@ type AccountType = {
   stepRecord: string[];
   password: string;
   isSkipped: boolean;
+  imported: object;
   handlePassword: (password: string) => void;
   handleNextStep: () => void;
   handleSetupStep: (step: string) => void;
@@ -41,6 +42,11 @@ function AccountProvider({ children }: PropsWithChildren) {
     localStorage.getItem("password") !== null
       ? (localStorage.getItem("password") as string)
       : ""
+  );
+  const [imported, setImported] = useState(
+    localStorage.getItem("importedAccount") !== null
+      ? JSON.parse(localStorage.getItem("importedAccount") as string)
+      : {}
   );
   const [stepsLength, setStepLength] = useState(stepRecord.length - 1);
   const [isSkipped, setIsSkipped] = useState(false);
@@ -144,6 +150,7 @@ function AccountProvider({ children }: PropsWithChildren) {
         stepRecord,
         password,
         isSkipped,
+        imported,
         handlePassword,
         handleNextStep,
         handleSetupStep,

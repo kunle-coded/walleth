@@ -16,8 +16,9 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isShowSeed, setIsShowSeed] = useState(false);
-  const [inputType, setInputType] = useState("password");
-  const [seedValue, setSeedValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [displaySeedValue, setDisplaySeedValue] = useState(""); // What the user sees
+  const [actualSeedValue, setActualSeedValue] = useState(""); // The actual value
   const [rows, setRows] = useState(1);
 
   const { handlePassword } = useAccount();
@@ -31,16 +32,18 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
     ...confirmPasswordProps
   } = confirmPassword;
 
-  useEffect(() => {
-    if (isShowSeed) {
-      setInputType("text");
-    } else {
-      setInputType("password");
-    }
-  }, [isShowSeed]);
+  const maskCharacter = "•";
 
   useEffect(() => {
-    if (value !== "" && confirmPasswordValue !== "") {
+    if (isShowSeed) {
+      setInputValue(actualSeedValue);
+    } else {
+      setInputValue(displaySeedValue);
+    }
+  }, [actualSeedValue, isShowSeed, displaySeedValue]);
+
+  useEffect(() => {
+    if (value !== "" && confirmPasswordValue !== "" && inputValue !== "") {
       if (value === confirmPasswordValue) {
         setPasswordMatch(true);
       } else {
@@ -49,7 +52,7 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
     } else {
       setPasswordMatch(false);
     }
-  }, [value, confirmPasswordValue]);
+  }, [value, confirmPasswordValue, inputValue]);
 
   function handleCreatePassword(event: React.MouseEvent<HTMLButtonElement>) {
     if (value === confirmPasswordValue) {
@@ -59,14 +62,31 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
   }
 
   function handleSeedInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    e.target.style.height = "auto";
     const inputTextValue = e.target.value;
 
-    // const trimmedInput = inputTextValue.trim();
-    // const word = trimmedInput.length / 12;
-    // const formttedInput = trimmedInput.length;
-
-    setSeedValue(inputTextValue);
+    // If the new value is shorter, handle deletions
+    if (inputTextValue.length < displaySeedValue.length) {
+      setActualSeedValue((prev) => prev.slice(0, inputTextValue.length));
+      setDisplaySeedValue(
+        inputTextValue
+          .split("")
+          .map((_, i) => (actualSeedValue[i] === " " ? " " : maskCharacter))
+          .join("")
+      );
+    }
+    // Otherwise, handle additions
+    else {
+      const newChars = inputTextValue.slice(displaySeedValue.length);
+      setActualSeedValue((prev) => prev + newChars);
+      setDisplaySeedValue(
+        (prev) =>
+          prev +
+          newChars
+            .split("")
+            .map((char) => (char === " " ? " " : maskCharacter))
+            .join("")
+      );
+    }
 
     if (inputTextValue.length >= 29) {
       setRows(2);
@@ -74,6 +94,10 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
       setRows(1);
     }
   }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+  };
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
@@ -100,7 +124,7 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
             <div className="flex relative bg-secondary-200 rounded">
               <span
                 className={`absolute left-4 ${
-                  isFocused || seedValue
+                  isFocused || actualSeedValue
                     ? "top-2 text-xs"
                     : "top-4 text-sm font-medium"
                 } text-secondary-300 z-10 transition-all`}
@@ -108,12 +132,15 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
                 Seed phrase
               </span>
               <textarea
-                className="w-full bg-transparent text-secondary-900 px-4 pb-2 pt-6 z-20 focus:outline-none resize-none"
+                className={`w-full bg-transparent text-secondary-900 px-4 pt-6 z-20 focus:outline-none resize-none 
+                  ${isFocused || actualSeedValue ? "mt-3 pb-4" : "pb-2"}`}
                 rows={rows}
-                value={seedValue}
+                value={inputValue}
+                autoComplete="off"
                 onChange={handleSeedInput}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                onPaste={handlePaste}
               />
 
               {type === "password" && (
