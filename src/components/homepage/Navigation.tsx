@@ -18,6 +18,7 @@ import Snaps from "../icons/Snaps";
 import MessageQuestion from "../icons/MessageQuestion";
 import Settings from "../icons/Settings";
 import Lock from "../icons/Lock";
+import Modal from "../modal/Modal";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -106,27 +107,34 @@ function Navigation() {
           </button>
         </div>
         <div className="flex flex-col items-center text-primary-500 text-ellipsis whitespace-nowrap ">
-          <button className="inline-flex justify-center items-center h-8 px-2 max-w-full p-0 gap-2 rounded-lg relative text-ellipsis whitespace-nowrap overflow-hidden align-middle select-none bg-transparent hover:bg-secondary-200 hover:shadow-none">
-            <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
-              <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0 0 16px] overflow-hidden bg-white rounded-[50%]">
-                <div className="flex">
-                  <div className="inline-block size-4 m-0 p-0 overflow-hidden rounded-[50px] bg-[rgb(245,204,0)]">
-                    <div className="size-full relative">
-                      <AccountAvatar />
+          <Modal>
+            <Modal.Open opens="account_options">
+              <button className="inline-flex justify-center items-center h-8 px-2 max-w-full p-0 gap-2 rounded-lg relative text-ellipsis whitespace-nowrap overflow-hidden align-middle select-none bg-transparent hover:bg-secondary-200 hover:shadow-none">
+                <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
+                  <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0 0 16px] overflow-hidden bg-white rounded-[50%]">
+                    <div className="flex">
+                      <div className="inline-block size-4 m-0 p-0 overflow-hidden rounded-[50px] bg-[rgb(245,204,0)]">
+                        <div className="size-full relative">
+                          <AccountAvatar />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <span className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">
-                Account 1
-              </span>
-            </span>
-            <span className="inline-block ms-1 size-4 max-w-4 flex-[0 0 16px]">
-              <div className="relative size-full">
-                <ArrowDown />
-              </div>
-            </span>
-          </button>
+                  <span className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">
+                    Account 1
+                  </span>
+                </span>
+                <span className="inline-block ms-1 size-4 max-w-4 flex-[0 0 16px]">
+                  <div className="relative size-full">
+                    <ArrowDown />
+                  </div>
+                </span>
+              </button>
+            </Modal.Open>
+            <Modal.Window name="account_options" headerText="Select an account">
+              <div>Account options</div>
+            </Modal.Window>
+          </Modal>
           <div className="flex items-center relative">
             <div
               className={`flex absolute -left-[70%] -top-1 py-2 px-4 bg-white shadow-[0_1px_8px_0_rgba(0,0,0,0.2)] rounded z-[60] transition-all after:absolute after:top-[35%] after:-right-[3%] after:w-3 after:h-3 after:-z-10 after:bg-white after:block after:rotate-45 ${
@@ -190,7 +198,7 @@ function Navigation() {
                     <Notifications />
                   </MenuItem>
                   <div className="h-[1px] w-full border border-b-0 border-solid border-secondary-300 opacity-50 "></div>
-                  <MenuItem menuText="Account Details">
+                  <MenuItem menuText="Account details">
                     <ScanBarcode />
                   </MenuItem>
                   <MenuItem menuText="View on explorer" showSubmenu>
