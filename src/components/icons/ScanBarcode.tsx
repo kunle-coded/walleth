@@ -1,4 +1,4 @@
-function Receive() {
+function ScanBarcode() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +17,4 @@ function Receive() {
   );
 }
 
-export default Receive;
+export default ScanBarcode;

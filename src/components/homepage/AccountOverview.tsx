@@ -2,7 +2,7 @@ import ActionButton from "../../ui/ActionButton";
 import ArrowUp from "../icons/ArrowUp";
 import Bridge from "../icons/Bridge";
 import PlusMinus from "../icons/PlusMinus";
-import Receive from "../icons/Receive";
+import ScanBarcode from "../icons/ScanBarcode";
 import Send from "../icons/Send";
 import Swap from "../icons/Swap";
 
@@ -60,7 +60,7 @@ function AccountOverview() {
                       <Send />
                     </ActionButton>
                     <ActionButton text="Receive">
-                      <Receive />
+                      <ScanBarcode />
                     </ActionButton>
                   </div>
                 </div>

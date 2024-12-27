@@ -9,11 +9,22 @@ import {
   writeClipboardText,
 } from "../../helpers/writeClipboardText";
 import EthLogo from "../logos/EthLogo";
+import Notifications from "../icons/Notifications";
+import MenuItem from "../../ui/MenuItem";
+import ScanBarcode from "../icons/ScanBarcode";
+import Export from "../icons/Export";
+import SecurityCheck from "../icons/SecurityCheck";
+import Snaps from "../icons/Snaps";
+import MessageQuestion from "../icons/MessageQuestion";
+import Settings from "../icons/Settings";
+import Lock from "../icons/Lock";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
   const [isShowTooltip, setIsShowTooltip] = useState(false);
   const [isDelay, setIsDelay] = useState(false);
+  const [isNotification, setIsNotification] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
   const network = "Ethereum Mainnet";
@@ -67,6 +78,10 @@ function Navigation() {
     }
   }
 
+  function handleMenu() {
+    setShowMenu((prevState) => !prevState);
+  }
+
   return (
     <nav className="w-full flex flex-col flex-nowrap items-center max-h-[68px] z-50">
       <div className="md:w-4/5 lg:w-[62%] h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
@@ -89,9 +104,6 @@ function Navigation() {
               </div>
             </span>
           </button>
-          <div className="todo"></div>
-          <div className="todo"></div>
-          <div className="todo"></div>
         </div>
         <div className="flex flex-col items-center text-primary-500 text-ellipsis whitespace-nowrap ">
           <button className="inline-flex justify-center items-center h-8 px-2 max-w-full p-0 gap-2 rounded-lg relative text-ellipsis whitespace-nowrap overflow-hidden align-middle select-none bg-transparent hover:bg-secondary-200 hover:shadow-none">
@@ -162,11 +174,46 @@ function Navigation() {
               <button
                 aria-label="Account options"
                 className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
+                onClick={handleMenu}
               >
                 <span className="inline-block flex-[0 0 1em] size-4 max-w-4 bg-transparent relative">
                   <More />
                 </span>
               </button>
+              {showMenu && (
+                <div className="absolute top-0 bottom-auto right-auto left-0 w-auto min-w-56 overflow-hidden translate-x-[925px] translate-y-[145px] p-0 bg-white border rounded-lg border-none border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
+                  <MenuItem
+                    menuText="Notifications"
+                    showNotification
+                    isNotification={isNotification}
+                  >
+                    <Notifications />
+                  </MenuItem>
+                  <div className="h-[1px] w-full border border-b-0 border-solid border-secondary-300 opacity-50 "></div>
+                  <MenuItem menuText="Account Details">
+                    <ScanBarcode />
+                  </MenuItem>
+                  <MenuItem menuText="View on explorer" showSubmenu>
+                    <Export />
+                  </MenuItem>
+                  <div className="h-[1px] w-full border border-b-0 border-solid border-secondary-300 opacity-50 "></div>
+                  <MenuItem menuText="All Permissions">
+                    <SecurityCheck />
+                  </MenuItem>
+                  <MenuItem menuText="Snaps">
+                    <Snaps />
+                  </MenuItem>
+                  <MenuItem menuText="Support">
+                    <MessageQuestion />
+                  </MenuItem>
+                  <MenuItem menuText="Settings">
+                    <Settings />
+                  </MenuItem>
+                  <MenuItem menuText="Lock Walleth">
+                    <Lock />
+                  </MenuItem>
+                </div>
+              )}
             </div>
           </div>
         </div>
