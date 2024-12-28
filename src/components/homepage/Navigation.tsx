@@ -19,6 +19,8 @@ import MessageQuestion from "../icons/MessageQuestion";
 import Settings from "../icons/Settings";
 import Lock from "../icons/Lock";
 import Modal from "../modal/Modal";
+import AccountSelection from "../accounts/AccountSelection";
+import NetworkAvatar from "../../ui/NetworkAvatar";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -91,11 +93,9 @@ function Navigation() {
             aria-label={`Network Menu ${network}`}
             className="flex items-center m-2 gap-2 h-8 max-w-[250px] pl-2 pr-4 bg-primary-100 border-none rounded-full cursor-pointer"
           >
-            <div className="flex justify-center items-center size-4 max-w-4 flex-[0 0 16px] text-xs leading-5 text-primary-500 bg-primary-100 border border-solid border-transparent rounded-[50%] overflow-hidden uppercase">
-              <div className="relative size-full">
-                <EthLogo />
-              </div>
-            </div>
+            <NetworkAvatar>
+              <EthLogo />
+            </NetworkAvatar>
             <span className="text-sm leading-[1.375rem] text-primary-500 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
               {network}
             </span>
@@ -132,7 +132,7 @@ function Navigation() {
               </button>
             </Modal.Open>
             <Modal.Window name="account_options" headerText="Select an account">
-              <div>Account options</div>
+              <AccountSelection />
             </Modal.Window>
           </Modal>
           <div className="flex items-center relative">

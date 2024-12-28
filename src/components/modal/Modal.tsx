@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import Close from "../icons/Close";
+import IconContainer from "../../ui/IconContainer";
 
 interface WindowProps {
   name: string;
@@ -111,9 +112,9 @@ function Window({
                   className="inline-flex justify-center items-center size-6 min-w-6 border-none rounded-lg text-primary-500 bg-transparent hover:bg-secondary-200"
                   onClick={close}
                 >
-                  <span className="inline-block flex-[0_0_1em] w-4 h-4 max-w-4 text-inherit relative">
+                  <IconContainer>
                     <Close />
-                  </span>
+                  </IconContainer>
                 </button>
               </div>
             </header>
