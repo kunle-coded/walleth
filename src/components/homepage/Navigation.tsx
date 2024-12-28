@@ -19,8 +19,9 @@ import MessageQuestion from "../icons/MessageQuestion";
 import Settings from "../icons/Settings";
 import Lock from "../icons/Lock";
 import Modal from "../modal/Modal";
-import AccountSelection from "../accounts/AccountSelection";
 import NetworkAvatar from "../../ui/NetworkAvatar";
+import OptionsSelection from "../popups/OptionsSelection";
+import Account from "../popups/Account";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -89,22 +90,41 @@ function Navigation() {
     <nav className="w-full flex flex-col flex-nowrap items-center max-h-[68px] z-50">
       <div className="md:w-4/5 lg:w-[62%] h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
         <div>
-          <button
-            aria-label={`Network Menu ${network}`}
-            className="flex items-center m-2 gap-2 h-8 max-w-[250px] pl-2 pr-4 bg-primary-100 border-none rounded-full cursor-pointer"
-          >
-            <NetworkAvatar>
-              <EthLogo />
-            </NetworkAvatar>
-            <span className="text-sm leading-[1.375rem] text-primary-500 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
-              {network}
-            </span>
-            <span className="inline-block ml-auto size-3 max-w-3 flex-[0 0 12px]">
-              <div className="relative size-full">
-                <ArrowDown />
-              </div>
-            </span>
-          </button>
+          <Modal>
+            <Modal.Open opens="network_options">
+              <button
+                aria-label={`Network Menu ${network}`}
+                className="flex items-center m-2 gap-2 h-8 max-w-[250px] pl-2 pr-4 bg-primary-100 border-none rounded-full cursor-pointer"
+              >
+                <NetworkAvatar>
+                  <EthLogo />
+                </NetworkAvatar>
+                <span className="text-sm leading-[1.375rem] text-primary-500 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
+                  {network}
+                </span>
+                <span className="inline-block ml-auto size-3 max-w-3 flex-[0 0 12px]">
+                  <div className="relative size-full">
+                    <ArrowDown />
+                  </div>
+                </span>
+              </button>
+            </Modal.Open>
+            <Modal.Window
+              name="network_options"
+              headerText="Select a network"
+              showButton
+              showSearch
+              searchText="Search"
+              buttonText="Add a custom network"
+            >
+              <OptionsSelection>
+                <Account current />
+                <Account current={false} />
+                <Account current={false} />
+                <Account current={false} />
+              </OptionsSelection>
+            </Modal.Window>
+          </Modal>
         </div>
         <div className="flex flex-col items-center text-primary-500 text-ellipsis whitespace-nowrap ">
           <Modal>
@@ -131,8 +151,20 @@ function Navigation() {
                 </span>
               </button>
             </Modal.Open>
-            <Modal.Window name="account_options" headerText="Select an account">
-              <AccountSelection />
+            <Modal.Window
+              name="account_options"
+              headerText="Select an account"
+              showButton
+              showSearch
+              searchText="Search accounts"
+              buttonText="Add account or hardware wallet"
+            >
+              <OptionsSelection>
+                <Account current />
+                <Account current={false} />
+                <Account current={false} />
+                <Account current={false} />
+              </OptionsSelection>
             </Modal.Window>
           </Modal>
           <div className="flex items-center relative">

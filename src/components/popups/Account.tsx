@@ -1,4 +1,3 @@
-import { useState } from "react";
 import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import EthLogo from "../logos/EthLogo";
@@ -13,7 +12,7 @@ function Account({ current }: AccountProps) {
   return (
     <div className="block">
       <div
-        className={`flex justify-center w-full p-4 relative text-primary-500 cursor-pointer ${
+        className={`flex justify-center w-full p-4 relative text-primary-500 cursor-pointer transition-[background-color] ease-linear ${
           current ? "bg-brand-100" : "bg-transparent hover:bg-secondary-200"
         }`}
       >

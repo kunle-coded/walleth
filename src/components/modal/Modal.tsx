@@ -9,10 +9,16 @@ import React, {
 import { createPortal } from "react-dom";
 import Close from "../icons/Close";
 import IconContainer from "../../ui/IconContainer";
+import SearchInput from "../../ui/SearchInput";
+import Add from "../icons/Add";
 
 interface WindowProps {
   name: string;
   headerText?: string;
+  showSearch: boolean;
+  showButton: boolean;
+  buttonText: string;
+  searchText: string;
 }
 
 interface ContextType {
@@ -77,16 +83,18 @@ function Window({
   children,
   name,
   headerText,
+  showButton,
+  showSearch,
+  buttonText,
+  searchText,
 }: PropsWithChildren<WindowProps>) {
   const { openName, close } = useContext(ModalContext);
 
   if (name !== openName) return;
 
   return createPortal(
-    <div
-      className="flex justify-center items-center inset-0 fixed bg-[rgba(0,_0,_0,_0.6)] transition-[background-color] duration-150 delay-0 z-[1050] "
-      onClick={close}
-    >
+    <div>
+      <div className="w-full h-full fixed top-0 right-0 bottom-0 left-0 bg-[rgba(0,_0,_0,_0.6)] transition-[background-color] duration-150 delay-0 z-[1050]"></div>
       <div
         data-focus-guard="true"
         tabIndex={name === openName ? 0 : -1}
@@ -96,9 +104,12 @@ function Window({
           : {})}
       ></div>
       <div data-focus-lock-disabled="false">
-        <div className="flex justify-center items-start w-screen h-screen fixed top-0 left-0 p-2 px-4 overflow-auto overscroll-y-none z-[1050] md:py-20 sm:py-12">
+        <div
+          className="flex justify-center items-start w-screen h-screen fixed top-0 left-0 p-2 px-4 overflow-auto overscroll-y-none z-[1050] md:pt-20 sm:pt-12 max-h-475-padding"
+          onClick={close}
+        >
           <section
-            className="flex flex-col max-h-full size-96 w-full max-w-96 p-0 rounded-lg overflow-y-auto bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] transition-all"
+            className="flex flex-col max-h-full w-full max-w-96 p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <header className="flex justify-between p-4">
@@ -118,10 +129,30 @@ function Window({
                 </button>
               </div>
             </header>
-            <div className="flex w-full">{children}</div>
+
+            {showSearch && <SearchInput placeholderText={searchText} />}
+            {children}
+            {showButton && (
+              <div className="flex items-center pt-2 pb-4 px-4">
+                <button className="inline-flex justify-center items-center w-full h-12 p-0 px-4 rounded-full border border-solid border-brand-500 text-sm font-medium leading-6 text-brand-500 bg-transparent md:text-[1rem] relative align-middle select-none cursor-pointer transition-colors hover:bg-brand-500 hover:text-white hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.4)]">
+                  <IconContainer margin>
+                    <Add />
+                  </IconContainer>
+                  {buttonText}
+                </button>
+              </div>
+            )}
           </section>
         </div>
       </div>
+      <div
+        data-focus-guard="true"
+        tabIndex={name === openName ? 0 : -1}
+        className="fixed top-px left-px w-px h-0 overflow-hidden p-0"
+        {...(name === openName
+          ? { "aria-hidden": "true", "data-focus-on-hidden": "true" }
+          : {})}
+      ></div>
     </div>,
     document.body
   );
