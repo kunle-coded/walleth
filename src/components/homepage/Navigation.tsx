@@ -20,8 +20,9 @@ import Settings from "../icons/Settings";
 import Lock from "../icons/Lock";
 import Modal from "../modal/Modal";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import OptionsSelection from "../popups/OptionsSelection";
 import Account from "../popups/Account";
+import SearchInput from "../../ui/SearchInput";
+import Networks from "../popups/Networks";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -113,16 +114,13 @@ function Navigation() {
               name="network_options"
               headerText="Select a network"
               showButton
-              showSearch
-              searchText="Search"
+              isAccount={false}
               buttonText="Add a custom network"
             >
-              <OptionsSelection>
-                <Account current />
-                <Account current={false} />
-                <Account current={false} />
-                <Account current={false} />
-              </OptionsSelection>
+              <div className="overflow-auto h-full scrollbar-custom">
+                <SearchInput placeholderText="Search" />
+                <Networks />
+              </div>
             </Modal.Window>
           </Modal>
         </div>
@@ -155,16 +153,15 @@ function Navigation() {
               name="account_options"
               headerText="Select an account"
               showButton
-              showSearch
-              searchText="Search accounts"
+              isAccount
               buttonText="Add account or hardware wallet"
             >
-              <OptionsSelection>
+              <div className="overflow-auto scrollbar-custom">
                 <Account current />
                 <Account current={false} />
                 <Account current={false} />
                 <Account current={false} />
-              </OptionsSelection>
+              </div>
             </Modal.Window>
           </Modal>
           <div className="flex items-center relative">

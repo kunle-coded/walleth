@@ -13,6 +13,10 @@
     scrollbar-color: #767e93 transparent;
     scrollbar-width: thin;
   }
+
+  .draggable {
+    overflow-anchor: none;
+  }
 }
 
 :root {

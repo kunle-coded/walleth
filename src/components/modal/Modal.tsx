@@ -15,10 +15,10 @@ import Add from "../icons/Add";
 interface WindowProps {
   name: string;
   headerText?: string;
-  showSearch: boolean;
   showButton: boolean;
   buttonText: string;
-  searchText: string;
+  searchText?: string;
+  isAccount: boolean;
 }
 
 interface ContextType {
@@ -84,9 +84,9 @@ function Window({
   name,
   headerText,
   showButton,
-  showSearch,
   buttonText,
   searchText,
+  isAccount,
 }: PropsWithChildren<WindowProps>) {
   const { openName, close } = useContext(ModalContext);
 
@@ -130,8 +130,9 @@ function Window({
               </div>
             </header>
 
-            {showSearch && <SearchInput placeholderText={searchText} />}
+            {isAccount && <SearchInput placeholderText="Search accounts" />}
             {children}
+
             {showButton && (
               <div className="flex items-center pt-2 pb-4 px-4">
                 <button className="inline-flex justify-center items-center w-full h-12 p-0 px-4 rounded-full border border-solid border-brand-500 text-sm font-medium leading-6 text-brand-500 bg-transparent md:text-[1rem] relative align-middle select-none cursor-pointer transition-colors hover:bg-brand-500 hover:text-white hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.4)]">
