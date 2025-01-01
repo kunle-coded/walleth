@@ -1,27 +1,18 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import MenuItem from "../../ui/MenuItem";
 import Export from "../icons/Export";
 import ScanBarcode from "../icons/ScanBarcode";
 import SecurityCheck from "../icons/SecurityCheck";
 import Snaps from "../icons/Snaps";
+import { PopupContext } from "../../contexts/PopupContext";
 
-interface AccountOptionProps {
-  onClosePopup?: () => void;
-  top: number;
-  index?: number;
-  isCurrent?: boolean;
-}
+function AccountOption() {
+  const { windowCord } = useContext(PopupContext);
 
-function AccountOption({
-  onClosePopup,
-  top,
-  index,
-  isCurrent,
-}: AccountOptionProps) {
   const popupStyle: React.CSSProperties = {
     position: "absolute",
     inset: "0px auto auto 0px",
-    transform: `translate(1226px, ${top}px)`,
+    transform: `translate(${windowCord.left}px, ${windowCord.top}px)`,
     width: "auto",
   };
 

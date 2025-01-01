@@ -1,13 +1,11 @@
 import ActionButton from "../../ui/ActionButton";
-import IconContainer from "../../ui/IconContainer";
 import ArrowUp from "../icons/ArrowUp";
 import Bridge from "../icons/Bridge";
-import More from "../icons/More";
 import PlusMinus from "../icons/PlusMinus";
 import ScanBarcode from "../icons/ScanBarcode";
 import Send from "../icons/Send";
 import Swap from "../icons/Swap";
-import PopupModal from "../modal/PopupModal";
+import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
 
 function AccountOverview() {
@@ -72,11 +70,10 @@ function AccountOverview() {
             </div>
             <div className="flex-grow">balance</div>
           </div>
-          <PopupModal>
-            <PopupModal.Window name="account_menu">
-              <AccountOption top={167} />
-            </PopupModal.Window>
-          </PopupModal>
+
+          <Window name="account_menu">
+            <AccountOption />
+          </Window>
         </div>
       </div>
     </section>

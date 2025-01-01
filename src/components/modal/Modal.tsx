@@ -11,6 +11,7 @@ import Close from "../icons/Close";
 import IconContainer from "../../ui/IconContainer";
 import SearchInput from "../../ui/SearchInput";
 import Add from "../icons/Add";
+import { PopupContext } from "../../contexts/PopupContext";
 
 interface WindowProps {
   name: string;
@@ -89,8 +90,18 @@ function Window({
   isAccount,
 }: PropsWithChildren<WindowProps>) {
   const { openName, close } = useContext(ModalContext);
+  const { close: closePopup } = useContext(PopupContext);
 
   if (name !== openName) return;
+
+  function handleCloseModal() {
+    close?.();
+    closePopup?.();
+  }
+  function handleInnerModal(e: React.MouseEvent) {
+    e.stopPropagation();
+    closePopup?.();
+  }
 
   return createPortal(
     <div>
@@ -106,11 +117,11 @@ function Window({
       <div data-focus-lock-disabled="false">
         <div
           className="flex justify-center items-start w-screen h-screen fixed top-0 left-0 p-2 px-4 overflow-auto overscroll-y-none z-[1050] md:pt-20 sm:pt-12 max-h-475-padding"
-          onClick={close}
+          onClick={handleCloseModal}
         >
           <section
             className="flex flex-col max-h-full w-full max-w-96 p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+            onClick={handleInnerModal}
           >
             <header className="flex justify-between p-4">
               <div className="ml-6 w-[calc(100%_-_48px)]">

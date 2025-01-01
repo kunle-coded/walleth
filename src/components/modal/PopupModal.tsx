@@ -1,12 +1,6 @@
-import React, {
-  cloneElement,
-  createContext,
-  Dispatch,
-  PropsWithChildren,
-  useContext,
-  useState,
-} from "react";
+import React, { cloneElement, Dispatch, useContext } from "react";
 import { createPortal } from "react-dom";
+import { PopupContext } from "../../contexts/PopupContext";
 
 interface ContextType {
   openName: string;
@@ -22,37 +16,20 @@ interface WindowProps {
   name: string;
 }
 
-const defaultValue: ContextType = {
-  openName: "",
-  open: function (): void {},
-  close: function (): void {},
-};
-
-const PopupContext = createContext(defaultValue);
-
-function PopupModal({ children }: PropsWithChildren) {
-  const [openName, setOpenName] = useState("");
-
-  const close = () => setOpenName("");
-  const open = setOpenName;
-
-  return (
-    <PopupContext.Provider value={{ openName, open, close }}>
-      {children}
-    </PopupContext.Provider>
-  );
-}
-
 function Open({
   children,
   opens: openWindowName,
 }: { children: React.ReactElement } & OpenProps) {
-  const { open } = useContext(PopupContext);
+  const { open, transformWindow } = useContext(PopupContext);
 
   return cloneElement(children, {
-    onClick: (e: MouseEvent) => {
+    onClick: (e: React.MouseEvent) => {
       e.stopPropagation();
+
       open(openWindowName);
+      const top = (e.target as HTMLElement).getBoundingClientRect().top + 15;
+      const left = (e.target as HTMLElement).getBoundingClientRect().left - 150;
+      transformWindow(top, left);
     },
   });
 }
@@ -65,15 +42,7 @@ function Window({
 
   if (name !== openName) return;
 
-  return createPortal(
-    <div className="" onClick={(e) => e.stopPropagation()}>
-      {cloneElement(children, { onClosePopup: close })}
-    </div>,
-    document.body
-  );
+  return createPortal(<div>{cloneElement(children)}</div>, document.body);
 }
 
-PopupModal.Open = Open;
-PopupModal.Window = Window;
-
-export default PopupModal;
+export { Open, Window };

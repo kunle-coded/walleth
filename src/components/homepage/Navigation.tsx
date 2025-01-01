@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AccountAvatar from "../icons/AccountAvatar";
 import ArrowDown from "../icons/ArrowDown";
 import Copy from "../icons/Copy";
@@ -124,7 +124,7 @@ function Navigation() {
             </Modal.Window>
           </Modal>
         </div>
-        <div className="flex flex-col items-center text-primary-500 text-ellipsis whitespace-nowrap ">
+        <div className="flex flex-col items-center text-primary-500 text-ellipsis whitespace-nowrap">
           <Modal>
             <Modal.Open opens="account_options">
               <button className="inline-flex justify-center items-center h-8 px-2 max-w-full p-0 gap-2 rounded-lg relative text-ellipsis whitespace-nowrap overflow-hidden align-middle select-none bg-transparent hover:bg-secondary-200 hover:shadow-none">

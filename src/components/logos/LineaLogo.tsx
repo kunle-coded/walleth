@@ -12,7 +12,7 @@ function LineaLogo() {
       }}
     >
       <rect width="199.4" height="207.623" fill="#121212" />
-      <g clip-path="url(#clip0_2303_643)">
+      <g clipPath="url(#clip0_2303_643)">
         <path
           d="M132.369 155.99H49.7001V68.8854H68.6148V139.109H132.369V155.981V155.99Z"
           fill="white"
