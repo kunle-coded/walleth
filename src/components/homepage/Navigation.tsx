@@ -157,10 +157,10 @@ function Navigation() {
               buttonText="Add account or hardware wallet"
             >
               <div className="overflow-auto scrollbar-custom">
-                <Account current />
-                <Account current={false} />
-                <Account current={false} />
-                <Account current={false} />
+                <Account current index={0} />
+                <Account current={false} index={1} />
+                <Account current={false} index={2} />
+                <Account current={false} index={3} />
               </div>
             </Modal.Window>
           </Modal>

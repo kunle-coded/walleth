@@ -3,18 +3,43 @@ import NetworkAvatar from "../../ui/NetworkAvatar";
 import EthLogo from "../logos/EthLogo";
 import More from "../icons/More";
 import IconContainer from "../../ui/IconContainer";
+import { useEffect, useRef, useState } from "react";
+import PopupModal from "../modal/PopupModal";
+import AccountOption from "./AccountOption";
 
 interface AccountProps {
   current: boolean;
+  index: number;
 }
 
-function Account({ current }: AccountProps) {
+function Account({ current, index }: AccountProps) {
+  const [itemTop, setItemTop] = useState(0);
+  const [currentItem, setCurrentItem] = useState(0);
+  const [isCloseMenu, setIsCloseMenu] = useState(false);
+
+  const itemRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const currentItem = itemRef.current;
+    if (currentItem) {
+      setItemTop(currentItem.getBoundingClientRect().top + 35);
+    }
+  }, []);
+
+  function handleClick() {
+    setIsCloseMenu(true);
+    console.log("clickiingg");
+  }
+
   return (
     <div className="block">
       <div
+        ref={itemRef}
         className={`flex justify-center w-full p-4 relative text-primary-500 cursor-pointer transition-[background-color] ease-linear ${
           current ? "bg-brand-100" : "bg-transparent hover:bg-secondary-200"
         }`}
+        onClick={handleClick}
       >
         {current && (
           <div className="absolute left-1 top-1 w-1 h-[calc(100%_-_8px)] bg-brand-500 rounded-[9999px]"></div>
@@ -72,14 +97,21 @@ function Account({ current }: AccountProps) {
             </div>
           </div>
         </div>
-        <button
-          aria-label="Account options"
-          className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
-        >
-          <IconContainer>
-            <More />
-          </IconContainer>
-        </button>
+
+        <PopupModal>
+          <PopupModal.Open opens="account_menu">
+            <button
+              ref={menuButtonRef}
+              aria-label="Account options"
+              tabIndex={index}
+              className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
+            >
+              <IconContainer>
+                <More />
+              </IconContainer>
+            </button>
+          </PopupModal.Open>
+        </PopupModal>
       </div>
     </div>
   );
