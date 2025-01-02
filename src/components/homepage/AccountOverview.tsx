@@ -7,6 +7,7 @@ import Send from "../icons/Send";
 import Swap from "../icons/Swap";
 import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
+import NetworkOption from "../popups/NetworkOption";
 
 function AccountOverview() {
   return (
@@ -71,6 +72,9 @@ function AccountOverview() {
             <div className="flex-grow">balance</div>
           </div>
 
+          <Window name="network_menu">
+            <NetworkOption />
+          </Window>
           <Window name="account_menu">
             <AccountOption />
           </Window>

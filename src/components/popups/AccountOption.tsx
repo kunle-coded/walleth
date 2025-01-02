@@ -12,7 +12,9 @@ function AccountOption() {
   const popupStyle: React.CSSProperties = {
     position: "absolute",
     inset: "0px auto auto 0px",
-    transform: `translate(${windowCord.left}px, ${windowCord.top}px)`,
+    transform: `translate(${windowCord.left - 150}px, ${
+      windowCord.top + 15
+    }px)`,
     width: "auto",
   };
 

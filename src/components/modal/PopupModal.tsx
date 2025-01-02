@@ -27,8 +27,8 @@ function Open({
       e.stopPropagation();
 
       open(openWindowName);
-      const top = (e.target as HTMLElement).getBoundingClientRect().top + 15;
-      const left = (e.target as HTMLElement).getBoundingClientRect().left - 150;
+      const top = (e.target as HTMLElement).getBoundingClientRect().top;
+      const left = (e.target as HTMLElement).getBoundingClientRect().left;
       transformWindow(top, left);
     },
   });

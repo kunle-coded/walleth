@@ -1,10 +1,8 @@
-import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import EthLogo from "../logos/EthLogo";
 import More from "../icons/More";
-import IconContainer from "../../ui/IconContainer";
 import ArrowDown from "../icons/ArrowDown";
 import { PropsWithChildren } from "react";
+import { Open } from "../modal/PopupModal";
 
 interface NetworkItemProps {
   current?: boolean;
@@ -53,11 +51,13 @@ function NetworkItem({
             </div>
           </div>
 
-          <button className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200">
-            <span className="inline-block text-[16px] flex-[0 0 1em] size-4 max-w-4 bg-transparent relative">
-              <More />
-            </span>
-          </button>
+          <Open opens="network_menu">
+            <button className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200">
+              <span className="inline-block text-[16px] flex-[0 0 1em] size-4 max-w-4 bg-transparent relative">
+                <More />
+              </span>
+            </button>
+          </Open>
         </div>
       </div>
     </div>
