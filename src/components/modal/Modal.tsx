@@ -120,7 +120,7 @@ function Window({
           onClick={handleCloseModal}
         >
           <section
-            className="flex flex-col max-h-full w-full max-w-96 p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] overflow-y-auto"
+            className="flex flex-col size-[360px] max-h-full w-full max-w-[360px] p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] overflow-y-auto"
             onClick={handleInnerModal}
           >
             <header className="flex justify-between p-4">
