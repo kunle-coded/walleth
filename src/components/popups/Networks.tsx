@@ -10,13 +10,14 @@ function Networks() {
   const [infoCordLeft, setInfoCordLeft] = useState(0);
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const [isTooltipEnter, setIsTooltipEnter] = useState(false);
+  const [isShowTestNetwork, setIsShowTestNetwork] = useState(false);
 
   const { handleInfoLeave, clearTimeoutOnUnmount } = useDelayedHover();
 
   const popupStyle: React.CSSProperties = {
     position: "absolute",
     inset: "auto auto 0px 0px",
-    transform: `translate(${infoCordLeft - 16}px, ${-infoCordTop - 135}px)`,
+    transform: `translate(${infoCordLeft - 16}px, ${-infoCordTop - 115}px)`,
     width: "360px",
   };
   const tooltipStyle: React.CSSProperties = {
@@ -39,6 +40,10 @@ function Networks() {
     return clearTimeoutOnUnmount;
   }, []);
 
+  useEffect(() => {
+    console.log("Updated isShowTestNetwork:", isShowTestNetwork);
+  }, [isShowTestNetwork]);
+
   function handleTooltipLeave() {
     setIsMouseEnter(false);
     setIsTooltipEnter(false);
@@ -46,6 +51,10 @@ function Networks() {
 
   function handleMouseLeave() {
     handleInfoLeave(isTooltipEnter, setIsMouseEnter);
+  }
+
+  function handleToggle() {
+    setIsShowTestNetwork((prevState) => !prevState);
   }
 
   return (
@@ -133,25 +142,59 @@ function Networks() {
         </p>
         <label className="flex cursor-pointer">
           <div className="flex justify-start items-center w-[52px] bg-transparent p-0 border-0 relative cursor-pointer select-none">
-            <div className="w-[40px] h-[24px] p-0 flex justify-center items-center border-none rounded-[26px] bg-brand-500 ">
-              <div className="flex justify-center items-center relative font-[Helvetica Neue,_Helvetica,_sans-serif] mt-auto mb-auto leading-[0] w-[26px] h-[20px] left-1 opacity-100"></div>
-              <div className="flex justify-center items-center relative font-[Helvetica Neue,_Helvetica,_sans-serif] mt-auto mb-auto pr-[5px] leading-[0] w-[26px] h-[20px] bottom-0 text-[rgba(255,_255,_255,_0.6)] opacity-0"></div>
+            <div
+              className={`w-[40px] h-[24px] p-0 flex justify-center items-center border-none rounded-[26px] ${
+                isShowTestNetwork ? "bg-brand-500" : "bg-secondary-500"
+              } `}
+            >
+              <div
+                className={`flex justify-center items-center relative font-[Helvetica Neue,_Helvetica,_sans-serif] mt-auto mb-auto leading-[0] w-[26px] h-[20px] left-1 ${
+                  isShowTestNetwork ? "opacity-100" : "opacity-0"
+                }`}
+              ></div>
+              <div
+                className={`flex justify-center items-center relative font-[Helvetica Neue,_Helvetica,_sans-serif] mt-auto mb-auto pr-[5px] leading-[0] w-[26px] h-[20px] bottom-0 text-[rgba(255,_255,_255,_0.6)] ${
+                  isShowTestNetwork ? "opacity-0" : "opacity-100"
+                }`}
+              ></div>
             </div>
             <div className="absolute top-0 left-0 h-full flex justify-start items-center self-stretch flex-1">
-              <div className="w-[18px] h-[18px] flex self-center shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)] rounded-[50%] box-border relative left-[18px] bg-white"></div>
+              <div
+                className={`w-[18px] h-[18px] flex self-center shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)] rounded-[50%] box-border relative bg-white transition-[left_250ms_linear] ${
+                  isShowTestNetwork ? "left-[18px]" : "left-[3px]"
+                }`}
+              ></div>
             </div>
             <input
               type="checkbox"
-              value="true"
+              value={isShowTestNetwork ? "true" : "false"}
               className="w-px h-px absolute p-0 -m-[1px] overflow-hidden"
               style={{ clip: "rect(0px, 0px, 0px, 0px)" }}
+              onClick={handleToggle}
             />
           </div>
         </label>
       </div>
-      <div>
-        <div>Test networks</div>
-      </div>
+      {isShowTestNetwork && (
+        <div className="h-full overflow-auto">
+          <NetworkItem
+            current
+            networkName="Localhost 8545"
+            networkLink="127.0.0.1:7545"
+            networkIconLink=""
+          />
+          <NetworkItem
+            networkName="Sepolia"
+            networkLink="sepolia.infura.io"
+            networkIconLink=""
+          />
+          <NetworkItem
+            networkName="Linea Sepolia"
+            networkLink="linea-sepolia.infura.io"
+            networkIconLink="src/assets/images/linea-testnet-logo.png"
+          />
+        </div>
+      )}
     </div>
   );
 }

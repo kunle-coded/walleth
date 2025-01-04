@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (max-height: 475px) {
-  .max-h-475-padding {
-    padding: 8px;
-  }
-}
-
 @layer utilities {
   .scrollbar-custom {
     scrollbar-color: #767e93 transparent;
@@ -16,6 +10,26 @@
 
   .draggable {
     overflow-anchor: none;
+  }
+
+  @media (max-height: 475px) {
+    .max-h-475-padding {
+      padding: 8px;
+    }
+  }
+
+  @media (min-width: 576px) and (min-height: 475px) {
+    .md-py-8-min-h-576 {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+  }
+
+  @media (min-width: 768px) and (min-height: 475px) {
+    .md-py-20-min-h-768 {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
   }
 }
 

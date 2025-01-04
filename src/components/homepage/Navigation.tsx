@@ -118,6 +118,7 @@ function Navigation() {
               showButton
               isAccount={false}
               buttonText="Add a custom network"
+              fullHeight
             >
               <div className="overflow-auto h-full scrollbar-custom">
                 <SearchInput placeholderText="Search" />

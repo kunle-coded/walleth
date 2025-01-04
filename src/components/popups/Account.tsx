@@ -58,9 +58,11 @@ function Account({ current, index }: AccountProps) {
               </p>
             </div>
             <div className="flex justify-center items-center gap-1">
-              <NetworkAvatar>
-                <EthLogo />
-              </NetworkAvatar>
+              <NetworkAvatar
+                networkName="Ethereum"
+                logoLink="src/assets/images/eth-logo.svg"
+              />
+
               <div className="text-xs text-end md:text-sm">
                 <div className="inline text-ellipsis overflow-hidden">
                   <span className="text-ellipsis whitespace-nowrap overflow-hidden text-inherit">

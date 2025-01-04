@@ -18,7 +18,7 @@ interface WindowProps {
   headerText?: string;
   showButton: boolean;
   buttonText: string;
-  searchText?: string;
+  fullHeight?: boolean;
   isAccount: boolean;
 }
 
@@ -86,7 +86,7 @@ function Window({
   headerText,
   showButton,
   buttonText,
-  searchText,
+  fullHeight,
   isAccount,
 }: PropsWithChildren<WindowProps>) {
   const { openName, close } = useContext(ModalContext);
@@ -98,6 +98,7 @@ function Window({
     close?.();
     closePopup?.();
   }
+
   function handleInnerModal(e: React.MouseEvent) {
     e.stopPropagation();
     closePopup?.();
@@ -116,11 +117,13 @@ function Window({
       ></div>
       <div data-focus-lock-disabled="false">
         <div
-          className="flex justify-center items-start w-screen h-screen fixed top-0 left-0 p-2 px-4 overflow-auto overscroll-y-none z-[1050] md:pt-20 sm:pt-12 max-h-475-padding"
+          className="max-h-475-padding flex justify-center items-start w-screen h-screen fixed top-0 left-0  overflow-auto overscroll-y-none z-[1050] md:py-20-min-h-475 md:py-8-min-h-475 md-py-8-min-h-576 md-py-20-min-h-768 px-4 py-4 p-0 "
           onClick={handleCloseModal}
         >
           <section
-            className="flex flex-col size-[360px] max-h-full w-full max-w-[360px] p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] overflow-y-auto"
+            className={`flex flex-col max-h-full w-full max-w-[360px] p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
+              fullHeight ? "h-screen" : "overflow-y-auto"
+            }`}
             onClick={handleInnerModal}
           >
             <header className="flex justify-between p-4">
