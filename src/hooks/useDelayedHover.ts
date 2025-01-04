@@ -14,7 +14,10 @@ function useDelayedHover() {
     }
 
     timeoutRef.current = window.setTimeout(() => {
-      if (!isTooltipEnter) {
+      if (isTooltipEnter) {
+        // setIsMouseEnter(false);
+        return;
+      } else {
         setIsMouseEnter(false);
       }
     }, 1000);

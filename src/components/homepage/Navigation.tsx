@@ -97,9 +97,11 @@ function Navigation() {
                 aria-label={`Network Menu ${network}`}
                 className="flex items-center m-2 gap-2 h-8 max-w-[250px] pl-2 pr-4 bg-primary-100 border-none rounded-full cursor-pointer"
               >
-                <NetworkAvatar>
-                  <EthLogo />
-                </NetworkAvatar>
+                <NetworkAvatar
+                  networkName={network}
+                  logoLink="src/assets/images/eth-logo.svg"
+                />
+
                 <span className="text-sm leading-[1.375rem] text-primary-500 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
                   {network}
                 </span>
