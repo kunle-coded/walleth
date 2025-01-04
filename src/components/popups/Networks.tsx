@@ -99,7 +99,7 @@ function Networks() {
                 ></span>
                 {isMouseEnter && (
                   <div
-                    className="p-4 rounded-lg text-primary-500 bg-primary-100 border border-solid border-[rgba(164,_169,_183,_0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]"
+                    className="p-4 rounded-lg text-primary-500 bg-primary-100 border border-solid border-[rgba(164,_169,_183,_0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] z-[1500]"
                     role="tooltip"
                     data-popper-reference-hidden="false"
                     data-popper-escaped="false"

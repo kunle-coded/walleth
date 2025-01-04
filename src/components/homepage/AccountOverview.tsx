@@ -8,6 +8,7 @@ import Swap from "../icons/Swap";
 import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
 import NetworkOption from "../popups/NetworkOption";
+import AccountOverviewTabs from "./AccountOverviewTabs";
 
 function AccountOverview() {
   return (
@@ -69,7 +70,19 @@ function AccountOverview() {
                 </div>
               </div>
             </div>
-            <div className="flex-grow">balance</div>
+            <div className="flex-grow">
+              <div className="flex-row">
+                <AccountOverviewTabs />
+                <div className="flex-row">
+                  <div className="mt-2">
+                    <div className="my-1 mx-2">
+                      <div className="flex justify-between"></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="next row"></div>
+              </div>
+            </div>
           </div>
 
           <Window name="network_menu">

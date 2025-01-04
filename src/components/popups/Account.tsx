@@ -1,6 +1,5 @@
 import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import EthLogo from "../logos/EthLogo";
 import More from "../icons/More";
 import IconContainer from "../../ui/IconContainer";
 import { Open } from "../modal/PopupModal";

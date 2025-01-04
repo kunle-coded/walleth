@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AccountAvatar from "../icons/AccountAvatar";
 import ArrowDown from "../icons/ArrowDown";
 import Copy from "../icons/Copy";
@@ -8,7 +8,6 @@ import {
   readClipboardText,
   writeClipboardText,
 } from "../../helpers/writeClipboardText";
-import EthLogo from "../logos/EthLogo";
 import Notifications from "../icons/Notifications";
 import MenuItem from "../../ui/MenuItem";
 import ScanBarcode from "../icons/ScanBarcode";
@@ -58,7 +57,7 @@ function Navigation() {
     };
 
     // Set an interval to fetch the clipboard text periodically
-    const intervalID = setInterval(fetchClipboardText, 30000); // Check every 3 seconds
+    const intervalID = setInterval(fetchClipboardText, 30000);
 
     return () => clearInterval(intervalID);
   }, [address]);
@@ -66,6 +65,7 @@ function Navigation() {
   function onAddressEnter() {
     setIsShowTooltip(true);
   }
+
   function onAddressLeave() {
     if (isDelay) return;
     setIsShowTooltip(false);
