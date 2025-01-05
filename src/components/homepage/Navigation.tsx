@@ -1,27 +1,16 @@
 import { useEffect, useState } from "react";
 import AccountAvatar from "../icons/AccountAvatar";
-import ArrowDown from "../icons/ArrowDown";
-import Copy from "../icons/Copy";
-import More from "../icons/More";
-import CopySuccess from "../icons/CopySuccess";
 import {
   readClipboardText,
   writeClipboardText,
 } from "../../helpers/writeClipboardText";
-import Notifications from "../icons/Notifications";
-import MenuItem from "../../ui/MenuItem";
-import ScanBarcode from "../icons/ScanBarcode";
-import Export from "../icons/Export";
-import SecurityCheck from "../icons/SecurityCheck";
-import Snaps from "../icons/Snaps";
-import MessageQuestion from "../icons/MessageQuestion";
-import Settings from "../icons/Settings";
-import Lock from "../icons/Lock";
 import Modal from "../modal/Modal";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import Account from "../popups/Account";
 import SearchInput from "../../ui/SearchInput";
 import Networks from "../popups/Networks";
+import Icon from "../../ui/Icon";
+import MenuItem from "../../ui/MenuItem";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -105,11 +94,12 @@ function Navigation() {
                 <span className="text-sm leading-[1.375rem] text-primary-500 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
                   {network}
                 </span>
-                <span className="inline-block ml-auto size-3 max-w-3 flex-[0 0 12px]">
-                  <div className="relative size-full">
-                    <ArrowDown />
-                  </div>
-                </span>
+
+                <Icon
+                  imgUrl="src/assets/images/arrow-down.svg"
+                  margin="ml-auto"
+                  size="small"
+                />
               </button>
             </Modal.Open>
             <Modal.Window
@@ -145,11 +135,7 @@ function Navigation() {
                     Account 1
                   </span>
                 </span>
-                <span className="inline-block ms-1 size-4 max-w-4 flex-[0 0 16px]">
-                  <div className="relative size-full">
-                    <ArrowDown />
-                  </div>
-                </span>
+                <Icon imgUrl="src/assets/images/arrow-down.svg" margin="ms-1" />
               </button>
             </Modal.Open>
             <Modal.Window
@@ -198,11 +184,19 @@ function Navigation() {
                     )}`}
                   </span>
                 </span>
-                <span className="inline-block ms-1 size-4 max-w-4 flex-[0 0 16px]">
-                  <div className="relative size-full text-secondary-500">
-                    {isCopied ? <CopySuccess /> : <Copy />}
-                  </div>
-                </span>
+                {isCopied ? (
+                  <Icon
+                    imgUrl="src/assets/images/copy-success.svg"
+                    margin="ms-1"
+                    color="secondary-500"
+                  />
+                ) : (
+                  <Icon
+                    imgUrl="src/assets/images/copy.svg"
+                    margin="ms-1"
+                    color="secondary-500"
+                  />
+                )}
               </button>
             </div>
           </div>
@@ -216,9 +210,7 @@ function Navigation() {
                 className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
                 onClick={handleMenu}
               >
-                <span className="inline-block flex-[0 0 1em] size-4 max-w-4 bg-transparent relative">
-                  <More />
-                </span>
+                <Icon imgUrl="src/assets/images/more.svg" />
               </button>
               {showMenu && (
                 <div className="absolute top-0 bottom-auto right-auto left-0 w-auto min-w-56 overflow-hidden translate-x-[925px] translate-y-[145px] p-0 bg-white border rounded-lg border-none border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
@@ -226,32 +218,45 @@ function Navigation() {
                     menuText="Notifications"
                     showNotification
                     isNotification={isNotification}
-                  >
-                    <Notifications />
-                  </MenuItem>
+                    iconUrl="src/assets/images/notification.svg"
+                  />
                   <div className="h-[1px] w-full border border-b-0 border-solid border-secondary-300 opacity-50 "></div>
-                  <MenuItem menuText="Account details">
-                    <ScanBarcode />
-                  </MenuItem>
-                  <MenuItem menuText="View on explorer" showSubmenu>
-                    <Export />
-                  </MenuItem>
+                  <MenuItem
+                    menuText="Account details"
+                    iconUrl="src/assets/images/scan-barcode.svg"
+                  />
+
+                  <MenuItem
+                    menuText="View on explorer"
+                    iconUrl="src/assets/images/export.svg"
+                    showSubmenu
+                  />
+
                   <div className="h-[1px] w-full border border-b-0 border-solid border-secondary-300 opacity-50 "></div>
-                  <MenuItem menuText="All Permissions">
-                    <SecurityCheck />
-                  </MenuItem>
-                  <MenuItem menuText="Snaps">
-                    <Snaps />
-                  </MenuItem>
-                  <MenuItem menuText="Support">
-                    <MessageQuestion />
-                  </MenuItem>
-                  <MenuItem menuText="Settings">
-                    <Settings />
-                  </MenuItem>
-                  <MenuItem menuText="Lock Walleth">
-                    <Lock />
-                  </MenuItem>
+                  <MenuItem
+                    menuText="All Permissions"
+                    iconUrl="src/assets/images/security-check.svg"
+                  />
+
+                  <MenuItem
+                    menuText="Snaps"
+                    iconUrl="src/assets/images/snaps.svg"
+                  />
+
+                  <MenuItem
+                    menuText="Support"
+                    iconUrl="src/assets/images/message-question.svg"
+                  />
+
+                  <MenuItem
+                    menuText="Settings"
+                    iconUrl="src/assets/images/settings.svg"
+                  />
+
+                  <MenuItem
+                    menuText="Lock Walleth"
+                    iconUrl="src/assets/images/lock.svg"
+                  />
                 </div>
               )}
             </div>

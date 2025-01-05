@@ -1,10 +1,11 @@
-import { PropsWithChildren } from "react";
+import Icon from "./Icon";
 
 interface MenuItemProps {
   menuText: string;
   isNotification?: boolean;
   showNotification?: boolean;
   showSubmenu?: boolean;
+  iconUrl: string;
 }
 
 function MenuItem({
@@ -12,13 +13,11 @@ function MenuItem({
   isNotification,
   showNotification,
   showSubmenu,
-  children,
-}: PropsWithChildren<MenuItemProps>) {
+  iconUrl,
+}: MenuItemProps) {
   return (
     <button className="grid grid-cols-[min-content_auto] items-center w-full py-3.5 px-4 text-start text-inherit font-medium bg-none border-none cursor-pointer hover:bg-primary-100">
-      <span className="inline-block size-4 max-w-4 mr-2 text-inherit relative">
-        {children}
-      </span>
+      <Icon imgUrl={iconUrl} margin="mr-2" />
 
       <div>
         <div className="flex flex-row justify-between items-center">

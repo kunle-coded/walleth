@@ -1,7 +1,6 @@
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import More from "../icons/More";
-import ArrowDown from "../icons/ArrowDown";
 import { Open } from "../modal/PopupModal";
+import Icon from "../../ui/Icon";
 
 interface NetworkItemProps {
   current?: boolean;
@@ -49,17 +48,17 @@ function NetworkItem({
               <button className="text-xs md:text-sm md:font-medium text-secondary-600 text-ellipsis whitespace-nowrap overflow-hidden p-0 border-none">
                 {networkLink}
               </button>
-              <span className="inline-block text-xs w-[1em] h-[1em] max-w-[1em] ml-1 flex-[0_0_1em] text-secondary-600 relative">
-                <ArrowDown />
-              </span>
+              <Icon
+                imgUrl="src/assets/images/arrow-down.svg"
+                size="small"
+                margin="ml-1"
+              />
             </div>
           </div>
 
           <Open opens="network_menu">
             <button className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200">
-              <span className="inline-block text-[16px] flex-[0 0 1em] size-4 max-w-4 bg-transparent relative">
-                <More />
-              </span>
+              <Icon imgUrl="src/assets/images/more.svg" />
             </button>
           </Open>
         </div>

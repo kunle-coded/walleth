@@ -1,10 +1,18 @@
-import { PropsWithChildren } from "react";
+interface AvatarProps {
+  imgUrl: string;
+}
 
-function Avatar({ children }: PropsWithChildren) {
+function Avatar({ imgUrl }: AvatarProps) {
   return (
-    <div className="flex justify-center items-center size-4 max-w-4 flex-[0 0 16px] text-xs leading-5 text-primary-500 bg-primary-100 border border-solid border-transparent rounded-[50%] overflow-hidden uppercase">
-      <div className="relative size-full">{children}</div>
-    </div>
+    <span
+      className="inline-block w-4 h-4 max-w-4 ms-1 text-inherit bg-current text-secondary-600"
+      style={{
+        maskImage: `url(${imgUrl})`,
+        maskSize: "cover",
+        maskRepeat: "no-repeat",
+        maskPosition: "center",
+      }}
+    ></span>
   );
 }
 
