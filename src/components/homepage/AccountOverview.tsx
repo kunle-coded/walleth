@@ -1,11 +1,18 @@
+import { useRef } from "react";
 import ActionButton from "../../ui/ActionButton";
 import Icon from "../../ui/Icon";
+import IconButton from "../../ui/IconButton";
+import TooltipPopup from "../../ui/TooltipPopup";
 import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
 import NetworkOption from "../popups/NetworkOption";
 import AccountOverviewTabs from "./AccountOverviewTabs";
+import usePopupCordinates from "../../hooks/usePopupCordinates";
 
 function AccountOverview() {
+  const filterRef = useRef(null);
+  const { isTop } = usePopupCordinates(filterRef);
+
   return (
     <section className="w-full flex flex-[1 0 auto] justify-center min-h-0">
       <div className="md:w-4/5 lg:w-[62vw] min-h-[82vh] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] z-20">
@@ -88,7 +95,7 @@ function AccountOverview() {
                   <div className="mt-2">
                     <div className="py-1 mx-2">
                       <div className="flex justify-between">
-                        <button className="inline-flex justify-between items-center w-auto min-w-[auto] max-w-full h-[32px] gap-1 rounded-lg py-0 px-2 mr-2 bg-white text-secondary-900 border-none text-ellipsis overflow-hidden whitespace-nowrap align-middle select-none cursor-pointer relative ">
+                        <button className="inline-flex justify-between items-center w-auto min-w-[auto] max-w-full h-[32px] gap-1 rounded-lg py-0 px-2 mr-2 bg-white text-secondary-900 border-none text-ellipsis overflow-hidden whitespace-nowrap align-middle select-none cursor-pointer relative">
                           <span className="text-ellipsis overflow-hidden whitespace-nowrap">
                             Ethereum Mainnet
                           </span>
@@ -97,10 +104,21 @@ function AccountOverview() {
                             margin="ms-1"
                           />
                         </button>
-                        <div className="filter"></div>
+                        <div className="flex justify-end">
+                          <div ref={filterRef}>
+                            <div className="inline">
+                              <IconButton iconUrl="src/assets/images/filter.svg" />
+                            </div>
+                            <TooltipPopup isTop={isTop} />
+                          </div>
+                          <IconButton
+                            iconUrl="src/assets/images/more.svg"
+                            margin="me-0"
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className="next row">token</div>
+                    <div className="h-[600px]">token</div>
                   </div>
                 </div>
               </div>
