@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import usePopupCordinates from "../hooks/usePopupCordinates";
+import React from "react";
 
 interface TooltipPopupProps {
-  valueY?: number;
   isTop: boolean;
-  //   targetRef: React.RefObject<HTMLDivElement>;
+  targetRef: React.RefObject<HTMLDivElement>;
+  coord: object;
 }
 
-function TooltipPopup({ isTop }: TooltipPopupProps) {
-  const [isEnter, setIsEnter] = useState(false);
-  //   const [isTop, setIsTop] = useState(false);
+function TooltipPopup({ isTop, targetRef, coord }: TooltipPopupProps) {
+  const left = targetRef.current?.getBoundingClientRect().left as number;
+  console.log("filter top", targetRef.current?.getBoundingClientRect().y);
 
   const TooltipStyle: React.CSSProperties = {
     zIndex: 9999,
@@ -21,10 +20,10 @@ function TooltipPopup({ isTop }: TooltipPopupProps) {
     top: "0px",
     left: "0px",
     perspective: "800px",
-    transform: "translate3d(1073px, 426px, 0px)",
+    transform: `translate3d(${left - 20}px, ${isTop ? "368px" : "429px"}, 0px)`,
   };
 
-  console.log(isTop);
+  console.log(coord);
 
   return (
     <div

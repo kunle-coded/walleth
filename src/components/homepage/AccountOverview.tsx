@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ActionButton from "../../ui/ActionButton";
 import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
@@ -7,11 +7,80 @@ import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
 import NetworkOption from "../popups/NetworkOption";
 import AccountOverviewTabs from "./AccountOverviewTabs";
-import usePopupCordinates from "../../hooks/usePopupCordinates";
 
-function AccountOverview() {
-  const filterRef = useRef(null);
-  const { isTop } = usePopupCordinates(filterRef);
+interface AccountOverviewProps {
+  filterRef: React.RefObject<HTMLDivElement>;
+  isTop: boolean;
+  coords: object;
+}
+
+function AccountOverview({ filterRef, isTop, coords }: AccountOverviewProps) {
+  const [isFilterEnter, setIsFilterEnter] = useState(false);
+  const [tokenOptionsCoords, setTokenOptionsCoords] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [optionsWidth, setOptionsWidth] = useState(0);
+
+  const tokenOptionsRef = useRef<HTMLDivElement>(null);
+
+  const tokensOptionsStyle = {
+    transform: `translate(${tokenOptionsCoords.left - optionsWidth / 1.5}px, ${
+      tokenOptionsCoords.top + 10
+    }px)`,
+  };
+
+  useEffect(() => {
+    if (filterRef.current) {
+      const rect = filterRef.current.getBoundingClientRect();
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      setTokenOptionsCoords({
+        top: rect.bottom + scrollTop,
+        left: rect.left + scrollLeft,
+      });
+    }
+
+    if (tokenOptionsRef.current) {
+      const width = tokenOptionsRef.current.clientWidth;
+      setOptionsWidth(width);
+    }
+  }, [filterRef]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (filterRef.current) {
+        const rect = filterRef.current.getBoundingClientRect();
+        const scrollLeft =
+          window.scrollX || document.documentElement.scrollLeft;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        setTokenOptionsCoords({
+          top: rect.bottom + scrollTop,
+          left: rect.left + scrollLeft,
+        });
+      }
+
+      if (tokenOptionsRef.current) {
+        const width = tokenOptionsRef.current.clientWidth;
+        setOptionsWidth(width);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [filterRef]);
+
+  function handleFilterEnter() {
+    setIsFilterEnter(true);
+  }
+  function handleFilterLeave() {
+    setIsFilterEnter(false);
+  }
 
   return (
     <section className="w-full flex flex-[1 0 auto] justify-center min-h-0">
@@ -95,7 +164,7 @@ function AccountOverview() {
                   <div className="mt-2">
                     <div className="py-1 mx-2">
                       <div className="flex justify-between">
-                        <button className="inline-flex justify-between items-center w-auto min-w-[auto] max-w-full h-[32px] gap-1 rounded-lg py-0 px-2 mr-2 bg-white text-secondary-900 border-none text-ellipsis overflow-hidden whitespace-nowrap align-middle select-none cursor-pointer relative">
+                        <button className="inline-flex justify-between items-center w-auto min-w-[auto] max-w-full h-[32px] gap-1 rounded-lg py-0 px-2 mr-2 bg-white text-secondary-900 border-none text-ellipsis overflow-hidden whitespace-nowrap align-middle select-none cursor-pointer relative hover:bg-secondary-200">
                           <span className="text-ellipsis overflow-hidden whitespace-nowrap">
                             Ethereum Mainnet
                           </span>
@@ -106,10 +175,20 @@ function AccountOverview() {
                         </button>
                         <div className="flex justify-end">
                           <div ref={filterRef}>
-                            <div className="inline">
+                            <div
+                              className="inline"
+                              onMouseEnter={handleFilterEnter}
+                              onMouseLeave={handleFilterLeave}
+                            >
                               <IconButton iconUrl="src/assets/images/filter.svg" />
                             </div>
-                            <TooltipPopup isTop={isTop} />
+                            {isFilterEnter && (
+                              <TooltipPopup
+                                isTop={isTop}
+                                targetRef={filterRef}
+                                coord={coords}
+                              />
+                            )}
                           </div>
                           <IconButton
                             iconUrl="src/assets/images/more.svg"
@@ -117,8 +196,32 @@ function AccountOverview() {
                           />
                         </div>
                       </div>
+                      <div
+                        ref={tokenOptionsRef}
+                        className="flex flex-col min-w-[158px] w-auto p-0 absolute inset-[0px_auto_auto_0px] z-10 border-solid border bg-white rounded-lg border-secondary-200 shadow-[0px_2px_16px_0px,_rgba(0,0,0,0.1)]"
+                        style={tokensOptionsStyle}
+                      >
+                        <div className="relative">
+                          <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
+                            <Icon
+                              imgUrl="src/assets/images/add.svg"
+                              margin="me-2"
+                            />
+                            Import tokens
+                          </button>
+                        </div>
+                        <div className="relative">
+                          <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
+                            <Icon
+                              imgUrl="src/assets/images/refresh.svg"
+                              margin="me-2"
+                            />
+                            Refresh list
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="h-[600px]">token</div>
+                    {/* <div className="">token</div> */}
                   </div>
                 </div>
               </div>
