@@ -3,12 +3,10 @@ import React from "react";
 interface TooltipPopupProps {
   isTop: boolean;
   targetRef: React.RefObject<HTMLDivElement>;
-  coord: object;
 }
 
-function TooltipPopup({ isTop, targetRef, coord }: TooltipPopupProps) {
+function TooltipPopup({ isTop, targetRef }: TooltipPopupProps) {
   const left = targetRef.current?.getBoundingClientRect().left as number;
-  console.log("filter top", targetRef.current?.getBoundingClientRect().y);
 
   const TooltipStyle: React.CSSProperties = {
     zIndex: 9999,
@@ -22,8 +20,6 @@ function TooltipPopup({ isTop, targetRef, coord }: TooltipPopupProps) {
     perspective: "800px",
     transform: `translate3d(${left - 20}px, ${isTop ? "368px" : "429px"}, 0px)`,
   };
-
-  console.log(coord);
 
   return (
     <div

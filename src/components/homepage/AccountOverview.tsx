@@ -7,6 +7,7 @@ import { Window } from "../modal/PopupModal";
 import AccountOption from "../popups/AccountOption";
 import NetworkOption from "../popups/NetworkOption";
 import AccountOverviewTabs from "./AccountOverviewTabs";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 interface AccountOverviewProps {
   filterRef: React.RefObject<HTMLDivElement>;
@@ -20,12 +21,21 @@ function AccountOverview({ filterRef, isTop, coords }: AccountOverviewProps) {
     top: 0,
     left: 0,
   });
-  const [optionsWidth, setOptionsWidth] = useState(0);
 
-  const tokenOptionsRef = useRef<HTMLDivElement>(null);
+  const {
+    isTokenMenu,
+    onOpenTokenMenu,
+    isTokenFilterOptions,
+    onOpenTokenFilter,
+  } = useGlobal();
 
   const tokensOptionsStyle = {
-    transform: `translate(${tokenOptionsCoords.left - optionsWidth / 1.5}px, ${
+    transform: `translate(${tokenOptionsCoords.left - 156 / 1.5}px, ${
+      tokenOptionsCoords.top + 10
+    }px)`,
+  };
+  const filterOptionsStyle = {
+    transform: `translate(${tokenOptionsCoords.left - 250 / 1.25}px, ${
       tokenOptionsCoords.top + 10
     }px)`,
   };
@@ -41,11 +51,6 @@ function AccountOverview({ filterRef, isTop, coords }: AccountOverviewProps) {
         left: rect.left + scrollLeft,
       });
     }
-
-    if (tokenOptionsRef.current) {
-      const width = tokenOptionsRef.current.clientWidth;
-      setOptionsWidth(width);
-    }
   }, [filterRef]);
 
   useEffect(() => {
@@ -60,11 +65,6 @@ function AccountOverview({ filterRef, isTop, coords }: AccountOverviewProps) {
           top: rect.bottom + scrollTop,
           left: rect.left + scrollLeft,
         });
-      }
-
-      if (tokenOptionsRef.current) {
-        const width = tokenOptionsRef.current.clientWidth;
-        setOptionsWidth(width);
       }
     };
 
@@ -179,47 +179,72 @@ function AccountOverview({ filterRef, isTop, coords }: AccountOverviewProps) {
                               className="inline"
                               onMouseEnter={handleFilterEnter}
                               onMouseLeave={handleFilterLeave}
+                              onClick={onOpenTokenFilter}
                             >
-                              <IconButton iconUrl="src/assets/images/filter.svg" />
+                              <IconButton
+                                iconUrl="src/assets/images/filter.svg"
+                                isFilter={isTokenFilterOptions}
+                              />
                             </div>
                             {isFilterEnter && (
                               <TooltipPopup
                                 isTop={isTop}
                                 targetRef={filterRef}
-                                coord={coords}
                               />
                             )}
                           </div>
                           <IconButton
                             iconUrl="src/assets/images/more.svg"
                             margin="me-0"
+                            onClick={onOpenTokenMenu}
                           />
                         </div>
                       </div>
-                      <div
-                        ref={tokenOptionsRef}
-                        className="flex flex-col min-w-[158px] w-auto p-0 absolute inset-[0px_auto_auto_0px] z-10 border-solid border bg-white rounded-lg border-secondary-200 shadow-[0px_2px_16px_0px,_rgba(0,0,0,0.1)]"
-                        style={tokensOptionsStyle}
-                      >
-                        <div className="relative">
-                          <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
-                            <Icon
-                              imgUrl="src/assets/images/add.svg"
-                              margin="me-2"
-                            />
-                            Import tokens
-                          </button>
+                      {isTokenMenu && (
+                        <div
+                          className="flex flex-col min-w-[158px] w-auto p-0 absolute inset-[0px_auto_auto_0px] z-10 border-solid border bg-white rounded-lg border-secondary-200 shadow-[0px_2px_16px_0px,_rgba(0,0,0,0.1)]"
+                          style={tokensOptionsStyle}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="relative">
+                            <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
+                              <Icon
+                                imgUrl="src/assets/images/add.svg"
+                                margin="me-2"
+                              />
+                              Import tokens
+                            </button>
+                          </div>
+                          <div className="relative">
+                            <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
+                              <Icon
+                                imgUrl="src/assets/images/refresh.svg"
+                                margin="me-2"
+                              />
+                              Refresh list
+                            </button>
+                          </div>
                         </div>
-                        <div className="relative">
-                          <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
-                            <Icon
-                              imgUrl="src/assets/images/refresh.svg"
-                              margin="me-2"
-                            />
-                            Refresh list
-                          </button>
+                      )}
+                      {isTokenFilterOptions && (
+                        <div
+                          className="flex flex-col min-w-[250px] w-auto p-0 absolute inset-[0px_auto_auto_0px] z-10 border-solid border bg-white rounded-lg border-secondary-200 shadow-[0px_2px_16px_0px,_rgba(0,0,0,0.1)]"
+                          style={filterOptionsStyle}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="relative">
+                            <button className="flex items-center w-full text-secondary-900 bg-white text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none hover:bg-secondary-200">
+                              Alphabetically (A-Z)
+                            </button>
+                          </div>
+                          <div className="relative">
+                            <button className="flex items-center w-full text-secondary-900 bg-brand-100 text-sm md:text-[1rem] md:leading-6 p-4 cursor-pointer border-none">
+                              Declining balance ($ high-low)
+                            </button>
+                            <div className="absolute w-1 top-1 left-1 h-[calc(100%_-_8px)] bg-brand-500 rounded-[9999px]"></div>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                     {/* <div className="">token</div> */}
                   </div>
