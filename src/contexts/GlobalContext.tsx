@@ -3,26 +3,31 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 type GlobalContextType = {
   isTokenMenu: boolean;
   isTokenFilterOptions: boolean;
+  overviewActiveTab: number;
   onOpenTokenMenu: () => void;
   onCloseTokenMenu: () => void;
   onOpenTokenFilter: () => void;
   onCloseTokenFilter: () => void;
+  onSelectTab: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const defaultValue = {
-  isTokenMenu: false,
-  isTokenFilterOptions: false,
-  onOpenTokenMenu: () => void {},
-  onCloseTokenMenu: () => void {},
-  onOpenTokenFilter: () => void {},
-  onCloseTokenFilter: () => void {},
-};
+// const defaultValue = {
+//   isTokenMenu: false,
+//   isTokenFilterOptions: false,
+//   overviewActiveTab: 0,
+//   onOpenTokenMenu: () => void {},
+//   onCloseTokenMenu: () => void {},
+//   onOpenTokenFilter: () => void {},
+//   onCloseTokenFilter: () => void {},
+//   onSelectTab: () => void {},
+// };
 
-const GlobalContext = createContext<GlobalContextType>(defaultValue);
+const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 function GlobalProvider({ children }: PropsWithChildren) {
   const [isTokenMenu, setIsTokenMenu] = useState(false);
   const [isTokenFilterOptions, setIsTokenFilterOptions] = useState(false);
+  const [overviewActiveTab, setOverviewActiveTab] = useState(0);
 
   function onOpenTokenMenu() {
     setIsTokenMenu(true);
@@ -41,15 +46,23 @@ function GlobalProvider({ children }: PropsWithChildren) {
     setIsTokenFilterOptions(false);
   }
 
+  function onSelectTab(e: React.MouseEvent<HTMLButtonElement>) {
+    const target = e.target as HTMLButtonElement;
+    const active = target.tabIndex;
+    setOverviewActiveTab(active);
+  }
+
   return (
     <GlobalContext.Provider
       value={{
         isTokenMenu,
         isTokenFilterOptions,
+        overviewActiveTab,
         onOpenTokenMenu,
         onCloseTokenMenu,
         onOpenTokenFilter,
         onCloseTokenFilter,
+        onSelectTab,
       }}
     >
       {children}
