@@ -31,6 +31,18 @@
       padding-bottom: 48px;
     }
   }
+
+  @media (min-width: 576px) {
+    .sm-width-576 {
+      width: 58.333333%;
+    }
+  }
+
+  @media (min-width: 576px) {
+    .sm-max-width-576 {
+      max-width: max-content;
+    }
+  }
 }
 
 :root {
@@ -83,6 +95,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s; */
+  /* color: rgb(100, 108, 255, 0.15); */
 }
 button:hover {
   /* border-color: #646cff; */
@@ -104,4 +117,9 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
+}
+
+::selection {
+  color: white;
+  background-color: #0369a1;
 }

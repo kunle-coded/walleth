@@ -7,6 +7,7 @@ import { AccountOverviewProps } from "../../types/assetsTypes";
 import TokenOverview from "../asset/TokenOverview";
 import { useGlobal } from "../../contexts/GlobalContext";
 import NFTOverview from "../asset/NFTOverview";
+import ActivityOverview from "../asset/ActivityOverview";
 
 function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
   const { overviewActiveTab } = useGlobal();
@@ -16,7 +17,7 @@ function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
       <div className="md:w-4/5 lg:w-[62vw] min-h-[82vh] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] z-20">
         <div className="flex min-h-full">
           <div className="flex flex-col flex-[1_1_66.5%] min-w-0 pt-2 bg-white">
-            <div className="flex flex-col flex-[0 0 auto] justify-start items-center">
+            <div className="flex flex-col flex-[0_0_auto] justify-start items-center">
               <div className="w-full min-w-0 flex flex-col justify-between lg:items-center sm:items-start flex-1">
                 <div className="w-full flex flex-col lg:items-center sm:items-start flex-1 gap-1">
                   <div>
@@ -93,6 +94,7 @@ function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
                   <TokenOverview filterRef={filterRef} isTop={isTop} />
                 )}
                 {overviewActiveTab === 1 && <NFTOverview />}
+                {overviewActiveTab === 2 && <ActivityOverview />}
               </div>
             </div>
           </div>
