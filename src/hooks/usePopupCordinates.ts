@@ -37,7 +37,7 @@ function usePopupCordinates() {
     } else {
       setIsTop(false);
     }
-  }, [above, below, isTop]);
+  }, [above, below]);
 
   return { isTop, coordinates, calcCoordinates };
 }

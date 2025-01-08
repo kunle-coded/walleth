@@ -11,7 +11,7 @@ function Home() {
   const { onCloseTokenMenu, onCloseTokenFilter } = useGlobal();
 
   const filterRef = useRef(null);
-  const { isTop, coordinates, calcCoordinates } = usePopupCordinates();
+  const { isTop, calcCoordinates } = usePopupCordinates();
 
   function handleAnyPopupClose() {
     close?.();
@@ -28,11 +28,7 @@ function Home() {
       >
         <Header />
         <Navigation />
-        <AccountOverview
-          filterRef={filterRef}
-          isTop={isTop}
-          coords={coordinates}
-        />
+        <AccountOverview filterRef={filterRef} isTop={isTop} />
       </main>
     </PopupProvider>
   );
