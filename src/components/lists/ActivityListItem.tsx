@@ -1,8 +1,10 @@
 import NetworkAvatar from "../../ui/NetworkAvatar";
+import Modal from "../modal/Modal";
+import TransactionDetails from "../popups/TransactionDetails";
 
 function ActivityListItem() {
   return (
-    <div className="flex flex-wrap gap w-full-4 p-4 bg-white border-t-[none] cursor-pointer">
+    <div className="flex flex-wrap gap w-full-4 p-4 bg-white border-t-[none] cursor-pointer relative">
       <div className="flex flex-row gap-4 w-full">
         <div className="inline-flex">
           <div className="block [align-self:start] relative">
@@ -44,6 +46,17 @@ function ActivityListItem() {
           </div>
         </div>
       </div>
+      <Modal>
+        <Modal.Open opens="transaction_details">
+          <button className="absolute inset-[1rem] bg-transparent border-none appearance-none"></button>
+        </Modal.Open>
+        <Modal.Window
+          name="transaction_details"
+          headerText="Contract interaction"
+        >
+          <TransactionDetails />
+        </Modal.Window>
+      </Modal>
     </div>
   );
 }

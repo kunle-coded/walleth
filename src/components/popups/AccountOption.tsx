@@ -24,18 +24,20 @@ function AccountOption() {
       className=" min-w-56 max-w-56 overflow-hidden p-0 bg-white border rounded-lg border-solid border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] z-[1050]"
       style={popupStyle}
     >
-      <MenuItem menuText="Account details">
-        <ScanBarcode />
-      </MenuItem>
-      <MenuItem menuText="View on explorer" showSubmenu>
-        <Export />
-      </MenuItem>
-      <MenuItem menuText="Pin to top">
-        <SecurityCheck />
-      </MenuItem>
-      <MenuItem menuText="Hide account">
-        <Snaps />
-      </MenuItem>
+      <MenuItem
+        menuText="Account details"
+        iconUrl="src/assets/images/scan-barcode.svg"
+      />
+      <MenuItem
+        menuText="View on explorer"
+        iconUrl="src/assets/images/export.svg"
+        showSubmenu
+      />
+      <MenuItem
+        menuText="Pin to top"
+        iconUrl="src/assets/images/security-check.svg"
+      />
+      <MenuItem menuText="Hide account" iconUrl="src/assets/images/snaps.svg" />
     </div>
   );
 }

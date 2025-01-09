@@ -11,6 +11,7 @@ import SearchInput from "../../ui/SearchInput";
 import Networks from "../popups/Networks";
 import Icon from "../../ui/Icon";
 import MenuItem from "../../ui/MenuItem";
+import { addressFormatter } from "../../helpers/addressFormatter";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -124,11 +125,7 @@ function Navigation() {
                 <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
                   <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0 0 16px] overflow-hidden bg-white rounded-[50%]">
                     <div className="flex">
-                      <div className="inline-block size-4 m-0 p-0 overflow-hidden rounded-[50px] bg-[rgb(245,204,0)]">
-                        <div className="size-full relative">
-                          <AccountAvatar />
-                        </div>
-                      </div>
+                      <AccountAvatar />
                     </div>
                   </div>
                   <span className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">
@@ -178,10 +175,7 @@ function Navigation() {
               >
                 <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
                   <span className="text-sm leading-6 font-medium text-secondary-500 text-ellipsis whitespace-nowrap overflow-hidden">
-                    {`${address.slice(0, 7)}...${address.slice(
-                      address.length - 5,
-                      address.length
-                    )}`}
+                    {addressFormatter(address)}
                   </span>
                 </span>
                 {isCopied ? (

@@ -15,11 +15,11 @@ import { PopupContext } from "../../contexts/PopupContext";
 
 interface WindowProps {
   name: string;
-  headerText?: string;
-  showButton: boolean;
-  buttonText: string;
+  headerText: string;
+  showButton?: boolean;
+  buttonText?: string;
   fullHeight?: boolean;
-  isAccount: boolean;
+  isAccount?: boolean;
 }
 
 interface ContextType {
@@ -127,8 +127,16 @@ function Window({
             onClick={handleInnerModal}
           >
             <header className="flex justify-between p-4">
-              <div className="ml-6 w-[calc(100%_-_48px)]">
-                <h4 className="text-lg font-bold leading-6 text-center text-primary-500">
+              <div
+                className={`${
+                  name === "transaction_details" ? "ml-0" : "ml-6"
+                } w-[calc(100%_-_48px)]`}
+              >
+                <h4
+                  className={`${
+                    name === "transaction_details" ? "text-left" : "text-center"
+                  } text-lg font-bold leading-6 text-primary-500`}
+                >
                   {headerText}
                 </h4>
               </div>

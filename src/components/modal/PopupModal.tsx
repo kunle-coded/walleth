@@ -2,12 +2,6 @@ import React, { cloneElement, Dispatch, useContext } from "react";
 import { createPortal } from "react-dom";
 import { PopupContext } from "../../contexts/PopupContext";
 
-interface ContextType {
-  openName: string;
-  open: Dispatch<React.SetStateAction<string>>;
-  close: () => void;
-}
-
 interface OpenProps {
   opens: string;
 }
@@ -25,7 +19,6 @@ function Open({
   return cloneElement(children, {
     onClick: (e: React.MouseEvent) => {
       e.stopPropagation();
-
       open(openWindowName);
       const top = (e.target as HTMLElement).getBoundingClientRect().top;
       const left = (e.target as HTMLElement).getBoundingClientRect().left;
