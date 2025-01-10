@@ -12,4 +12,10 @@ interface TransactionType {
   total: number;
 }
 
-export type { TransactionType };
+interface TransactionDetailItemType {
+  item: string;
+  value: string | number;
+  weight?: string;
+}
+
+export type { TransactionType, TransactionDetailItemType };

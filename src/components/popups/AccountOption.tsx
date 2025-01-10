@@ -1,9 +1,5 @@
 import { useContext } from "react";
 import MenuItem from "../../ui/MenuItem";
-import Export from "../icons/Export";
-import ScanBarcode from "../icons/ScanBarcode";
-import SecurityCheck from "../icons/SecurityCheck";
-import Snaps from "../icons/Snaps";
 import { PopupContext } from "../../contexts/PopupContext";
 
 function AccountOption() {

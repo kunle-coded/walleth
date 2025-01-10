@@ -1,14 +1,10 @@
-interface TransactionDetailItemProps {
-  item: string;
-  value: string | number;
-  weight?: string;
-}
+import { TransactionDetailItemType } from "../types/transactionType";
 
 function TransactionDetailItem({
   item,
   value,
   weight,
-}: TransactionDetailItemProps) {
+}: TransactionDetailItemType) {
   return (
     <div className="flex justify-between py-2 px-0 text-secondary-500 text-xs leading-[140%] font-medium border-b border-solid border-white">
       <div className="min-w-[40%] pr-2">{item}</div>

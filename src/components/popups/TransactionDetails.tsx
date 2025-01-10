@@ -3,6 +3,9 @@ import AccountAvatar from "../icons/AccountAvatar";
 import { TransactionType } from "../../types/transactionType";
 import TransactionDetailItem from "../../ui/TransactionDetailItem";
 import Icon from "../../ui/Icon";
+import Modal from "../modal/Modal";
+import SaveAddress from "./SaveAddress";
+import UnknownAddress from "../../ui/UnknownAddress";
 
 function TransactionDetails() {
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
@@ -20,8 +23,6 @@ function TransactionDetails() {
     maxFeeGas: 0.000000005,
     total: 0.00225577,
   };
-
-  console.log(addressFormatter(address));
 
   return (
     <div className="flex flex-col justify-start items-stretch flex-1 rounded-xl overflow-y-auto relative">
@@ -96,28 +97,20 @@ function TransactionDetails() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row items-center flex-[1] py-0 pr-0 pl-[30px] border-solid border-l border-l-[rgba(175,_180,_192,_0.4)] text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer">
-                <div className="min-w-0">
-                  <div className="inline max-w-full">
-                    <div className="flex">
-                      <div className="inline-flex items-center gap-[5px] max-w-full text-xs pt-px pr-2 pb-px pl-1 bg-secondary-200 rounded-[36px]">
-                        <span
-                          className="inline-block text-[20px] w-[1em] h-[1em] max-w-[1em] flex-[0_0_1em] text-secondary-900 bg-current"
-                          style={{
-                            maskImage: "url(src/assets/images/question.svg)",
-                            maskSize: "cover",
-                            maskRepeat: "no-repeat",
-                            maskPosition: "center",
-                          }}
-                        ></span>
-                        <p className="text-sm leading-[1.375rem] text-secondary-900 text-ellipsis whitespace-nowrap overflow-hidden md:text-[1rem] md:leading-6">
-                          {address.slice(0, 10)}
-                        </p>
+              <Modal>
+                <Modal.Open opens="save_address">
+                  <div className="flex flex-row items-center flex-[1] py-0 pr-0 pl-[30px] border-solid border-l border-l-[rgba(175,_180,_192,_0.4)] text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer">
+                    <div className="min-w-0">
+                      <div className="inline max-w-full">
+                        <UnknownAddress address={address} />
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </Modal.Open>
+                <Modal.Window name="save_address" headerText="Unknown address">
+                  <SaveAddress />
+                </Modal.Window>
+              </Modal>
             </div>
           </div>
           <div className="flex flex-col">
