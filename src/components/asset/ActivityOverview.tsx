@@ -10,8 +10,9 @@ function ActivityOverview() {
             <p className="ps-4 pe-4 pt-4 text-secondary-900 text-sm font-medium leading-[1.375rem] md:text-[1rem] md:leading-6">
               Nov 30
             </p>
-            <ActivityListItem />
-            <ActivityListItem />
+            <ActivityListItem iconUrl="src/assets/images/programming.svg" />
+            <ActivityListItem iconUrl="src/assets/images/programming.svg" />
+            <ActivityListItem iconUrl="src/assets/images/received.svg" />
           </div>
         </div>
       </div>

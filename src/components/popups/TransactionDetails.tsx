@@ -24,6 +24,10 @@ function TransactionDetails() {
     total: 0.00225577,
   };
 
+  function handleSave(value: string) {
+    console.log(value);
+  }
+
   return (
     <div className="flex flex-col justify-start items-stretch flex-1 rounded-xl overflow-y-auto relative">
       <div>
@@ -107,7 +111,14 @@ function TransactionDetails() {
                     </div>
                   </div>
                 </Modal.Open>
-                <Modal.Window name="save_address" headerText="Unknown address">
+                <Modal.Window
+                  name="save_address"
+                  headerText="Unknown address"
+                  showButton
+                  buttonText="Save"
+                  buttonType="primary"
+                  iconUrl="src/assets/images/save.svg"
+                >
                   <SaveAddress />
                 </Modal.Window>
               </Modal>

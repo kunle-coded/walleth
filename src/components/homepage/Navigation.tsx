@@ -110,6 +110,7 @@ function Navigation() {
               isAccount={false}
               buttonText="Add a custom network"
               fullHeight
+              iconUrl="src/assets/images/add.svg"
             >
               <div className="overflow-auto h-full scrollbar-custom">
                 <SearchInput placeholderText="Search" />
@@ -141,6 +142,7 @@ function Navigation() {
               showButton
               isAccount
               buttonText="Add account or hardware wallet"
+              iconUrl="src/assets/images/add.svg"
             >
               <div className="overflow-auto scrollbar-custom">
                 <Account current index={0} />

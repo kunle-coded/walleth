@@ -1,32 +1,15 @@
 import React, {
   cloneElement,
   createContext,
-  Dispatch,
   PropsWithChildren,
   useContext,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import Close from "../icons/Close";
-import IconContainer from "../../ui/IconContainer";
 import SearchInput from "../../ui/SearchInput";
-import Add from "../icons/Add";
 import { PopupContext } from "../../contexts/PopupContext";
-
-interface WindowProps {
-  name: string;
-  headerText: string;
-  showButton?: boolean;
-  buttonText?: string;
-  fullHeight?: boolean;
-  isAccount?: boolean;
-}
-
-interface ContextType {
-  openName: string;
-  open: Dispatch<React.SetStateAction<string>>;
-  close: () => void;
-}
+import Icon from "../../ui/Icon";
+import { ContextType, ModalWindowType, OpenType } from "../../types/modalTypes";
 
 const defaultValue: ContextType = {
   open: function (): void {},
@@ -54,10 +37,6 @@ function Modal({ children }: PropsWithChildren) {
   );
 }
 
-interface OpenProps {
-  opens: string;
-}
-
 /**
  *
  * @param children the element that opens the modal window
@@ -68,7 +47,7 @@ interface OpenProps {
 function Open({
   children,
   opens: openWindowName,
-}: { children: React.ReactElement } & OpenProps) {
+}: { children: React.ReactElement } & OpenType) {
   const { open } = useContext(ModalContext);
 
   return cloneElement(children, { onClick: () => open(openWindowName) });
@@ -88,7 +67,9 @@ function Window({
   buttonText,
   fullHeight,
   isAccount,
-}: PropsWithChildren<WindowProps>) {
+  buttonType,
+  iconUrl,
+}: PropsWithChildren<ModalWindowType>) {
   const { openName, close } = useContext(ModalContext);
   const { close: closePopup } = useContext(PopupContext);
 
@@ -145,9 +126,7 @@ function Window({
                   className="inline-flex justify-center items-center size-6 min-w-6 border-none rounded-lg text-primary-500 bg-transparent hover:bg-secondary-200"
                   onClick={close}
                 >
-                  <IconContainer>
-                    <Close />
-                  </IconContainer>
+                  <Icon imgUrl="src/assets/images/close.svg" />
                 </button>
               </div>
             </header>
@@ -157,10 +136,14 @@ function Window({
 
             {showButton && (
               <div className="flex items-center pt-2 pb-4 px-4">
-                <button className="inline-flex justify-center items-center w-full h-12 p-0 px-4 rounded-full border border-solid border-brand-500 text-sm font-medium leading-6 text-brand-500 bg-transparent md:text-[1rem] relative align-middle select-none cursor-pointer transition-colors hover:bg-brand-500 hover:text-white hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.4)]">
-                  <IconContainer margin>
-                    <Add />
-                  </IconContainer>
+                <button
+                  className={`inline-flex justify-center items-center w-full h-12 p-0 px-4 rounded-full border border-solid text-sm font-medium leading-6 md:text-[1rem] relative align-middle select-none cursor-pointer transition-colors hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.4)] ${
+                    buttonType === "primary"
+                      ? "border-brand-500 bg-brand-500 text-white hover:bg-brand-400"
+                      : "text-brand-500 bg-transparent border-brand-500 hover:text-white hover:bg-brand-500"
+                  }`}
+                >
+                  <Icon imgUrl={iconUrl || ""} margin="me-1" />
                   {buttonText}
                 </button>
               </div>

@@ -2,7 +2,11 @@ import NetworkAvatar from "../../ui/NetworkAvatar";
 import Modal from "../modal/Modal";
 import TransactionDetails from "../popups/TransactionDetails";
 
-function ActivityListItem() {
+interface ActivityListItemProps {
+  iconUrl: string;
+}
+
+function ActivityListItem({ iconUrl }: ActivityListItemProps) {
   return (
     <div className="flex flex-wrap gap w-full-4 p-4 bg-white border-t-[none] cursor-pointer relative">
       <div className="flex flex-row gap-4 w-full">
@@ -12,7 +16,7 @@ function ActivityListItem() {
               <span
                 className="inline-block w-[1em] h-[1em] max-w-[1em] flex-[0_0_1em] text-[20px] text-inherit bg-current"
                 style={{
-                  maskImage: `url(src/assets/images/programming.svg)`,
+                  maskImage: `url(${iconUrl})`,
                   maskSize: "cover",
                   maskRepeat: "no-repeat",
                   maskPosition: "center",
