@@ -1,4 +1,6 @@
+import React from "react";
 import NetworkAvatar from "../../ui/NetworkAvatar";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 interface TokenListItemProps {
   tokenName: string;
@@ -6,8 +8,19 @@ interface TokenListItemProps {
 }
 
 function TokenListItem({ tokenName, tokenLogoUrl }: TokenListItemProps) {
+  const { onAssetView } = useGlobal();
+
+  function handleAssetView(e: React.MouseEvent<HTMLAnchorElement>) {
+    // e.preventDefault();
+    onAssetView();
+  }
+
   return (
-    <a href="#" className="flex flex-row px-4 py-2">
+    <a
+      href="#asset/0x12345"
+      className="flex flex-row px-4 py-2"
+      onClick={handleAssetView}
+    >
       <div className="inline-block self-center mr-4 relative">
         <div className="flex justify-center items-center w-[32px] h-[32px] max-w-[32px] flex-[0_0_32px] overflow-hidden text-xs leading-5 md:text-sm md:leading-[1.375rem] bg-secondary-200 text-primary-500 rounded-[50%]">
           <img src={tokenLogoUrl} alt="Eth logo" className="w-full" />

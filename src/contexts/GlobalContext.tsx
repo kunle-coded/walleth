@@ -4,11 +4,14 @@ type GlobalContextType = {
   isTokenMenu: boolean;
   isTokenFilterOptions: boolean;
   overviewActiveTab: number;
+  isViewAsset: boolean;
   onOpenTokenMenu: () => void;
   onCloseTokenMenu: () => void;
   onOpenTokenFilter: () => void;
   onCloseTokenFilter: () => void;
   onSelectTab: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onAssetView: () => void;
+  onAssetClose: () => void;
 };
 
 // const defaultValue = {
@@ -28,6 +31,7 @@ function GlobalProvider({ children }: PropsWithChildren) {
   const [isTokenMenu, setIsTokenMenu] = useState(false);
   const [isTokenFilterOptions, setIsTokenFilterOptions] = useState(false);
   const [overviewActiveTab, setOverviewActiveTab] = useState(0);
+  const [isViewAsset, setIsViewAsset] = useState(false);
 
   function onOpenTokenMenu() {
     setIsTokenMenu(true);
@@ -52,17 +56,28 @@ function GlobalProvider({ children }: PropsWithChildren) {
     setOverviewActiveTab(active);
   }
 
+  function onAssetView() {
+    setIsViewAsset(true);
+  }
+
+  function onAssetClose() {
+    setIsViewAsset(false);
+  }
+
   return (
     <GlobalContext.Provider
       value={{
         isTokenMenu,
         isTokenFilterOptions,
         overviewActiveTab,
+        isViewAsset,
         onOpenTokenMenu,
         onCloseTokenMenu,
         onOpenTokenFilter,
         onCloseTokenFilter,
         onSelectTab,
+        onAssetView,
+        onAssetClose,
       }}
     >
       {children}

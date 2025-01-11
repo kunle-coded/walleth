@@ -1,10 +1,12 @@
+import { useGlobal } from "../../contexts/GlobalContext";
 import ActionButton from "../../ui/ActionButton";
 import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import TokenListItem from "../lists/TokenListItem";
+import ActivityListItem from "../lists/ActivityListItem";
+import { Open, Window } from "../modal/PopupModal";
 
 function SingleAsset() {
-  // flex min-h-full - flex flex-col flex-[1_1_66.5%] min-w-0 pt-2 bg-white
+  const { onAssetClose } = useGlobal();
 
   return (
     <div className="mx-auto mt-4 max-w-[650px]">
@@ -13,17 +15,20 @@ function SingleAsset() {
           <ButtonWithIcon
             iconUrl="src/assets/images/arrow-left.svg"
             margin="mr-1"
+            onClick={onAssetClose}
           />
           <p className="text-primary-500 text-sm leading-[1.375rem] md:text-[1rem] md:leading-6">
             ETH
           </p>
         </div>
-        <div className="">
-          <ButtonWithIcon
-            iconUrl="src/assets/images/more.svg"
-            color="text-secondary-900"
-          />
-        </div>
+        <Open opens="asset_view_options">
+          <div className="">
+            <ButtonWithIcon
+              iconUrl="src/assets/images/more.svg"
+              color="text-secondary-900"
+            />
+          </div>
+        </Open>
       </div>
       <div className="mt-5">
         <div className="flex justify-evenly">
@@ -54,11 +59,14 @@ function SingleAsset() {
         </div>
       </div>
       <div className="flex flex-col pt-5">
-        <h3 className="pl-4 pb-2 text-secondary-900 text-lg leading-6 font-bold md:text-2xl">
+        <h3 className="pl-4 pb-2 text-primary-400 text-lg leading-6 font-bold md:text-2xl">
           Your balance
         </h3>
         <div className="flex flex-col gap-4">
-          <a href="#" className="flex flex-row px-4 py-2">
+          <a
+            href="#"
+            className="flex flex-row px-4 py-2 hover:bg-secondary-200 focus-within:bg-secondary-200"
+          >
             <div className="inline-block self-center mr-4 relative">
               <div className="flex justify-center items-center w-[32px] h-[32px] max-w-[32px] flex-[0_0_32px] overflow-hidden text-xs leading-5 md:text-sm md:leading-[1.375rem] bg-secondary-200 text-primary-500 rounded-[50%]">
                 <img
@@ -77,7 +85,7 @@ function SingleAsset() {
             <div className="flex flex-col flex-grow w-full overflow-hidden">
               <div className="flex flex-row justify-between gap-1">
                 <div className="inline-block w-1/3">
-                  <span className="text-sm leading-[1.375rem] font-medium text-secondary-900 text-ellipsis whitespace-nowrap overflow-hidden md:text-[1rem] md:leading-6">
+                  <span className="text-sm leading-[1.375rem] font-semibold text-secondary-900 text-ellipsis whitespace-nowrap overflow-hidden md:text-[1rem] md:leading-6">
                     ETH
                   </span>
                   <div className="flex">
@@ -88,8 +96,8 @@ function SingleAsset() {
                 </div>
                 <div className="flex flex-col items-end w-2/3">
                   <p className="w-2/3 text-sm leading-[1.375rem] font-medium text-secondary-900 text-end text-ellipsis whitespace-nowrap overflow-hidden md:text-[1rem] md:leading-6"></p>
-                  <p className="text-xs leading-[1.25rem] font-medium text-secondary-600 text-end text-ellipsis whitespace-nowrap overflow-hidden md:text-sm md:leading-[1.375rem]">
-                    0.0129 Eth
+                  <p className="text-xs leading-[1.25rem] font-semibold text-secondary-600 text-end text-ellipsis whitespace-nowrap overflow-hidden md:text-sm md:leading-[1.375rem]">
+                    0.0129 ETH
                   </p>
                 </div>
               </div>
@@ -98,10 +106,70 @@ function SingleAsset() {
           </a>
         </div>
         <div className="flex flex-col gap-7 mt-2">
-          <div className="flex">Token details</div>
-          <div className="flex">Your activity</div>
+          <div className="flex flex-col px-4">
+            <h3 className="pb-4 text-primary-400 text-lg leading-6 font-bold md:text-2xl">
+              Token details
+            </h3>
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between">
+                <p className="text-secondary-600 text-sm leading-[1.375rem] font-semibold md:text-[1rem] md:leading-6">
+                  Spending caps
+                </p>
+                <a
+                  href=""
+                  className="inline-flex justify-center items-center h-auto p-0 px-0 relative bg-transparent text-brand-500 text-sm leading-[1.375rem] font-semibold md:text-[1rem] md:leading-6 align-middle select-none cursor-pointer"
+                >
+                  Edit in Portfolio
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="mb-8">
+            <h3 className="pl-4 text-primary-400 text-lg leading-6 font-bold md:text-2xl">
+              Your activity
+            </h3>
+            <div className="flex flex-col flex-[1]">
+              <div className="flex-[1]">
+                <div className="flex flex-col flex-[1]">
+                  <p className="pe-4 ps-4 pt-4 text-primary-900 text-sm leading-[1.375rem] font-medium md:text-[1rem] md:leading-6">
+                    Nov 30
+                  </p>
+                  <ActivityListItem
+                    iconUrl="src/assets/images/programming.svg"
+                    status="confirmed"
+                  />
+                  <p className="pe-4 ps-4 pt-4 text-primary-900 text-sm leading-[1.375rem] font-medium md:text-[1rem] md:leading-6">
+                    Nov 29
+                  </p>
+                  <ActivityListItem
+                    iconUrl="src/assets/images/programming.svg"
+                    status="confirmed"
+                  />
+                  <ActivityListItem
+                    iconUrl="src/assets/images/send.svg"
+                    status="failed"
+                  />
+                  <ActivityListItem
+                    iconUrl="src/assets/images/programming.svg"
+                    status="confirmed"
+                  />
+                  <ActivityListItem
+                    iconUrl="src/assets/images/received.svg"
+                    status="confirmed"
+                  />
+                  <ActivityListItem
+                    iconUrl="src/assets/images/programming.svg"
+                    status="confirmed"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <Window name="asset_view_options">
+        <div>View on explorer</div>
+      </Window>
     </div>
   );
 }

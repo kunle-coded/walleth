@@ -6,6 +6,7 @@ export default {
       colors: {
         primary: {
           100: "#f2f4f6",
+          400: "#141618",
           500: "#090A0B",
         },
         secondary: {
@@ -27,6 +28,7 @@ export default {
           500: "#108C4A",
         },
         error: {
+          200: "#e88f97",
           500: "#d73847",
         },
       },

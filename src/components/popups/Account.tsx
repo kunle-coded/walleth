@@ -3,6 +3,7 @@ import NetworkAvatar from "../../ui/NetworkAvatar";
 import More from "../icons/More";
 import IconContainer from "../../ui/IconContainer";
 import { Open } from "../modal/PopupModal";
+import Icon from "../../ui/Icon";
 
 interface AccountProps {
   current: boolean;
@@ -82,9 +83,7 @@ function Account({ current, index }: AccountProps) {
             tabIndex={index}
             className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
           >
-            <IconContainer>
-              <More />
-            </IconContainer>
+            <Icon imgUrl="src/assets/images/more.svg" />
           </button>
         </Open>
       </div>
