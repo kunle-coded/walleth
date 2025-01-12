@@ -4,6 +4,7 @@ import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import ActivityListItem from "../lists/ActivityListItem";
 import { Open, Window } from "../modal/PopupModal";
+import AssetOption from "../popups/AssetOption";
 
 function SingleAsset() {
   const { onAssetClose } = useGlobal();
@@ -168,7 +169,7 @@ function SingleAsset() {
         </div>
       </div>
       <Window name="asset_view_options">
-        <div>View on explorer</div>
+        <AssetOption />
       </Window>
     </div>
   );

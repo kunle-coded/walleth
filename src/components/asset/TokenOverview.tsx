@@ -75,6 +75,7 @@ function TokenOverview({ filterRef, isTop }: AccountOverviewProps) {
   function handleFilterEnter() {
     setIsFilterEnter(true);
   }
+
   function handleFilterLeave() {
     setIsFilterEnter(false);
   }

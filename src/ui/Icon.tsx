@@ -10,7 +10,9 @@ function Icon({ imgUrl, color, margin, size }: IconProps) {
     <span
       className={`inline-block text-[16px] w-[1em] h-[1em] max-w-[1em] bg-current ${
         color ? `text-${color}` : "text-inherit"
-      } ${margin ? margin : ""} ${size === "small" ? "text-xs" : ""}`}
+      } ${margin ? margin : ""} ${
+        size === "small" ? "text-xs" : size === "big" ? "text-[24px]" : ""
+      }`}
       style={{
         maskImage: `url(${imgUrl})`,
         maskSize: "cover",

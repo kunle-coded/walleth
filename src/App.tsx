@@ -4,6 +4,7 @@ import Onboarding from "./pages/Onboarding";
 import { AccountProvider } from "./contexts/AccountContext";
 import Home from "./pages/Home";
 import { GlobalProvider } from "./contexts/GlobalContext";
+import { PopupProvider } from "./contexts/PopupContext";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,9 @@ function App() {
   return (
     <GlobalProvider>
       <AccountProvider>
-        <RouterProvider router={router} />
+        <PopupProvider>
+          <RouterProvider router={router} />
+        </PopupProvider>
       </AccountProvider>
     </GlobalProvider>
   );
