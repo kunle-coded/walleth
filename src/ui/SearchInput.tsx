@@ -16,7 +16,7 @@ function SearchInput({ placeholderText }: SearchInputProps) {
           type="search"
           placeholder={placeholderText}
           autoComplete="off"
-          className="w-full flex-grow px-2 box-content leading-6 text-ellipsis whitespace-nowrap border-none bg-transparent focus-visible:outline-none placeholder:font-[Arial] placeholder:font-medium placeholder:text-secondary-500"
+          className="w-full flex-grow pl-2 box-content leading-6 text-ellipsis whitespace-nowrap border-none bg-transparent focus-visible:outline-none placeholder:font-[Arial] placeholder:font-medium placeholder:text-secondary-500"
         />
       </div>
     </div>
