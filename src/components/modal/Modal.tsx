@@ -102,12 +102,12 @@ function Window({
           onClick={handleCloseModal}
         >
           <section
-            className={`flex flex-col max-h-full w-full max-w-[360px] p-0 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
+            className={`flex flex-col max-h-full w-full max-w-[360px] p-4 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
               fullHeight ? "h-screen" : "overflow-y-auto"
             }`}
             onClick={handleInnerModal}
           >
-            <header className="flex justify-between p-4">
+            <header className="flex justify-between py-4">
               <div
                 className={`${
                   name === "transaction_details" ? "ml-0" : "ml-6"
@@ -135,7 +135,7 @@ function Window({
             {children}
 
             {showButton && (
-              <div className="flex items-center pt-2 pb-4 px-4">
+              <div className="flex items-center pt-4 pb-4 px-4">
                 <button
                   className={`inline-flex justify-center items-center w-full h-12 p-0 px-4 rounded-full border border-solid text-sm font-medium leading-6 md:text-[1rem] relative align-middle select-none cursor-pointer transition-colors hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.4)] ${
                     buttonType === "primary"

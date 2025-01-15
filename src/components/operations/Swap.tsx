@@ -4,7 +4,7 @@ import { useState } from "react";
 import Icon from "../../ui/Icon";
 import SwapQuote from "./SwapQuote";
 import SwapFooter from "./SwapFooter";
-import SwapTo from "./swapTo";
+import SwapTo from "./SwapTo";
 import SwapFrom from "./SwapFrom";
 
 function Swap() {

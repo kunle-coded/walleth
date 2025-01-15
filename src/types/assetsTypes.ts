@@ -5,4 +5,11 @@ interface AccountOverviewProps {
   isTop: boolean;
 }
 
-export type { AccountOverviewProps };
+type TokenType = {
+  id: number;
+  name: string;
+  description: string;
+  logoUrl: string;
+};
+
+export type { AccountOverviewProps, TokenType };

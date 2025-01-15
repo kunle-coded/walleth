@@ -7,7 +7,7 @@ interface SearchInputProps {
 
 function SearchInput({ placeholderText }: SearchInputProps) {
   return (
-    <div className="p-4 pt-0">
+    <div className="pb-4 pt-0">
       <div className="inline-flex items-center w-full h-8 px-4 bg-white border border-solid rounded border-[rgba(187,192,197,0.4)]">
         <IconContainer>
           <Search />
