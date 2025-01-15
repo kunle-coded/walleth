@@ -2,8 +2,9 @@ import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import More from "../icons/More";
 import IconContainer from "../../ui/IconContainer";
-import { Open } from "../modal/PopupModal";
+import { Open, Window } from "../modal/PopupModal";
 import Icon from "../../ui/Icon";
+import AccountOption from "./AccountOption";
 
 interface AccountProps {
   current: boolean;
@@ -86,6 +87,9 @@ function Account({ current, index }: AccountProps) {
             <Icon imgUrl="src/assets/images/more.svg" />
           </button>
         </Open>
+        <Window name="account_menu">
+          <AccountOption />
+        </Window>
       </div>
     </div>
   );

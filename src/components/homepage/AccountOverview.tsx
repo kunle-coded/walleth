@@ -2,6 +2,9 @@ import { AccountOverviewProps } from "../../types/assetsTypes";
 import SingleAsset from "../asset/SingleAsset";
 import MainAssets from "../asset/MainAssets";
 import { useGlobal } from "../../contexts/GlobalContext";
+import NetworkOption from "../popups/NetworkOption";
+import { Window } from "../modal/PopupModal";
+import AccountOption from "../popups/AccountOption";
 
 function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
   const { isViewAsset } = useGlobal();

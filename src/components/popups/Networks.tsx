@@ -40,9 +40,9 @@ function Networks() {
     return clearTimeoutOnUnmount;
   }, []);
 
-  useEffect(() => {
-    console.log("Updated isShowTestNetwork:", isShowTestNetwork);
-  }, [isShowTestNetwork]);
+  // useEffect(() => {
+  //   console.log("Updated isShowTestNetwork:", isShowTestNetwork);
+  // }, [isShowTestNetwork]);
 
   function handleTooltipLeave() {
     setIsMouseEnter(false);

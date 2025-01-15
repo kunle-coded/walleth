@@ -1,6 +1,7 @@
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import { Open } from "../modal/PopupModal";
+import { Open, Window } from "../modal/PopupModal";
 import Icon from "../../ui/Icon";
+import NetworkOption from "./NetworkOption";
 
 interface NetworkItemProps {
   current?: boolean;
@@ -61,6 +62,9 @@ function NetworkItem({
               <Icon imgUrl="src/assets/images/more.svg" />
             </button>
           </Open>
+          <Window name="network_menu">
+            <NetworkOption />
+          </Window>
         </div>
       </div>
     </div>

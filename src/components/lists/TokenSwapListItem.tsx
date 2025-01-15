@@ -1,29 +1,41 @@
-import NetworkAvatar from "../../ui/NetworkAvatar";
+import { useGlobal } from "../../contexts/GlobalContext";
 
 interface TokenSwapListItemProps {
+  tokenId: number;
   tokenName: string;
   tokenDescription: string;
   tokenLogoUrl: string;
   isNoBorderTop?: boolean;
+  onCloseModal?: () => void;
 }
 
 function TokenSwapListItem({
+  tokenId,
   tokenName,
   tokenDescription,
   tokenLogoUrl,
   isNoBorderTop,
+  onCloseModal,
 }: TokenSwapListItemProps) {
+  const { onTokenSelect } = useGlobal();
+
+  function handleTokenItem() {
+    onTokenSelect(tokenId);
+    onCloseModal?.();
+  }
+
   return (
     <div
       className={`flex flex-row flex-nowrap items-center py-2 px-4 relative min-h-[50px] cursor-pointer box-border ease-in-out duration-200 transition-all border-solid border-[rgb(175,180,192,0.4)] ${
         isNoBorderTop ? "" : "border-t"
       }`}
+      onClick={handleTokenItem}
     >
       <div>
-        <NetworkAvatar
-          logoLink={`src/assets/tokenIcons/${tokenLogoUrl}`}
-          networkName={tokenName}
-          size="big"
+        <img
+          src={`src/assets/tokenIcons/${tokenLogoUrl}`}
+          alt={`${tokenName} logo`}
+          className="w-[24px] h-[24px] rounded-[50%] bg-center bg-white shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]"
         />
       </div>
       <div className="flex justify-between flex-[1]">

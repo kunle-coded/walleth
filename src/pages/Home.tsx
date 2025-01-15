@@ -17,7 +17,6 @@ function Home() {
   const { isTop, calcCoordinates } = usePopupCordinates();
 
   function handleAnyPopupClose() {
-    console.log("should close");
     close?.();
     onCloseTokenMenu?.();
     onCloseTokenFilter?.();

@@ -69,7 +69,7 @@ function Window({
   isAccount,
   buttonType,
   iconUrl,
-}: PropsWithChildren<ModalWindowType>) {
+}: { children: React.ReactElement } & ModalWindowType) {
   const { openName, close } = useContext(ModalContext);
   const { close: closePopup } = useContext(PopupContext);
 
@@ -132,7 +132,7 @@ function Window({
             </header>
 
             {isAccount && <SearchInput placeholderText="Search accounts" />}
-            {children}
+            {cloneElement(children, { onCloseModal: close })}
 
             {showButton && (
               <div className="flex items-center pt-4 pb-4 px-4">

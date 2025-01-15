@@ -96,13 +96,6 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
           </div>
         </div>
       </div>
-
-      <Window name="network_menu">
-        <NetworkOption />
-      </Window>
-      <Window name="account_menu">
-        <AccountOption />
-      </Window>
     </div>
   );
 }
