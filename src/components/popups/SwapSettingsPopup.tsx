@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function SwapSettingsPopup() {
+  const [currentChecked, setCurrentChecked] = useState<number>(0);
+  const [value, setValue] = useState("");
   const infoRef = useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const top = infoRef.current ? infoRef.current.getBoundingClientRect().top : 0;
   const left = infoRef.current
     ? infoRef.current.getBoundingClientRect().left
@@ -17,15 +20,25 @@ function SwapSettingsPopup() {
     const left = infoRef.current.getBoundingClientRect().left;
 
     setInfoCoord({ top, left });
-
-    console.log(top, left);
   }, []);
 
   function onInfoEnter() {
     setIsInfoEnter(true);
   }
+
   function onInfoLeave() {
     setIsInfoEnter(false);
+  }
+
+  function handleButtonCheck(index: number) {
+    // e.stopPropagation();
+    if (index === currentChecked) return;
+    if (value && currentChecked !== 2) setValue("");
+    setCurrentChecked(index);
+  }
+
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    setValue(e.target.value);
   }
 
   const infoStyle: React.CSSProperties = {
@@ -86,15 +99,72 @@ function SwapSettingsPopup() {
         <div className="flex flex-row">
           <div className="flex justify-center items-center">
             <button
-              aria-checked="false"
-              className="flex-[1] h-[25px] min-w-[48px] mr-2 p-0 border-l border border-[rgb(175,180,192,0.4)] rounded-[4px_0px_0px_4px] bg-white text-xs leading-[140%] text-primary-400 text-ellipsis whitespace-nowrap overflow-hidden"
+              role="radio"
+              aria-checked={currentChecked === 0}
+              tabIndex={0}
+              className={`flex-[1] h-[25px] min-w-[48px] mr-2 p-0 border-l border-[rgb(175,180,192,0.4)] rounded-[4px_0px_0px_4px] text-xs leading-[140%] text-ellipsis whitespace-nowrap overflow-hidden hover:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] ${
+                currentChecked === 0
+                  ? "bg-brand-500 text-white border-none"
+                  : "bg-white border text-primary-400 "
+              }`}
+              onClick={() => handleButtonCheck(0)}
             >
               2%
             </button>
-            <button className="flex justify-center items-center"></button>
-            <button className="flex justify-center items-center"></button>
+            <button
+              role="radio"
+              aria-checked={currentChecked === 1}
+              tabIndex={1}
+              className={`flex-[1] h-[25px] min-w-[48px] mr-2 p-0 border-[rgb(175,180,192,0.4)] rounded-[25px]  text-xs leading-[140%] text-ellipsis whitespace-nowrap overflow-hidden hover:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] ${
+                currentChecked === 1
+                  ? "bg-brand-500 text-white border-none"
+                  : "bg-white text-primary-400 border"
+              }`}
+              onClick={() => handleButtonCheck(1)}
+            >
+              3%
+            </button>
+            <button
+              role="radio"
+              aria-checked={currentChecked === 2}
+              tabIndex={2}
+              className={`flex justify-center items-center flex-[1] relative h-[25px] min-w-[72px] mr-0 p-0 border-[rgb(175,180,192,0.4)] rounded-[0px_4px_4px_0px] text-xs leading-[140%] text-ellipsis whitespace-nowrap overflow-hidden cursor-text hover:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] outline-none focus:outline-none ${
+                currentChecked === 2
+                  ? "bg-brand-500 text-white border-none"
+                  : "bg-white text-primary-400 border"
+              }`}
+              onClick={() => handleButtonCheck(2)}
+            >
+              {currentChecked === 2 ? (
+                <div className="flex justify-center">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={value}
+                    autoFocus={currentChecked === 2}
+                    className="w-[64px] text-center bg-brand-500 text-white border-none outline-none focus:outline-none"
+                    onChange={handleInput}
+                  />
+                </div>
+              ) : (
+                "custom"
+              )}
+              {currentChecked === 2 && (
+                <div className="absolute right-[5px]">%</div>
+              )}
+            </button>
           </div>
         </div>
+      </div>
+      <div className="flex-row mt-5">
+        <button
+          disabled={
+            (currentChecked === 2 && Number(value) <= 2) || currentChecked === 0
+          }
+          className="inline-flex justify-center items-center h-[40px] w-full p-0 px-4 relative text-sm leading-snug font-medium align-middle select-none cursor-pointer border-none rounded-full bg-brand-500 text-white md:text-[1rem] md:leading-6 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Update
+        </button>
       </div>
       <div
         role="tooltip"
@@ -116,7 +186,6 @@ function SwapSettingsPopup() {
           </div>
         </div>
       </div>
-      <div className="flex-row mt-5">Settings for swap</div>
     </div>
   );
 }
