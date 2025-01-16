@@ -35,7 +35,10 @@ function Window({
 
   if (name !== openName) return;
 
-  return createPortal(<div>{cloneElement(children)}</div>, document.body);
+  return createPortal(
+    <div onClick={(e) => e.stopPropagation()}>{cloneElement(children)}</div>,
+    document.body
+  );
 }
 
 export { Open, Window };

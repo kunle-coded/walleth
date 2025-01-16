@@ -6,6 +6,8 @@ import SwapQuote from "./SwapQuote";
 import SwapFooter from "./SwapFooter";
 import SwapTo from "./SwapTo";
 import SwapFrom from "./SwapFrom";
+import Modal from "../modal/Modal";
+import SwapInfoPopup from "../popups/SwapSettingsPopup";
 
 function Swap() {
   const [isSwapValid, setIsSwapValid] = useState(false);
@@ -13,6 +15,10 @@ function Swap() {
 
   function handleSwapRotate() {
     setIsSwapRotate((prevState) => !prevState);
+  }
+
+  function handleBack() {
+    window.location.hash = "";
   }
 
   return (
@@ -26,48 +32,43 @@ function Swap() {
                 size="big"
                 color="secondary-500"
                 cursor
+                onClick={handleBack}
               />
             </div>
             <div className="text-center flex-[1] -mt-[5px] font-extrabold leading-[140%] text-secondary-900 ">
               Swap
             </div>
             <div className="flex flex-row justify-center w-1/12 mr-4">
-              <Icon
-                imgUrl="src/assets/images/settings.svg"
-                size="big"
-                color="secondary-500"
-                cursor
-              />
+              <Modal>
+                <Modal.Open opens="swap_settings">
+                  <Icon
+                    imgUrl="src/assets/images/settings.svg"
+                    size="big"
+                    color="secondary-500"
+                    cursor
+                  />
+                </Modal.Open>
+                <Modal.Window
+                  name="swap_settings"
+                  headerText="Transaction settings"
+                >
+                  <SwapInfoPopup />
+                </Modal.Window>
+              </Modal>
             </div>
           </div>
-          {/* start of content */}
           <div className="flex flex-col flex-nowrap items-center relative w-full h-full">
-            {/* start of content inner */}
             <div className="flex flex-col flex-nowrap flex-[1] w-full">
-              {/* start of content inner first */}
               <div className="flex flex-col h-full mr-4 ml-4 swap-content">
-                {/* Everything goes here - quote details, footer */}
-                {/* Start of swap from */}
-
                 <SwapFrom isSwap={isSwapRotate} onSwap={handleSwapRotate} />
 
-                {/* End of swap from */}
-
                 <SwapTo isSwap={isSwapRotate} />
-
-                {/* Swap to */}
                 <button className="info"></button>
-
-                {/* quote details */}
                 {isSwapValid && <SwapQuote />}
               </div>
-
-              {/* footer here if no quote */}
               {!isSwapValid && <SwapFooter />}
             </div>
-            {/* end of content inner div */}
           </div>
-          {/* end of content div */}
         </div>
       </div>
     </div>

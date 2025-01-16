@@ -4,9 +4,10 @@ interface IconProps {
   margin?: string;
   size?: string;
   cursor?: boolean;
+  onClick?: () => void;
 }
 
-function Icon({ imgUrl, color, margin, size, cursor }: IconProps) {
+function Icon({ imgUrl, color, margin, size, cursor, onClick }: IconProps) {
   return (
     <span
       className={`inline-block text-[16px] w-[1em] h-[1em] max-w-[1em] bg-current ${
@@ -20,6 +21,7 @@ function Icon({ imgUrl, color, margin, size, cursor }: IconProps) {
         maskRepeat: "no-repeat",
         maskPosition: "center",
       }}
+      onClick={onClick}
     ></span>
   );
 }

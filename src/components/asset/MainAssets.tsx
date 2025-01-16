@@ -1,7 +1,4 @@
 import ActionButton from "../../ui/ActionButton";
-import { Window } from "../modal/PopupModal";
-import AccountOption from "../popups/AccountOption";
-import NetworkOption from "../popups/NetworkOption";
 import AccountOverviewTabs from "../homepage/AccountOverviewTabs";
 import { AccountOverviewProps } from "../../types/assetsTypes";
 import TokenOverview from "../asset/TokenOverview";
@@ -11,6 +8,10 @@ import ActivityOverview from "../asset/ActivityOverview";
 
 function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
   const { overviewActiveTab } = useGlobal();
+
+  function handleAction(link: string) {
+    window.location.hash = link;
+  }
 
   return (
     <div className="flex min-h-full">
@@ -60,26 +61,31 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
                 <ActionButton
                   text="Buy & Sell"
                   iconUrl="src/assets/images/plus-minus.svg"
+                  onClick={() => handleAction("buy-sell")}
                 />
 
                 <ActionButton
                   text="Swap"
                   iconUrl="src/assets/images/swap.svg"
+                  onClick={() => handleAction("swap")}
                 />
 
                 <ActionButton
                   text="Bridge"
                   iconUrl="src/assets/images/bridge.svg"
+                  onClick={() => handleAction("bridge")}
                 />
 
                 <ActionButton
                   text="Send"
                   iconUrl="src/assets/images/send.svg"
+                  onClick={() => handleAction("send")}
                 />
 
                 <ActionButton
                   text="Receive"
                   iconUrl="src/assets/images/scan-barcode.svg"
+                  onClick={() => handleAction("receive")}
                 />
               </div>
             </div>

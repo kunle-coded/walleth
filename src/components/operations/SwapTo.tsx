@@ -9,7 +9,6 @@ interface SwapFromProps {
 }
 
 function SwapTo({ isSwap }: SwapFromProps) {
-  // const [selectedToken, setSelectedToken] = useState(1);
   const { selectedToken } = useGlobal();
 
   return (

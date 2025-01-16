@@ -14,7 +14,6 @@ function SwapFrom({ isSwap, onSwap }: SwapFromProps) {
 
   return (
     <div className="relative mt-4 pt-6 pb-5 px-4 rounded-tl-md rounded-tr-md rounded-br-none rounded-bl-none shadow-none border border-solid border-[rgb(175,_180,_192,_0.4)]">
-      {/* swap start */}
       {isSwap ? (
         <div className="flex flex-row justify-between items-center">
           <div className="select">

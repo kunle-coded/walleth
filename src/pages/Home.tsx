@@ -1,14 +1,12 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import AccountOverview from "../components/homepage/AccountOverview";
 import Header from "../components/homepage/Header";
 import Navigation from "../components/homepage/Navigation";
-import { PopupContext, PopupProvider } from "../contexts/PopupContext";
+import { PopupContext } from "../contexts/PopupContext";
 import usePopupCordinates from "../hooks/usePopupCordinates";
 import { useGlobal } from "../contexts/GlobalContext";
-import Swap from "../components/operations/Swap";
 
 function Home() {
-  const [isSwap, setIsSwap] = useState(true);
   const popupContext = useContext(PopupContext);
   const close = popupContext?.close;
   const { onCloseTokenMenu, onCloseTokenFilter } = useGlobal();
@@ -30,8 +28,7 @@ function Home() {
     >
       <Header />
       <Navigation />
-      {!isSwap && <AccountOverview filterRef={filterRef} isTop={isTop} />}
-      {isSwap && <Swap />}
+      <AccountOverview filterRef={filterRef} isTop={isTop} />
     </main>
   );
 }

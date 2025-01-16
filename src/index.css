@@ -12,6 +12,10 @@
     overflow-anchor: none;
   }
 
+  .perspective-midrange {
+    perspective: 800px;
+  }
+
   @media (max-height: 475px) {
     .max-h-475-padding {
       padding: 8px;

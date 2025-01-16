@@ -1,4 +1,3 @@
-import { useGlobal } from "../../contexts/GlobalContext";
 import ActionButton from "../../ui/ActionButton";
 import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import NetworkAvatar from "../../ui/NetworkAvatar";
@@ -7,7 +6,15 @@ import { Open, Window } from "../modal/PopupModal";
 import AssetOption from "../popups/AssetOption";
 
 function SingleAsset() {
-  const { onAssetClose } = useGlobal();
+  // Go back to main assets
+  function handleBack() {
+    window.location.hash = "";
+  }
+
+  // handle action button click
+  function handleAction(link: string) {
+    window.location.hash = link;
+  }
 
   return (
     <div className="mx-auto mt-4 max-w-[650px]">
@@ -16,7 +23,7 @@ function SingleAsset() {
           <ButtonWithIcon
             iconUrl="src/assets/images/arrow-left.svg"
             margin="mr-1"
-            onClick={onAssetClose}
+            onClick={handleBack}
           />
           <p className="text-primary-500 text-sm leading-[1.375rem] md:text-[1rem] md:leading-6">
             ETH
@@ -37,25 +44,33 @@ function SingleAsset() {
             text="Buy & Sell"
             iconUrl="src/assets/images/plus-minus.svg"
             isDisabled
+            onClick={() => handleAction("buy-sell")}
           />
 
           <ActionButton
             text="Swap"
             iconUrl="src/assets/images/swap.svg"
             isDisabled
+            onClick={() => handleAction("swap")}
           />
 
           <ActionButton
             text="Bridge"
             iconUrl="src/assets/images/bridge.svg"
             isDisabled
+            onClick={() => handleAction("bridge")}
           />
 
-          <ActionButton text="Send" iconUrl="src/assets/images/send.svg" />
+          <ActionButton
+            text="Send"
+            iconUrl="src/assets/images/send.svg"
+            onClick={() => handleAction("send")}
+          />
 
           <ActionButton
             text="Receive"
             iconUrl="src/assets/images/scan-barcode.svg"
+            onClick={() => handleAction("receive")}
           />
         </div>
       </div>
