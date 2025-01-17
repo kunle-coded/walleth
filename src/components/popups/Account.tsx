@@ -1,7 +1,5 @@
 import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import More from "../icons/More";
-import IconContainer from "../../ui/IconContainer";
 import { Open, Window } from "../modal/PopupModal";
 import Icon from "../../ui/Icon";
 import AccountOption from "./AccountOption";
@@ -37,7 +35,7 @@ function Account({ current, index }: AccountProps) {
             <div className="flex justify-between">
               <div className="flex items-center gap-2 me-2 min-w-20 max-w-40">
                 <button className="w-full p-0 text-sm font-semibold text-left text-inherit text-ellipsis whitespace-nowrap overflow-hidden bg-transparent border-none cursor-pointer">
-                  Account 1
+                  Account {index + 1}
                 </button>
               </div>
               <div className="flex flex-row justify-end items-center self-end min-w-[60px] max-w-[130px] text-inherit text-end text-sm text-ellipsis whitespace-nowrap overflow-hidden">
