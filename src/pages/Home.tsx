@@ -35,8 +35,8 @@ function Home() {
   }, []);
 
   return (
-    <main
-      className="w-screen h-screen flex flex-col overflow-x-hidden items-center relative bg-primary-100"
+    <div
+      className="w-screen h-full flex flex-col overflow-x-hidden items-center relative bg-primary-100"
       onClick={handleAnyPopupClose}
       onScroll={() => calcCoordinates(filterRef)}
     >
@@ -46,7 +46,7 @@ function Home() {
         <AccountOverview filterRef={filterRef} isTop={isTop} />
       )}
       {urlLocation === "#send" && <Send />}
-    </main>
+    </div>
   );
 }
 

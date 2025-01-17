@@ -1,5 +1,5 @@
 import { addressFormatter } from "../../helpers/addressFormatter";
-import AccountAvatar from "../icons/AccountAvatar";
+import AccountAvatar from "../../ui/AccountAvatar";
 import { TransactionType } from "../../types/transactionType";
 import TransactionDetailItem from "../../ui/TransactionDetailItem";
 import Icon from "../../ui/Icon";

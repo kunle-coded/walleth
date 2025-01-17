@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "../../contexts/GlobalContext";
 import { AccountOverviewProps } from "../../types/assetsTypes";
 
-import Avatar from "../../ui/Avatar";
 import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
 import TooltipPopup from "../../ui/TooltipPopup";
@@ -187,7 +186,7 @@ function TokenOverview({ filterRef, isTop }: AccountOverviewProps) {
           href=""
           className="flex justify-start items-center h-[40px] p-0 pl-4 pr-0 mb-4 relative bg-transparent text-brand-500 align-middle select-none text-sm leading-[1.375rem] font-semibold md:text-[1rem] md:leading-6"
         >
-          <Avatar
+          <Icon
             imgUrl="src/assets/images/message-question.svg"
             color="text-brand-500"
             margin="me-1"

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import AccountAvatar from "../icons/AccountAvatar";
 import {
   readClipboardText,
   writeClipboardText,
@@ -12,6 +11,7 @@ import Networks from "../popups/Networks";
 import Icon from "../../ui/Icon";
 import MenuItem from "../../ui/MenuItem";
 import { addressFormatter } from "../../helpers/addressFormatter";
+import AccountAvatarOne from "../icons/AccountAvatarOne";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -126,7 +126,7 @@ function Navigation() {
                 <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
                   <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0 0 16px] overflow-hidden bg-white rounded-[50%]">
                     <div className="flex">
-                      <AccountAvatar />
+                      <AccountAvatarOne />
                     </div>
                   </div>
                   <span className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">

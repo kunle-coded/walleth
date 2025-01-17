@@ -1,4 +1,4 @@
-import Avatar from "../../ui/Avatar";
+import Icon from "../../ui/Icon";
 import ActivityListItem from "../lists/ActivityListItem";
 
 function ActivityOverview() {
@@ -32,7 +32,7 @@ function ActivityOverview() {
         rel="noopener noreferrer"
         className="flex justify-center items-center h-[40px] p-0 pl-0 pr-0 mb-4 mt-4 relative bg-transparent text-brand-500 align-middle select-none text-sm leading-[1.375rem] font-semibold md:text-[1rem] md:leading-6 decoration-[none]"
       >
-        <Avatar
+        <Icon
           imgUrl="src/assets/images/message-question.svg"
           color="text-brand-500"
           margin="me-1"

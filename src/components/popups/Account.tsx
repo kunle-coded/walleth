@@ -1,15 +1,16 @@
-import AccountAvatarOne from "../icons/AccountAvatarOne";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import { Open, Window } from "../modal/PopupModal";
 import Icon from "../../ui/Icon";
 import AccountOption from "./AccountOption";
+import AccountAvatar from "../../ui/AccountAvatar";
 
 interface AccountProps {
   current: boolean;
   index: number;
+  noEdit?: boolean;
 }
 
-function Account({ current, index }: AccountProps) {
+function Account({ current, index, noEdit }: AccountProps) {
   return (
     <div className="block">
       <div
@@ -22,13 +23,7 @@ function Account({ current, index }: AccountProps) {
         )}
         <div className="hidden"></div>
         <div className="hidden sm:flex">
-          <div className="flex justify-center items-center flex-[0_0_32px] rounded-[50%] bg-primary-100 text-primary-500 uppercase w-8 h-8 max-w-8 me-2 border border-solid border-transparent overflow-hidden">
-            <div className="flex">
-              <div className="inline-block w-8 h-8 m-0 p-0 bg-[rgba(245,_204,_0)] rounded-[50%] overflow-hidden">
-                <AccountAvatarOne />
-              </div>
-            </div>
-          </div>
+          <AccountAvatar />
         </div>
         <div className="flex flex-col flex-[1] overflow-hidden">
           <div className="flex flex-col">
@@ -76,18 +71,22 @@ function Account({ current, index }: AccountProps) {
           </div>
         </div>
 
-        <Open opens="account_menu">
-          <button
-            aria-label="Account options"
-            tabIndex={index}
-            className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
-          >
-            <Icon imgUrl="src/assets/images/more.svg" />
-          </button>
-        </Open>
-        <Window name="account_menu">
-          <AccountOption />
-        </Window>
+        {!noEdit && (
+          <div>
+            <Open opens="account_menu">
+              <button
+                aria-label="Account options"
+                tabIndex={index}
+                className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
+              >
+                <Icon imgUrl="src/assets/images/more.svg" />
+              </button>
+            </Open>
+            <Window name="account_menu">
+              <AccountOption />
+            </Window>
+          </div>
+        )}
       </div>
     </div>
   );
