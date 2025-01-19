@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import SearchInput from "../../ui/SearchInput";
 import { PopupContext } from "../../contexts/PopupContext";
 import Icon from "../../ui/Icon";
 import { ContextType, ModalWindowType, OpenType } from "../../types/modalTypes";
@@ -66,7 +65,6 @@ function Window({
   showButton,
   buttonText,
   fullHeight,
-  isAccount,
   buttonType,
   iconUrl,
   isFullWidth,
@@ -136,7 +134,6 @@ function Window({
               </div>
             </header>
 
-            {isAccount && <SearchInput placeholderText="Search accounts" />}
             {cloneElement(children, { onCloseModal: close })}
 
             {showButton && (

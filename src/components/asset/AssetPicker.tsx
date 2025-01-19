@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Icon from "../../ui/Icon";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import SearchInput from "../../ui/SearchInput";
+import Tabbed from "../../ui/Tabbed";
 import TokenSendListItem from "../lists/TokenSendListItem";
 import Modal from "../modal/Modal";
 
@@ -17,6 +19,12 @@ function AssetPicker({
   isCurrencyToggle,
   onToggle,
 }: AssetPickerProps) {
+  const [activeTab, setActiveTab] = useState(0);
+
+  function handleTabSelect(index: number) {
+    setActiveTab(index);
+  }
+
   return (
     <div className="asset-picker-amount-input">
       <div
@@ -62,35 +70,68 @@ function AssetPicker({
             isFullWidth
           >
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1 ms-auto me-auto">
-                <NetworkAvatar
-                  logoLink="src/assets/images/eth-logo.svg"
-                  networkName="Eth"
-                />
-                <p className="text-secondary-900 text-xs leading-5 md:text-sm md:leading-snug">
-                  Sending ETH
-                </p>
-              </div>
+              {purpose === "send" && (
+                <div className="pe-4 ps-4">
+                  <Tabbed
+                    tabOneText="Tokens"
+                    tabTwoText="NFTs"
+                    activeTab={activeTab}
+                    onTabClick={handleTabSelect}
+                  />
+                </div>
+              )}
+              {purpose === "receive" && (
+                <div className="flex items-center gap-1 ms-auto me-auto">
+                  <NetworkAvatar
+                    logoLink="src/assets/images/eth-logo.svg"
+                    networkName="Eth"
+                  />
+                  <p className="text-secondary-900 text-xs leading-5 md:text-sm md:leading-snug">
+                    Sending ETH
+                  </p>
+                </div>
+              )}
               <div className="max-h-full overflow-y-scroll">
                 <div className="pt-4 px-4">
-                  <SearchInput placeholderText="Search tokens" />
+                  <SearchInput placeholderText="Search tokens" isBig />
                 </div>
-                <div className="max-h-full">
-                  <TokenSendListItem
-                    tokenId={0}
-                    tokenName="ETH"
-                    tokenDescription="Ethereum"
-                    tokenLogoUrl="0x6b175474e89094c44da98b954eedeac495271d0f.png"
-                    isCurrent
-                    isTokenOwned
-                  />
-                  <TokenSendListItem
-                    tokenId={1}
-                    tokenName="ETH"
-                    tokenDescription="Ethereum"
-                    tokenLogoUrl="0x6b175474e89094c44da98b954eedeac495271d0f.png"
-                  />
-                </div>
+                {activeTab === 0 && (
+                  <div className="max-h-full">
+                    <TokenSendListItem
+                      tokenId={0}
+                      tokenName="ETH"
+                      tokenDescription="Ethereum"
+                      tokenLogoUrl="0x6b175474e89094c44da98b954eedeac495271d0f.png"
+                      isCurrent
+                      isTokenOwned
+                    />
+                    <TokenSendListItem
+                      tokenId={1}
+                      tokenName="ETH"
+                      tokenDescription="Ethereum"
+                      tokenLogoUrl="0x6b175474e89094c44da98b954eedeac495271d0f.png"
+                    />
+                  </div>
+                )}
+                {activeTab === 1 && (
+                  <div className="flex flex-col justify-center items-center px-12 pb-8 pt-5">
+                    <div className="flex justify-center items-center w-[80px] h-[80px] p-4 bg-white   align-middle select-none relative border-[4px] border-solid border-secondary-300 rounded-[50%] overflow-hidden uppercase">
+                      <img src="src/assets/images/no-nft.svg" alt="" />
+                    </div>
+
+                    <div className="flex flex-col justify-center items-center mb-8 mt-4">
+                      <h4 className="text-secondary-400 leading-6 font-extrabold md:text-[1.25rem]">
+                        No NFTs yet
+                      </h4>
+                      <a
+                        href="/support/nfts"
+                        className="inline-flex justify-center items-center p-0 pr-0 pl-0 h-[32px] text-sm leading-[1.375rem] font-semibold text-brand-500 bg-transparent align-middle select-none cursor-pointer relative md:leading-6 md:text-[1rem]"
+                      >
+                        Learn more
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </Modal.Window>

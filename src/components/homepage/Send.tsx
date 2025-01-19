@@ -4,9 +4,10 @@ import Icon from "../../ui/Icon";
 import AccountAvatar from "../../ui/AccountAvatar";
 import Modal from "../modal/Modal";
 import Account from "../popups/Account";
-import NetworkAvatar from "../../ui/NetworkAvatar";
 import AssetPicker from "../asset/AssetPicker";
 import AddressPicker from "../asset/AddressPicker";
+import SearchInput from "../../ui/SearchInput";
+import Tabbed from "../../ui/Tabbed";
 
 function Send() {
   const [isInputFocus, setIsInputFocus] = useState(false);
@@ -14,7 +15,7 @@ function Send() {
   const [hasContact, setHasContact] = useState(false);
   const [isPositiveBalance, setIsPositiveBalance] = useState(false);
   const [isReceiverAddressSelected, setIsReceiverAddressSelected] =
-    useState(true);
+    useState(false);
   const [isCurrencyToggle, setIsCurrencyToggle] = useState(false);
 
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
@@ -23,16 +24,24 @@ function Send() {
     setIsInputFocus(true);
   }
 
-  function handleBlur() {
-    setIsInputFocus(false);
-  }
-
   function handleTabSelect(index: number) {
     setActiveTab(index);
   }
 
+  function handleBlur() {
+    setIsInputFocus(false);
+  }
+
   function toggleCurrency() {
     setIsCurrencyToggle((prevState) => !prevState);
+  }
+
+  function handleReceiverAddress() {
+    setIsReceiverAddressSelected(true);
+  }
+
+  function removeReceiverAddress() {
+    setIsReceiverAddressSelected(false);
   }
 
   return (
@@ -59,18 +68,21 @@ function Send() {
               From
             </label>
             <Modal>
-              <Modal.Open opens="account_options">
-                <AddressPicker address={address} account="Account 1" />
+              <Modal.Open opens="account_selections">
+                <div>
+                  <AddressPicker address={address} account="Account 1" />
+                </div>
               </Modal.Open>
               <Modal.Window
-                name="account_options"
+                name="account_selections"
                 headerText="Select an account"
                 showButton
-                isAccount
                 buttonText="Add account or hardware wallet"
                 iconUrl="src/assets/images/add.svg"
+                isFullWidth
               >
                 <div className="overflow-auto scrollbar-custom">
+                  <SearchInput placeholderText="Search accounts" padding />
                   <Account current index={0} />
                   <Account current={false} index={1} />
                   <Account current={false} index={2} />
@@ -79,12 +91,14 @@ function Send() {
               </Modal.Window>
             </Modal>
           </div>
-          <AssetPicker
-            isError={isPositiveBalance}
-            onToggle={toggleCurrency}
-            isCurrencyToggle={isCurrencyToggle}
-            purpose="send"
-          />
+          {isReceiverAddressSelected && (
+            <AssetPicker
+              isError={isPositiveBalance}
+              onToggle={toggleCurrency}
+              isCurrencyToggle={isCurrencyToggle}
+              purpose="send"
+            />
+          )}
           <div className="mt-6">
             <div className="flex flex-col pb-4">
               <label className="inline-flex items-center pb-2 text-secondary-900 text-sm leading-snug font-medium md:text-[1rem] md:leading-6">
@@ -102,7 +116,10 @@ function Send() {
                         </p>
                       </div>
                     </div>
-                    <button className="flex justify-center items-center bg-none border-none py-0 px-2 w-6 min-w-6 h-6 text-[16px] text-secondary-900 rounded-lg cursor-pointer hover:bg-secondary-200">
+                    <button
+                      className="flex justify-center items-center bg-none border-none py-0 px-2 w-6 min-w-6 h-6 text-[16px] text-secondary-900 rounded-lg cursor-pointer hover:bg-secondary-200"
+                      onClick={removeReceiverAddress}
+                    >
                       <Icon imgUrl="src/assets/images/close.svg" />
                     </button>
                   </div>
@@ -135,46 +152,32 @@ function Send() {
                 </div>
               )}
             </div>
-            <AssetPicker
-              isCurrencyToggle={isCurrencyToggle}
-              onToggle={toggleCurrency}
-              purpose="receive"
-            />
+            {isReceiverAddressSelected && (
+              <AssetPicker
+                isCurrencyToggle={isCurrencyToggle}
+                onToggle={toggleCurrency}
+                purpose="receive"
+              />
+            )}
             {/* Tabs start */}
             {!isReceiverAddressSelected && (
               <div className="w-full pb-0">
                 <div className="flex-row">
-                  <ul className="flex flex-row justify-start gap-1 top-0 border-b-0 relative bg-transparent text-sm z-[2] list-none">
-                    <li
-                      className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
-                        activeTab === 0
-                          ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
-                          : ""
-                      }`}
-                      onClick={() => handleTabSelect(0)}
-                    >
-                      <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
-                        Your accounts
-                      </button>
-                    </li>
-                    <li
-                      className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
-                        activeTab === 1
-                          ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
-                          : ""
-                      }`}
-                      onClick={() => handleTabSelect(1)}
-                    >
-                      {" "}
-                      <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
-                        Contacts
-                      </button>
-                    </li>
-                  </ul>
+                  <Tabbed
+                    tabOneText="Your accounts"
+                    tabTwoText="Contacts"
+                    activeTab={activeTab}
+                    onTabClick={handleTabSelect}
+                  />
                   <div className="flex-row">
                     {activeTab === 0 && (
                       <div className="flex flex-col pb-4">
-                        <Account current index={0} noEdit />
+                        <Account
+                          current
+                          index={0}
+                          noEdit
+                          onSelect={handleReceiverAddress}
+                        />
                         <Account current={false} index={1} noEdit />
                         <Account current={false} index={2} noEdit />
                         <Account current={false} index={3} noEdit />

@@ -8,15 +8,17 @@ interface AccountProps {
   current: boolean;
   index: number;
   noEdit?: boolean;
+  onSelect?: () => void;
 }
 
-function Account({ current, index, noEdit }: AccountProps) {
+function Account({ current, index, noEdit, onSelect }: AccountProps) {
   return (
     <div className="block">
       <div
         className={`flex justify-center w-full p-4 relative text-primary-500 cursor-pointer transition-[background-color] ease-linear ${
           current ? "bg-brand-100" : "bg-transparent hover:bg-secondary-200"
         }`}
+        onClick={onSelect}
       >
         {current && (
           <div className="absolute left-1 top-1 w-1 h-[calc(100%_-_8px)] bg-brand-500 rounded-[9999px]"></div>

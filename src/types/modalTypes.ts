@@ -6,7 +6,6 @@ interface ModalWindowType {
   showButton?: boolean;
   buttonText?: string;
   fullHeight?: boolean;
-  isAccount?: boolean;
   buttonType?: string;
   iconUrl?: string;
   isFullWidth?: boolean;

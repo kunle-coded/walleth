@@ -107,13 +107,13 @@ function Navigation() {
               name="network_options"
               headerText="Select a network"
               showButton
-              isAccount={false}
               buttonText="Add a custom network"
               fullHeight
+              isFullWidth
               iconUrl="src/assets/images/add.svg"
             >
               <div className="overflow-auto h-full scrollbar-custom">
-                <SearchInput placeholderText="Search" />
+                <SearchInput placeholderText="Search" padding />
                 <Networks />
               </div>
             </Modal.Window>
@@ -140,11 +140,11 @@ function Navigation() {
               name="account_options"
               headerText="Select an account"
               showButton
-              isAccount
               buttonText="Add account or hardware wallet"
               iconUrl="src/assets/images/add.svg"
             >
               <div className="overflow-auto scrollbar-custom">
+                <SearchInput placeholderText="Search accounts" />
                 <Account current index={0} />
                 <Account current={false} index={1} />
                 <Account current={false} index={2} />
