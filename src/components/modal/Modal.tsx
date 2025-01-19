@@ -69,6 +69,7 @@ function Window({
   isAccount,
   buttonType,
   iconUrl,
+  isFullWidth,
 }: { children: React.ReactElement } & ModalWindowType) {
   const { openName, close } = useContext(ModalContext);
   const { close: closePopup } = useContext(PopupContext);
@@ -102,12 +103,16 @@ function Window({
           onClick={handleCloseModal}
         >
           <section
-            className={`flex flex-col max-h-full w-full max-w-[360px] p-4 rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
+            className={`flex flex-col max-h-full w-full max-w-[360px] rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
               fullHeight ? "h-screen" : "overflow-y-auto"
-            }`}
+            } ${isFullWidth ? "py-4" : "p-4"}`}
             onClick={handleInnerModal}
           >
-            <header className="flex justify-between py-4">
+            <header
+              className={`flex justify-between py-4 ${
+                isFullWidth ? "px-4" : ""
+              }`}
+            >
               <div
                 className={`${
                   name === "transaction_details" ? "ml-0" : "ml-6"

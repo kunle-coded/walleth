@@ -4,11 +4,18 @@ import Icon from "../../ui/Icon";
 import AccountAvatar from "../../ui/AccountAvatar";
 import Modal from "../modal/Modal";
 import Account from "../popups/Account";
+import NetworkAvatar from "../../ui/NetworkAvatar";
+import AssetPicker from "../asset/AssetPicker";
+import AddressPicker from "../asset/AddressPicker";
 
 function Send() {
   const [isInputFocus, setIsInputFocus] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [hasContact, setHasContact] = useState(false);
+  const [isPositiveBalance, setIsPositiveBalance] = useState(false);
+  const [isReceiverAddressSelected, setIsReceiverAddressSelected] =
+    useState(true);
+  const [isCurrencyToggle, setIsCurrencyToggle] = useState(false);
 
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
 
@@ -22,6 +29,10 @@ function Send() {
 
   function handleTabSelect(index: number) {
     setActiveTab(index);
+  }
+
+  function toggleCurrency() {
+    setIsCurrencyToggle((prevState) => !prevState);
   }
 
   return (
@@ -49,21 +60,7 @@ function Send() {
             </label>
             <Modal>
               <Modal.Open opens="account_options">
-                <button className="inline-flex justify-start items-center gap-2 h-[62px] w-full max-w-full py-4 pr-4 pl-3 bg-transparent text-secondary-900 text-sm leading-snug font-medium border border-solid border-[rgb(175,180,192,0.4)] rounded-lg relative align-middle cursor-pointer select-none text-ellipsis whitespace-nowrap overflow-hidden md:text-[1rem] md:leading-6 hover:bg-secondary-200">
-                  <span className="flex items-center gap-2 w-full text-secondary-900 text-ellipsis whitespace-nowrap overflow-hidden">
-                    <AccountAvatar />
-                    <span className="flex-grow text-start ps-1 text-secondary-900 text-sm leading-[140%] font-medium text-ellipsis whitespace-nowrap overflow-hidden">
-                      Account 1
-                      <p className="flex text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
-                        {addressFormatter(address)}
-                      </p>
-                    </span>
-                  </span>
-                  <Icon
-                    imgUrl="src/assets/images/arrow-down.svg"
-                    margin="ms-1"
-                  />
-                </button>
+                <AddressPicker address={address} account="Account 1" />
               </Modal.Open>
               <Modal.Window
                 name="account_options"
@@ -82,122 +79,155 @@ function Send() {
               </Modal.Window>
             </Modal>
           </div>
+          <AssetPicker
+            isError={isPositiveBalance}
+            onToggle={toggleCurrency}
+            isCurrencyToggle={isCurrencyToggle}
+            purpose="send"
+          />
           <div className="mt-6">
             <div className="flex flex-col pb-4">
               <label className="inline-flex items-center pb-2 text-secondary-900 text-sm leading-snug font-medium md:text-[1rem] md:leading-6">
                 To
               </label>
-              <div className="flex flex-row flex-nowrap">
-                <div
-                  className={`flex flex-row flex-nowrap flex-auto items-center w-0 p-3 bg-white rounded-lg border border-solid transition-[border-color] ease-in-out hover:border-[rgb(175,180,192,1)] ${
-                    isInputFocus
-                      ? "border-[rgb(175,180,192,1)]"
-                      : "border-[rgb(175,180,192,0.4)]"
-                  }`}
-                >
-                  <input
-                    type="text"
-                    placeholder="Enter public address (0x) or domain name"
-                    dir="auto"
-                    spellCheck="false"
-                    className="flex-auto w-0 border-0 outline-none bg-white text-secondary-900 text-sm leading-[140%]"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                  />
-                  <button
-                    aria-label="Scan QR code"
-                    className="flex justify-center items-center py-0 px-2 text-[16px] h-6 w-8 min-w-8 bg-none border-none rounded-lg text-brand-500 cursor-pointer"
-                  >
-                    <Icon imgUrl="src/assets/images/scan.svg" size="big" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-full pb-0">
-              <div className="flex-row">
-                <ul className="flex flex-row justify-start gap-1 top-0 border-b-0 relative bg-transparent text-sm z-[2] list-none">
-                  <li
-                    className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
-                      activeTab === 0
-                        ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
-                        : ""
-                    }`}
-                    onClick={() => handleTabSelect(0)}
-                  >
-                    <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
-                      Your accounts
-                    </button>
-                  </li>
-                  <li
-                    className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
-                      activeTab === 1
-                        ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
-                        : ""
-                    }`}
-                    onClick={() => handleTabSelect(1)}
-                  >
-                    {" "}
-                    <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
-                      Contacts
-                    </button>
-                  </li>
-                </ul>
-                <div className="flex-row">
-                  {activeTab === 0 && (
-                    <div className="flex flex-col pb-4">
-                      <Account current index={0} noEdit />
-                      <Account current={false} index={1} noEdit />
-                      <Account current={false} index={2} noEdit />
-                      <Account current={false} index={3} noEdit />
+              {isReceiverAddressSelected ? (
+                <div className="flex flex-row flex-nowrap">
+                  <div className="flex flex-row flex-nowrap flex-auto items-center h-[62px] w-0 py-0 px-3 bg-white border border-solid border-[rgb(175,180,192,0.4)] rounded-lg transition-[border-color] duration-150 ease-in-out">
+                    <div className="flex flex-row flex-nowrap items-center flex-auto w-0 border-0 outline-none text-brand-500 text-xs leading-[140%]">
+                      <AccountAvatar border margin="0" />
+                      <div className="ml-3 text-start ps-1 text-secondary-900 text-sm leading-[140%] font-medium text-ellipsis whitespace-[inherit] break-words overflow-hidden">
+                        Account 2
+                        <p className="text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
+                          {addressFormatter(address)}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  {activeTab === 1 &&
-                    (hasContact ? (
+                    <button className="flex justify-center items-center bg-none border-none py-0 px-2 w-6 min-w-6 h-6 text-[16px] text-secondary-900 rounded-lg cursor-pointer hover:bg-secondary-200">
+                      <Icon imgUrl="src/assets/images/close.svg" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-row flex-nowrap">
+                  <div
+                    className={`flex flex-row flex-nowrap flex-auto items-center w-0 p-3 bg-white rounded-lg border border-solid transition-[border-color] ease-in-out hover:border-[rgb(175,180,192,1)] ${
+                      isInputFocus
+                        ? "border-[rgb(175,180,192,1)]"
+                        : "border-[rgb(175,180,192,0.4)]"
+                    }`}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Enter public address (0x) or domain name"
+                      dir="auto"
+                      spellCheck="false"
+                      className="flex-auto w-0 border-0 outline-none bg-white text-secondary-900 text-sm leading-[140%]"
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                    />
+                    <button
+                      aria-label="Scan QR code"
+                      className="flex justify-center items-center py-0 px-2 text-[16px] h-6 w-8 min-w-8 bg-none border-none rounded-lg text-brand-500 cursor-pointer"
+                    >
+                      <Icon imgUrl="src/assets/images/scan.svg" size="big" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <AssetPicker
+              isCurrencyToggle={isCurrencyToggle}
+              onToggle={toggleCurrency}
+              purpose="receive"
+            />
+            {/* Tabs start */}
+            {!isReceiverAddressSelected && (
+              <div className="w-full pb-0">
+                <div className="flex-row">
+                  <ul className="flex flex-row justify-start gap-1 top-0 border-b-0 relative bg-transparent text-sm z-[2] list-none">
+                    <li
+                      className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
+                        activeTab === 0
+                          ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
+                          : ""
+                      }`}
+                      onClick={() => handleTabSelect(0)}
+                    >
+                      <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
+                        Your accounts
+                      </button>
+                    </li>
+                    <li
+                      className={`flex-row w-6/12 transition-[color,_border-color] ease-linear ${
+                        activeTab === 1
+                          ? "text-brand-500 border-b-2 border-solid border-b-brand-500"
+                          : ""
+                      }`}
+                      onClick={() => handleTabSelect(1)}
+                    >
+                      {" "}
+                      <button className="block w-full min-w-[50px] p-2 border-none text-sm leading-snug font-medium md:text-[1rem] md:leading-6 text-center bg-[unset] text-[unset] cursor-pointer ">
+                        Contacts
+                      </button>
+                    </li>
+                  </ul>
+                  <div className="flex-row">
+                    {activeTab === 0 && (
                       <div className="flex flex-col pb-4">
-                        <div className="">
-                          <div className=""></div>
-                          <button className="flex items-center w-full p-4 cursor-pointer border-none bg-transparent hover:bg-secondary-200">
-                            <AccountAvatar />
-                            <div className="flex flex-col overflow-hidden">
-                              <p className="w-full p-0 text-secondary-900 text-left text-sm leading-snug font-medium md:text-[14px] md:leading-6 text-ellipsis whitespace-nowrap overflow-hidden">
-                                Ade
-                              </p>
-                              <div className="flex text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
-                                <div>
-                                  <div className="inline">
-                                    {addressFormatter(address)}
+                        <Account current index={0} noEdit />
+                        <Account current={false} index={1} noEdit />
+                        <Account current={false} index={2} noEdit />
+                        <Account current={false} index={3} noEdit />
+                      </div>
+                    )}
+                    {activeTab === 1 &&
+                      (hasContact ? (
+                        <div className="flex flex-col pb-4">
+                          <div className="">
+                            <div className=""></div>
+                            <button className="flex items-center w-full p-4 cursor-pointer border-none bg-transparent hover:bg-secondary-200">
+                              <AccountAvatar />
+                              <div className="flex flex-col overflow-hidden">
+                                <p className="w-full p-0 text-secondary-900 text-left text-sm leading-snug font-medium md:text-[14px] md:leading-6 text-ellipsis whitespace-nowrap overflow-hidden">
+                                  Ade
+                                </p>
+                                <div className="flex text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
+                                  <div>
+                                    <div className="inline">
+                                      {addressFormatter(address)}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </button>
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col pb-4">
-                        <div className="p-6 text-center">
-                          <p className="mb-4 text-secondary-900 text-sm leading-snug font-bold md:text-[1rem] md:leading-6">
-                            You don't have any contacts yet
-                          </p>
-                          <p className="mb-4 text-secondary-500 text-sm leading-snug md:text-[1rem] md:leading-6">
-                            <span>
-                              Contacts allow you to safely send transactions to
-                              another account multiple times. To create a
-                              contact,{" "}
-                              <a
-                                href="#settings"
-                                className="text-brand-500 text-sm leading-snug underline-offset-2 transition-[underline] hover:underline md:text-[1rem] md:leading-6"
-                              >
-                                click here
-                              </a>
-                            </span>
-                          </p>
+                      ) : (
+                        <div className="flex flex-col pb-4">
+                          <div className="p-6 text-center">
+                            <p className="mb-4 text-secondary-900 text-sm leading-snug font-bold md:text-[1rem] md:leading-6">
+                              You don't have any contacts yet
+                            </p>
+                            <p className="mb-4 text-secondary-500 text-sm leading-snug md:text-[1rem] md:leading-6">
+                              <span>
+                                Contacts allow you to safely send transactions
+                                to another account multiple times. To create a
+                                contact,{" "}
+                                <a
+                                  href="#settings"
+                                  className="text-brand-500 text-sm leading-snug underline-offset-2 transition-[underline] hover:underline md:text-[1rem] md:leading-6"
+                                >
+                                  click here
+                                </a>
+                              </span>
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="flex w-full p-4 gap-4">

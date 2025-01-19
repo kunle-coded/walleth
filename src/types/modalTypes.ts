@@ -9,6 +9,7 @@ interface ModalWindowType {
   isAccount?: boolean;
   buttonType?: string;
   iconUrl?: string;
+  isFullWidth?: boolean;
 }
 
 interface ContextType {
