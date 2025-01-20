@@ -68,6 +68,7 @@ function Window({
   buttonType,
   iconUrl,
   isFullWidth,
+  noScroll,
 }: { children: React.ReactElement } & ModalWindowType) {
   const { openName, close } = useContext(ModalContext);
   const { close: closePopup } = useContext(PopupContext);
@@ -102,7 +103,7 @@ function Window({
         >
           <section
             className={`flex flex-col max-h-full w-full max-w-[360px] rounded-lg bg-white shadow-[0_2px_40px_0_rgba(0,0,0,0.1)] ${
-              fullHeight ? "h-screen" : "overflow-y-auto"
+              fullHeight ? "h-screen" : noScroll ? "" : "overflow-y-auto"
             } ${isFullWidth ? "py-4" : "p-4"}`}
             onClick={handleInnerModal}
           >

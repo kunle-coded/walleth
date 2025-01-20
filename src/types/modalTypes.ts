@@ -9,6 +9,7 @@ interface ModalWindowType {
   buttonType?: string;
   iconUrl?: string;
   isFullWidth?: boolean;
+  noScroll?: boolean;
 }
 
 interface ContextType {

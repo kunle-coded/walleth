@@ -76,7 +76,6 @@ function Send() {
               <Modal.Window
                 name="account_selections"
                 headerText="Select an account"
-                showButton
                 buttonText="Add account or hardware wallet"
                 iconUrl="src/assets/images/add.svg"
                 isFullWidth

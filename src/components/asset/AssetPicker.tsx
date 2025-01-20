@@ -92,9 +92,11 @@ function AssetPicker({
                 </div>
               )}
               <div className="max-h-full overflow-y-scroll">
-                <div className="pt-4 px-4">
-                  <SearchInput placeholderText="Search tokens" isBig />
-                </div>
+                {activeTab === 0 && (
+                  <div className="pt-4 px-4">
+                    <SearchInput placeholderText="Search tokens" isBig />
+                  </div>
+                )}
                 {activeTab === 0 && (
                   <div className="max-h-full">
                     <TokenSendListItem
@@ -114,7 +116,7 @@ function AssetPicker({
                   </div>
                 )}
                 {activeTab === 1 && (
-                  <div className="flex flex-col justify-center items-center px-12 pb-8 pt-5">
+                  <div className="flex flex-col justify-center items-center px-12 py-8">
                     <div className="flex justify-center items-center w-[80px] h-[80px] p-4 bg-white   align-middle select-none relative border-[4px] border-solid border-secondary-300 rounded-[50%] overflow-hidden uppercase">
                       <img src="src/assets/images/no-nft.svg" alt="" />
                     </div>

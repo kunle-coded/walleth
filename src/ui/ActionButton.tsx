@@ -4,7 +4,7 @@ interface ActionButtonProps {
   text: string;
   iconUrl: string;
   isDisabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function ActionButton({
