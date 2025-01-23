@@ -6,6 +6,7 @@ interface MenuItemProps {
   showNotification?: boolean;
   showSubmenu?: boolean;
   iconUrl: string;
+  onClick?: () => void;
 }
 
 function MenuItem({
@@ -14,9 +15,13 @@ function MenuItem({
   showNotification,
   showSubmenu,
   iconUrl,
+  onClick,
 }: MenuItemProps) {
   return (
-    <button className="grid grid-cols-[min-content_auto] items-center w-full py-3.5 px-4 text-start text-inherit font-medium bg-none border-none cursor-pointer hover:bg-primary-100">
+    <button
+      className="grid grid-cols-[min-content_auto] items-center w-full py-3.5 px-4 text-start text-inherit font-medium bg-none border-none cursor-pointer hover:bg-primary-100"
+      onClick={onClick}
+    >
       <Icon imgUrl={iconUrl} margin="mr-2" />
 
       <div>

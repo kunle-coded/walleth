@@ -1,11 +1,14 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 type GlobalContextType = {
+  isShowGlobalMenu: boolean;
   isTokenMenu: boolean;
   isTokenFilterOptions: boolean;
   overviewActiveTab: number;
   isViewAsset: boolean;
   selectedToken: number | null;
+  showMenu: () => void;
+  hideMenu: () => void;
   onOpenTokenMenu: () => void;
   onCloseTokenMenu: () => void;
   onOpenTokenFilter: () => void;
@@ -18,20 +21,10 @@ type GlobalContextType = {
 
 type TokenType = number | null;
 
-// const defaultValue = {
-//   isTokenMenu: false,
-//   isTokenFilterOptions: false,
-//   overviewActiveTab: 0,
-//   onOpenTokenMenu: () => void {},
-//   onCloseTokenMenu: () => void {},
-//   onOpenTokenFilter: () => void {},
-//   onCloseTokenFilter: () => void {},
-//   onSelectTab: () => void {},
-// };
-
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 function GlobalProvider({ children }: PropsWithChildren) {
+  const [isShowGlobalMenu, setIsShowGlobalMenu] = useState(false);
   const [isTokenMenu, setIsTokenMenu] = useState(false);
   const [isTokenFilterOptions, setIsTokenFilterOptions] = useState(false);
   const [overviewActiveTab, setOverviewActiveTab] = useState(0);
@@ -72,10 +65,18 @@ function GlobalProvider({ children }: PropsWithChildren) {
   function onTokenSelect(selected: number) {
     setSelectedToken(selected);
   }
+  function showMenu() {
+    setIsShowGlobalMenu(true);
+  }
+
+  function hideMenu() {
+    setIsShowGlobalMenu(false);
+  }
 
   return (
     <GlobalContext.Provider
       value={{
+        isShowGlobalMenu,
         isTokenMenu,
         isTokenFilterOptions,
         overviewActiveTab,
@@ -89,6 +90,8 @@ function GlobalProvider({ children }: PropsWithChildren) {
         onAssetView,
         onAssetClose,
         onTokenSelect,
+        showMenu,
+        hideMenu,
       }}
     >
       {children}

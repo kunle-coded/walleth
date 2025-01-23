@@ -6,10 +6,12 @@ import Swap from "../operations/Swap";
 
 function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
   const [urlLocation, setUrlLocation] = useState(window.location.hash);
+  const [isSingle, setIsSingle] = useState(false);
 
   useEffect(() => {
     const handleHashChange = () => {
       setUrlLocation(window.location.hash);
+      console.log(window.location.hash);
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -19,16 +21,27 @@ function AccountOverview({ filterRef, isTop }: AccountOverviewProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (urlLocation.includes("#asset/0x")) {
+      setIsSingle(true);
+    } else {
+      setIsSingle(false);
+    }
+  }, [urlLocation]);
+
   return (
-    <section className="w-full flex flex-[1_0_auto] justify-center min-h-0">
-      <div className="md:w-4/5 lg:w-[62vw] min-h-[82vh] shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] bg-white z-20">
-        {urlLocation === "" && (
+    <div
+      className={`main-container shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] z-[18] ${
+        isSingle ? "bg-white" : ""
+      }`}
+    >
+      {urlLocation === "" && (
+        <div className="flex min-h-full">
           <MainAssets filterRef={filterRef} isTop={isTop} />
-        )}
-        {urlLocation.includes("asset/0x") && <SingleAsset />}
-        {urlLocation === "#swap" && <Swap />}
-      </div>
-    </section>
+        </div>
+      )}
+      {urlLocation.includes("#asset/0x") && <SingleAsset />}
+    </div>
   );
 }
 

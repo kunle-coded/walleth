@@ -26,7 +26,7 @@ function TokenSwapListItem({
 
   return (
     <div
-      className={`flex flex-row flex-nowrap items-center py-2 px-4 relative min-h-[50px] cursor-pointer box-border ease-in-out duration-200 transition-all border-solid border-[rgb(175,180,192,0.4)] ${
+      className={`flex flex-row flex-nowrap items-center py-2 px-4 relative min-h-[50px] cursor-pointer box-border ease-in-out duration-200 transition-all border-solid border-[rgb(175,180,192,0.4)] hover:bg-secondary-200 ${
         isNoBorderTop ? "" : "border-t"
       }`}
       onClick={handleTokenItem}

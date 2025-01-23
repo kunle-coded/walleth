@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   readClipboardText,
   writeClipboardText,
@@ -12,13 +12,17 @@ import Icon from "../../ui/Icon";
 import MenuItem from "../../ui/MenuItem";
 import { addressFormatter } from "../../helpers/addressFormatter";
 import AccountAvatarOne from "../icons/AccountAvatarOne";
+import { useGlobal } from "../../contexts/GlobalContext";
+import changeLocation from "../../helpers/changeLocation";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
   const [isShowTooltip, setIsShowTooltip] = useState(false);
   const [isDelay, setIsDelay] = useState(false);
   const [isNotification, setIsNotification] = useState(true);
-  const [showMenu, setShowMenu] = useState(false);
+  const [isSingle, setIsSingle] = useState(false);
+
+  const { isShowGlobalMenu, showMenu } = useGlobal();
 
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
   const network = "Ethereum Mainnet";
@@ -73,13 +77,18 @@ function Navigation() {
     }
   }
 
-  function handleMenu() {
-    setShowMenu((prevState) => !prevState);
+  function handleMainMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    showMenu();
   }
 
   return (
-    <nav className="w-full flex flex-col flex-nowrap items-center max-h-[68px] z-50">
-      <div className="md:w-4/5 lg:w-[62%] h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
+    <nav
+      className={`flex flex-col flex-nowrap items-center w-full min-h-[68px] bg-primary-100 z-[55] ${
+        isSingle ? "mb-4" : "mb-0"
+      }`}
+    >
+      <div className="app-header-contents h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
         <div>
           <Modal>
             <Modal.Open opens="network_options">
@@ -140,11 +149,12 @@ function Navigation() {
               name="account_options"
               headerText="Select an account"
               showButton
+              isFullWidth
               buttonText="Add account or hardware wallet"
               iconUrl="src/assets/images/add.svg"
             >
               <div className="overflow-auto scrollbar-custom">
-                <SearchInput placeholderText="Search accounts" />
+                <SearchInput placeholderText="Search accounts" padding />
                 <Account current index={0} />
                 <Account current={false} index={1} />
                 <Account current={false} index={2} />
@@ -204,11 +214,11 @@ function Navigation() {
               <button
                 aria-label="Account options"
                 className="inline-flex justify-center items-center border-none rounded-lg bg-transparent text-primary-500 w-6 h-6 min-w-6 p-0 cursor-pointer hover:bg-secondary-200"
-                onClick={handleMenu}
+                onClick={handleMainMenu}
               >
                 <Icon imgUrl="src/assets/images/more.svg" />
               </button>
-              {showMenu && (
+              {isShowGlobalMenu && (
                 <div className="absolute top-0 bottom-auto right-auto left-0 w-auto min-w-56 overflow-hidden translate-x-[925px] translate-y-[145px] p-0 bg-white border rounded-lg border-none border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
                   <MenuItem
                     menuText="Notifications"
@@ -247,6 +257,7 @@ function Navigation() {
                   <MenuItem
                     menuText="Settings"
                     iconUrl="src/assets/images/settings.svg"
+                    onClick={() => changeLocation("settings")}
                   />
 
                   <MenuItem
