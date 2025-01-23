@@ -2,10 +2,15 @@ import { useState } from "react";
 
 interface ToggleButtonProps {
   isToggled: boolean;
+  toggleStatus?: boolean;
   onToggle: () => void;
 }
 
-function ToggleButton({ isToggled, onToggle }: ToggleButtonProps) {
+function ToggleButton({
+  isToggled,
+  toggleStatus,
+  onToggle,
+}: ToggleButtonProps) {
   return (
     <label className="flex toggle-direction-ltr cursor-pointer">
       <div className="flex justify-start items-center w-[52px] bg-transparent p-0 border-0 relative cursor-pointer select-none">
@@ -40,6 +45,24 @@ function ToggleButton({ isToggled, onToggle }: ToggleButtonProps) {
           onClick={onToggle}
         />
       </div>
+      {toggleStatus && (
+        <div className="grid items-center uppercase text-[1rem]">
+          <span
+            className={`toggle-button-status-grid-area ${
+              isToggled ? "visible" : "hidden"
+            }`}
+          >
+            On
+          </span>
+          <span
+            className={`toggle-button-status-grid-area ${
+              isToggled ? "hidden" : "visible"
+            }`}
+          >
+            Off
+          </span>
+        </div>
+      )}
     </label>
   );
 }

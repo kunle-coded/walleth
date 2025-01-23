@@ -2,6 +2,7 @@ import { useState } from "react";
 import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import Icon from "../../ui/Icon";
 import General from "./General";
+import Advanced from "./Advanced";
 
 const tabItems = [
   { id: 0, label: "General", iconUrl: "src/assets/images/settings.svg" },
@@ -122,7 +123,8 @@ function Settings() {
               {tabItems[activeTab].label}
             </h4>
           </div>
-          <General />
+          {activeTab === 0 && <General />}
+          {activeTab === 1 && <Advanced />}
         </div>
       </div>
     </div>

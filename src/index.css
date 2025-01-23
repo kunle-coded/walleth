@@ -126,6 +126,10 @@
     .sm-p-b-576 {
       padding-bottom: 16px;
     }
+
+    .toggle-button-status-grid-area {
+      grid-area: 1/1/1/1;
+    }
   }
 
   @media (min-width: 768px) {
@@ -153,7 +157,7 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
 
   /* color-scheme: light dark; */
   /* color: #f8f8f9;
@@ -173,6 +177,7 @@ a {
   /* color: #e88f97; */
   /* color: rgb(175, 180, 192); */
   /* color: rgb(100, 108, 255); brand-500 */
+  /* color: rgb(215, 56, 71); error-500 */
 }
 
 body {
@@ -186,6 +191,7 @@ body {
   /* min-width: 320px;
   min-height: 100vh; */
   /* position: relative; */
+  color: #090a0b;
 }
 
 h1 {
@@ -228,13 +234,13 @@ input[type="number"] {
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
+  /* :root {
     color: #213547;
     background-color: #f8f8f9;
   }
   a:hover {
     color: #747bff;
-  }
+  } */
 }
 
 ::selection {
