@@ -16,6 +16,10 @@
     perspective: 800px;
   }
 
+  .toggle-direction-ltr {
+    direction: ltr;
+  }
+
   @media (max-height: 475px) {
     .max-h-475-padding {
       padding: 8px;
