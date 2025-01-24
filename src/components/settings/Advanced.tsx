@@ -95,7 +95,7 @@ function Advanced() {
                   type="text"
                   placeholder="0"
                   dir="auto"
-                  className="block w-full min-w-0 h-[1.1876em] m-0 pb-[7px] pt-[3px] bg-none box-content text-secondary-900 focus:outline-none "
+                  className="block w-full min-w-0 h-[1.1876em] m-0 pb-[7px] pt-[3px] bg-none box-content text-secondary-900 focus:outline-none placeholder:text-secondary-600"
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                 />

@@ -26,6 +26,7 @@ function Settings() {
   const [isFocus, setIsFocus] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [isContactDetail, setIsContactDetail] = useState(false);
+  const [isAddContact, setIsAddContact] = useState(false);
 
   function handleFocus() {
     setIsFocus(true);
@@ -38,6 +39,7 @@ function Settings() {
   function handleTabSelection(tabItem: number) {
     setActiveTab(tabItem);
     setIsContactDetail(false);
+    setIsAddContact(false);
   }
 
   return (
@@ -123,7 +125,7 @@ function Settings() {
         <div className="content-area flex flex-col flex-auto overflow-y-auto">
           <div className="settings-subheader flex flex-row items-center p-4 px-6">
             <h4 className="text-secondary-900 leading-6 font-bold md:text-lg">
-              {tabItems[activeTab].label}
+              {isAddContact ? "New contact" : tabItems[activeTab].label}
             </h4>
             {isContactDetail && (
               <div className="sub-header w-full max-w-[calc(100%_-_125px_-_85px)] ms-1 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -134,7 +136,12 @@ function Settings() {
           </div>
           {activeTab === 0 && <General />}
           {activeTab === 1 && <Advanced />}
-          {activeTab === 2 && <Contacts onContactDetail={setIsContactDetail} />}
+          {activeTab === 2 && (
+            <Contacts
+              onContactDetail={setIsContactDetail}
+              onAddContact={setIsAddContact}
+            />
+          )}
         </div>
       </div>
     </div>
