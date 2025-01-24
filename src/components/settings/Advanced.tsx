@@ -1,12 +1,10 @@
 import { useState } from "react";
-import Icon from "../../ui/Icon";
-import ToggleButton from "../../ui/ToggleButton";
 import SystemButton from "../../ui/SystemButton";
 import SettingsItemToggle from "../../ui/SettingsItemToggle";
 
 function Advanced() {
   const [isInputFocus, setIsInputFocus] = useState(false);
-  const [isActiveIdenticon, setIsActiveIdenticon] = useState(0);
+  // const [isActiveIdenticon, setIsActiveIdenticon] = useState(0);
 
   function handleFocus() {
     setIsInputFocus(true);
@@ -126,15 +124,6 @@ function Advanced() {
         title="Dismiss Secret Recovery Phrase backup reminder"
         details="Turn this on to dismiss the Secret Recovery Phrase backup reminder message. We highly recommend that you back up your Secret Recovery Phrase to avoid loss of funds."
       />
-      {/* <div className="flex flex-row justify-between gap-4 p-0 pt-4">
-        <div className="flex flex-col min-w-0">
-          <span>Show hex data</span>
-          <div className="text-secondary-500 text-[0.895rem] leading-[140%]">
-            Select this to show the hex data field on the send screen
-          </div>
-        </div>
-        <div className="flex flex-col max-w-[300px] mt-2"></div>
-      </div> */}
     </div>
   );
 }

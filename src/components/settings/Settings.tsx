@@ -3,6 +3,7 @@ import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import Icon from "../../ui/Icon";
 import General from "./General";
 import Advanced from "./Advanced";
+import Contacts from "./Contacts";
 
 const tabItems = [
   { id: 0, label: "General", iconUrl: "src/assets/images/settings.svg" },
@@ -24,6 +25,7 @@ const tabItems = [
 function Settings() {
   const [isFocus, setIsFocus] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [isContactDetail, setIsContactDetail] = useState(false);
 
   function handleFocus() {
     setIsFocus(true);
@@ -35,6 +37,7 @@ function Settings() {
 
   function handleTabSelection(tabItem: number) {
     setActiveTab(tabItem);
+    setIsContactDetail(false);
   }
 
   return (
@@ -122,9 +125,16 @@ function Settings() {
             <h4 className="text-secondary-900 leading-6 font-bold md:text-lg">
               {tabItems[activeTab].label}
             </h4>
+            {isContactDetail && (
+              <div className="sub-header w-full max-w-[calc(100%_-_125px_-_85px)] ms-1 text-ellipsis whitespace-nowrap overflow-hidden">
+                <span> {">"} </span>
+                Unknown address
+              </div>
+            )}
           </div>
           {activeTab === 0 && <General />}
           {activeTab === 1 && <Advanced />}
+          {activeTab === 2 && <Contacts onContactDetail={setIsContactDetail} />}
         </div>
       </div>
     </div>

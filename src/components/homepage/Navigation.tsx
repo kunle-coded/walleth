@@ -133,7 +133,7 @@ function Navigation() {
             <Modal.Open opens="account_options">
               <button className="inline-flex justify-center items-center h-8 px-2 max-w-full p-0 gap-2 rounded-lg relative text-ellipsis whitespace-nowrap overflow-hidden align-middle select-none bg-transparent hover:bg-secondary-200 hover:shadow-none">
                 <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
-                  <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0 0 16px] overflow-hidden bg-white rounded-[50%]">
+                  <div className="flex justify-center items-center text-xs uppercase size-4 max-w-4 flex-[0_0_16px] overflow-hidden bg-white rounded-[50%]">
                     <div className="flex">
                       <AccountAvatarOne />
                     </div>
