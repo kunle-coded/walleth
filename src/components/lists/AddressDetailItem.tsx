@@ -2,7 +2,11 @@ import AccountAvatar from "../../ui/AccountAvatar";
 import Icon from "../../ui/Icon";
 import SystemButton from "../../ui/SystemButton";
 
-function AddressDetailItem() {
+interface AddressDetailItemProps {
+  onEdit: () => void;
+}
+
+function AddressDetailItem({ onEdit }: AddressDetailItemProps) {
   const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
 
   return (
@@ -14,7 +18,7 @@ function AddressDetailItem() {
         </p>
       </div>
       <div className="flex flex-col flex-nowrap px-6 pt-6 pb-0">
-        <SystemButton label="Edit" noHeight />
+        <SystemButton label="Edit" noHeight onClick={onEdit} />
       </div>
       <div className="flex flex-col flex-nowrap px-6 pt-6 pb-0">
         <div className="mt-3 text-secondary-600 text-xs leading-[140%]">
