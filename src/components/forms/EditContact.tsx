@@ -8,22 +8,30 @@ interface AddContactProps {
 }
 
 function EditContact({ onCancel }: AddContactProps) {
-  const [isFocus, setIsFocus] = useState(false);
-  const [isTwoFocus, setIsTwoFocus] = useState(false);
+  const [isUsernameFocus, setIsUsernameFocus] = useState(false);
+  const [isAddressFocus, setIsAddressFocus] = useState(false);
+  const [isMemoFocus, setIsMemoFocus] = useState(false);
 
-  function handleFocus() {
-    setIsFocus(true);
+  function handleUsernameFocus() {
+    setIsUsernameFocus(true);
   }
 
-  function handleBlur() {
-    setIsFocus(false);
+  function handleUsernameBlur() {
+    setIsUsernameFocus(false);
   }
-  function handleTwoFocus() {
-    setIsTwoFocus(true);
+  function handleAddressFocus() {
+    setIsAddressFocus(true);
   }
 
-  function handleTwoBlur() {
-    setIsTwoFocus(false);
+  function handleAddressBlur() {
+    setIsAddressFocus(false);
+  }
+  function handleMemoFocus() {
+    setIsMemoFocus(true);
+  }
+
+  function handleMemoBlur() {
+    setIsMemoFocus(false);
   }
 
   return (
@@ -38,7 +46,7 @@ function EditContact({ onCancel }: AddContactProps) {
         <div className="p-0 leading-[140%]">
           <a
             role="button"
-            className="contents w-full py-3 px-4 bg-transparent rounded-md box-border cursor-pointer text-error-200 text-sm leading-[140%] transition-[border-color,_background-color] duration-[0.3s]"
+            className="contents w-full py-3 px-4 bg-transparent rounded-md box-border cursor-pointer text-error-500 text-sm leading-[140%] transition-[border-color,_background-color] duration-[0.3s]"
           >
             Delete contact
           </a>
@@ -53,7 +61,9 @@ function EditContact({ onCancel }: AddContactProps) {
           <div className="inline-flex flex-col w-full min-w-0 mt-2 mb-1 m-0 p-0 relative border-0 align-top">
             <div
               className={`flex items-center text-secondary-900 w-full h-[48px] px-4 relative bg-white rounded-lg text-sm border border-solid cursor-text box-border tracking-[0.00938em] leading-[1.1876em] hover:border-brand-500 ${
-                isFocus ? "border-brand-500" : "border-[rgba(187,192,197,0.9)]"
+                isUsernameFocus
+                  ? "border-brand-500"
+                  : "border-[rgba(187,192,197,0.9)]"
               }`}
             >
               <input
@@ -62,8 +72,8 @@ function EditContact({ onCancel }: AddContactProps) {
                 value="Unknown address"
                 autoComplete="off"
                 className="block w-full h-[1.1876em] min-w-0 m-0 pt-[3px] pb-[7px] px-0 box-content leading-6 text-ellipsis whitespace-nowrap border-none bg-none focus-visible:outline-none text-secondary-900"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                onFocus={handleUsernameFocus}
+                onBlur={handleUsernameBlur}
               />
             </div>
           </div>
@@ -75,7 +85,7 @@ function EditContact({ onCancel }: AddContactProps) {
           <div className="inline-flex flex-col w-full min-w-0 mt-2 mb-1 m-0 p-0 relative border-0 align-top">
             <div
               className={`flex flex-row flex-nowrap flex-auto items-center w-full h-[90px] py-0 px-4 pt-[3px] text-secondary-900 bg-white text-sm relative cursor-text tracking-[0.00938em] leading-[1.1876em] rounded-lg border border-solid transition-[border-color] ease-in-out box-border hover:border-brand-500 ${
-                isTwoFocus
+                isAddressFocus
                   ? "border-brand-500"
                   : "border-[rgb(175,180,192,0.4)]"
               }`}
@@ -87,6 +97,8 @@ function EditContact({ onCancel }: AddContactProps) {
                 dir="auto"
                 className="block w-full min-w-0 h-auto pt-2.5 p-0 bg-none text-secondary-900 box-content resize-none focus:outline-0 border-0"
                 value="0x2b5a8cd7f3bf420619a68b46d9e5088ca63f760f"
+                onFocus={handleAddressFocus}
+                onBlur={handleAddressBlur}
               ></textarea>
             </div>
           </div>
@@ -99,7 +111,7 @@ function EditContact({ onCancel }: AddContactProps) {
           <div className="inline-flex flex-col w-full min-w-0 mt-2 mb-1 m-0 p-0 relative border-0 align-top">
             <div
               className={`flex flex-row flex-nowrap flex-auto items-center w-full h-[96px] py-0 px-4 pt-[3px] text-secondary-900 bg-white text-sm relative cursor-text tracking-[0.00938em] leading-[1.1876em] rounded-lg border border-solid transition-[border-color] ease-in-out box-border hover:border-brand-500 ${
-                isTwoFocus
+                isMemoFocus
                   ? "border-brand-500"
                   : "border-[rgb(175,180,192,0.4)]"
               }`}
@@ -110,6 +122,8 @@ function EditContact({ onCancel }: AddContactProps) {
                 rows={3}
                 dir="auto"
                 className="block w-full min-w-0 h-auto pt-2.5 p-0 bg-none text-secondary-900 box-content resize-none focus:outline-0 border-0"
+                onFocus={handleMemoFocus}
+                onBlur={handleMemoBlur}
               ></textarea>
             </div>
           </div>
