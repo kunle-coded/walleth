@@ -2,12 +2,20 @@ interface NetworkAvatarProps {
   size?: string;
   logoLink: string;
   networkName: string;
+  borderColor?: boolean;
 }
 
-function NetworkAvatar({ size, logoLink, networkName }: NetworkAvatarProps) {
+function NetworkAvatar({
+  size,
+  logoLink,
+  networkName,
+  borderColor,
+}: NetworkAvatarProps) {
   return (
     <div
-      className={`flex justify-center items-center text-primary-500 border border-solid border-white rounded-[50%] overflow-hidden uppercase shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)] ${
+      className={`flex justify-center items-center text-primary-500 text-xs leading-5 md:text-sm md:leading-snug  border-solid rounded-[50%] overflow-hidden uppercase  ${
+        borderColor ? "border-transparent" : "border-white border"
+      } ${
         size === "large"
           ? "w-[32px] h-[32px] max-w-[32px] flex-[0_0_32px]"
           : size === "big"
@@ -16,7 +24,7 @@ function NetworkAvatar({ size, logoLink, networkName }: NetworkAvatarProps) {
       } ${
         networkName === "Sepolia"
           ? "bg-[rgba(207_181_240)]"
-          : "bg-secondary-200"
+          : "bg-[rgb(175,180,192,0.5)]"
       }`}
     >
       {logoLink === "" ? (

@@ -4,6 +4,7 @@ import Icon from "../../ui/Icon";
 import General from "./General";
 import Advanced from "./Advanced";
 import Contacts from "./Contacts";
+import SecurityPrivacy from "./SecurityPrivacy";
 
 const tabItems = [
   { id: 0, label: "General", iconUrl: "src/assets/images/settings.svg" },
@@ -142,6 +143,7 @@ function Settings() {
               onAddContact={setIsAddContact}
             />
           )}
+          {activeTab === 3 && <SecurityPrivacy />}
         </div>
       </div>
     </div>

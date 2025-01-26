@@ -52,6 +52,7 @@ function Advanced() {
               transactions on Ethereum Mainnet."
         showLink
         linkUrl=""
+        linkText="Learn more"
       />
       <SettingsItemToggle
         title="Show hex data"
