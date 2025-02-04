@@ -1,4 +1,4 @@
-import { AccountOverviewProps } from "../../types/assetsTypes";
+import { AccountOverviewProps } from "../../types/assets";
 import SingleAsset from "../asset/SingleAsset";
 import MainAssets from "../asset/MainAssets";
 import { useEffect, useState } from "react";

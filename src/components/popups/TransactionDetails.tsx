@@ -1,6 +1,6 @@
 import { addressFormatter } from "../../helpers/addressFormatter";
 import AccountAvatar from "../../ui/AccountAvatar";
-import { TransactionType } from "../../types/transactionType";
+import { TransactionType } from "../../types/transaction";
 import TransactionDetailItem from "../../ui/TransactionDetailItem";
 import Icon from "../../ui/Icon";
 import Modal from "../modal/Modal";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../contexts/GlobalContext";
-import { AccountOverviewProps } from "../../types/assetsTypes";
+import { AccountOverviewProps } from "../../types/assets";
 
 import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";

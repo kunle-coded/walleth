@@ -1,5 +1,5 @@
 import { useGlobal } from "../../contexts/GlobalContext";
-import { AccountOverviewProps } from "../../types/assetsTypes";
+import { AccountOverviewProps } from "../../types/assets";
 import ActionButton from "../../ui/ActionButton";
 import AccountOverviewTabs from "../homepage/AccountOverviewTabs";
 import TokenOverview from "../asset/TokenOverview";

@@ -1,4 +1,4 @@
-import { TransactionDetailItemType } from "../types/transactionType";
+import { TransactionDetailItemType } from "../types/transaction";
 
 function TransactionDetailItem({
   item,

@@ -1,4 +1,4 @@
-import { TokenType } from "./types/assetsTypes";
+import { TokenType } from "./types/assets";
 
 const networks = [
   {

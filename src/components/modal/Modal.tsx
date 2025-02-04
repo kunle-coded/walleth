@@ -8,7 +8,7 @@ import React, {
 import { createPortal } from "react-dom";
 import { PopupContext } from "../../contexts/PopupContext";
 import Icon from "../../ui/Icon";
-import { ContextType, ModalWindowType, OpenType } from "../../types/modalTypes";
+import { ContextType, ModalWindowType, OpenType } from "../../types/modal";
 
 const defaultValue: ContextType = {
   open: function (): void {},
