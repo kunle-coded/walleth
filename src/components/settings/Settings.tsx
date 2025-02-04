@@ -158,7 +158,9 @@ function Settings() {
               onAddContact={setIsAddContact}
             />
           )}
-          {activeTab === 2 && isContactEmpty && <EmptyContact />}
+          {activeTab === 2 && isContactEmpty && (
+            <EmptyContact onAddContact={setIsAddContact} />
+          )}
           {activeTab === 3 && <SecurityPrivacy />}
           {activeTab === 5 && <Experimental />}
           {activeTab === 6 && <About />}
