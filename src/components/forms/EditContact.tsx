@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Icon from "../../ui/Icon";
 import SystemButton from "../../ui/SystemButton";
 import AccountAvatar from "../../ui/AccountAvatar";
 

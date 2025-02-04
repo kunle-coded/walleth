@@ -8,6 +8,7 @@ interface SettingsItemToggleProps {
   linkText?: string;
   showLink?: boolean;
   showPeriod?: boolean;
+  column?: boolean;
 }
 
 function SettingsItemToggle({
@@ -17,6 +18,7 @@ function SettingsItemToggle({
   linkText,
   showLink,
   showPeriod,
+  column,
 }: SettingsItemToggleProps) {
   const [isToggled, setIsToggled] = useState(false);
 
@@ -25,7 +27,13 @@ function SettingsItemToggle({
   }
 
   return (
-    <div className="flex flex-row justify-between gap-4 p-0 pt-4">
+    <div
+      className={`${
+        column
+          ? "p-4 pr-0 pl-3"
+          : "flex justify-between gap-4 flex-row p-0 pt-4"
+      }`}
+    >
       <div className="flex flex-col min-w-0">
         {title && <span>{title}</span>}
         <div className="text-secondary-500 text-[0.895rem] leading-[140%]">

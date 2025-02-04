@@ -4,7 +4,6 @@ import SettingsItemToggle from "../../ui/SettingsItemToggle";
 
 function Advanced() {
   const [isInputFocus, setIsInputFocus] = useState(false);
-  // const [isActiveIdenticon, setIsActiveIdenticon] = useState(0);
 
   function handleFocus() {
     setIsInputFocus(true);

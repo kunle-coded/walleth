@@ -8,6 +8,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 import Send from "../components/operations/Send";
 import Settings from "../components/settings/Settings";
 import Swap from "../components/operations/Swap";
+import Notification from "../components/settings/Notification";
 
 function Home() {
   const [urlLocation, setUrlLocation] = useState(window.location.hash);
@@ -43,19 +44,34 @@ function Home() {
       onClick={handleAnyPopupClose}
       onScroll={() => calcCoordinates(filterRef)}
     >
-      {urlLocation !== "#send" && <Header />}
-      {urlLocation !== "#send" && <Navigation />}
+      {urlLocation !== "#send" && urlLocation !== "#notifications/settings" && (
+        <Header />
+      )}
+      {urlLocation !== "#send" && urlLocation !== "#notifications/settings" && (
+        <Navigation />
+      )}
 
-      <main className="flex justify-center flex-[1_0_auto] min-h-0 w-full">
-        {urlLocation !== "#send" &&
-          urlLocation !== "#swap" &&
-          urlLocation !== "#settings" && (
-            <AccountOverview filterRef={filterRef} isTop={isTop} />
-          )}
-        {urlLocation === "#swap" && <Swap />}
-        {urlLocation === "#send" && <Send />}
-        {urlLocation === "#settings" && <Settings />}
-      </main>
+      {urlLocation !== "#notifications/settings" && (
+        <div className="flex justify-center flex-[1_0_auto] min-h-0 w-full">
+          {urlLocation !== "#send" &&
+            urlLocation !== "#swap" &&
+            urlLocation !== "#settings" && (
+              <AccountOverview filterRef={filterRef} isTop={isTop} />
+            )}
+          {urlLocation === "#swap" && <Swap />}
+          {urlLocation === "#send" && <Send />}
+          {urlLocation === "#settings" && <Settings />}
+        </div>
+      )}
+
+      {urlLocation === "#notifications/settings" && (
+        <div className="flex justify-center flex-[1_0_auto] min-h-0 w-full">
+          <div className="main-container shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] z-[18]">
+            <Header />
+            <Notification />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

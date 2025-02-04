@@ -2,7 +2,6 @@ import { useState } from "react";
 import SettingsItemToggle from "../../ui/SettingsItemToggle";
 import ToggleButton from "../../ui/ToggleButton";
 import SettingsNetworkItemToggle from "../../ui/SettingsNetworkItemToggle";
-import NetworkAvatar from "../../ui/NetworkAvatar";
 
 type NetworkType = {
   id: number;

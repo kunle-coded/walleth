@@ -15,7 +15,7 @@ function ButtonWithIcon({
 }: ButtonWithIconProps) {
   return (
     <button
-      className={`flex justify-center items-center w-6 h-6 min-w-6 p-0 cursor-pointer bg-transparent  rounded-lg border-none hover:bg-secondary-200 ${
+      className={`flex justify-center items-center w-6 h-6 min-w-6 p-0 cursor-pointer bg-transparent rounded-lg border-none hover:bg-secondary-200 ${
         color ? color : "text-primary-500"
       } ${margin ? margin : ""}`}
       onClick={onClick}

@@ -5,6 +5,11 @@ import General from "./General";
 import Advanced from "./Advanced";
 import Contacts from "./Contacts";
 import SecurityPrivacy from "./SecurityPrivacy";
+import Notification from "./Notification";
+import changeLocation from "../../helpers/changeLocation";
+import Experimental from "./Experimental";
+import About from "./About";
+import EmptyContact from "./EmptyContact";
 
 const tabItems = [
   { id: 0, label: "General", iconUrl: "src/assets/images/settings.svg" },
@@ -20,7 +25,12 @@ const tabItems = [
     label: "Notifications",
     iconUrl: "src/assets/images/notification.svg",
   },
-  { id: 5, label: "About", iconUrl: "src/assets/images/info.svg" },
+  {
+    id: 5,
+    label: "Experimental",
+    iconUrl: "src/assets/images/flask.svg",
+  },
+  { id: 6, label: "About", iconUrl: "src/assets/images/info.svg" },
 ];
 
 function Settings() {
@@ -28,6 +38,7 @@ function Settings() {
   const [activeTab, setActiveTab] = useState(0);
   const [isContactDetail, setIsContactDetail] = useState(false);
   const [isAddContact, setIsAddContact] = useState(false);
+  const [isContactEmpty, setIsContactEmpty] = useState(true);
 
   function handleFocus() {
     setIsFocus(true);
@@ -38,6 +49,10 @@ function Settings() {
   }
 
   function handleTabSelection(tabItem: number) {
+    if (tabItem === 4) {
+      changeLocation("notifications/settings");
+      return;
+    }
     setActiveTab(tabItem);
     setIsContactDetail(false);
     setIsAddContact(false);
@@ -137,13 +152,16 @@ function Settings() {
           </div>
           {activeTab === 0 && <General />}
           {activeTab === 1 && <Advanced />}
-          {activeTab === 2 && (
+          {activeTab === 2 && !isContactEmpty && (
             <Contacts
               onContactDetail={setIsContactDetail}
               onAddContact={setIsAddContact}
             />
           )}
+          {activeTab === 2 && isContactEmpty && <EmptyContact />}
           {activeTab === 3 && <SecurityPrivacy />}
+          {activeTab === 5 && <Experimental />}
+          {activeTab === 6 && <About />}
         </div>
       </div>
     </div>
