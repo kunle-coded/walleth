@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
+import { useDispatch } from "react-redux";
+import { addSetupStep, nextStep } from "../../slices/accountSlice";
 
-interface CreatePasswordProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
-
-function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
+function SeedPhraseConfirm() {
   const [isPhraseMatched, setIsPhraseMatched] = useState(false);
   const [seedPhrase] = useState<string[]>([
     "toy",
@@ -25,6 +23,8 @@ function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
   const [wordsToMatch] = useState<number[]>([1, 8, 12]);
   const [matchedIndices, setMatchedIndices] = useState<number[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (matchedIndices.length === 3 && selected.length === 3) {
@@ -58,7 +58,7 @@ function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
     setSelected((prevState: string[]) => [...prevState, selectedWord]);
   }
 
-  function handleReset(value: React.MouseEvent<HTMLButtonElement>) {
+  function handleSecureComplete(value: React.MouseEvent<HTMLButtonElement>) {
     const target = value.target as HTMLElement;
 
     if (target.textContent === "Try again" && !isPhraseMatched) {
@@ -66,7 +66,8 @@ function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
       setSelected(() => []);
       setIsPhraseMatched(false);
     } else if (target.textContent === "Continue" && isPhraseMatched) {
-      onClick(value);
+      dispatch(nextStep("complete_setup"));
+      dispatch(addSetupStep("complete_setup"));
     }
   }
 
@@ -143,7 +144,7 @@ function SeedPhraseConfirm({ onClick }: CreatePasswordProps) {
         <Button
           type="primary"
           isDisabled={matchedIndices.length < 3 && !isPhraseMatched}
-          onClick={handleReset}
+          onClick={handleSecureComplete}
         >
           {matchedIndices.length === 3 && !isPhraseMatched
             ? "Try again"

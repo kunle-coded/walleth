@@ -1,12 +1,25 @@
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Secure from "../icons/Secure";
 import LinkButton from "../../ui/LinkButton";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccountSetup, finishSetup } from "../../slices/accountSlice";
+import { updatePassword } from "../../slices/userSlice";
 
 // interface CreatePasswordProps {
 //   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 // }
 
 function SecureComplete() {
+  const { isImport, password } = useSelector(getAccountSetup);
+
+  const dispatch = useDispatch();
+
+  function handleSetupComplete() {
+    // localStorage.setItem("userPassword", password);
+    dispatch(updatePassword(password));
+    dispatch(finishSetup());
+  }
+
   return (
     <div className="w-full flex flex-col overflow-hidden">
       <div className="block mt-8">
@@ -15,8 +28,10 @@ function SecureComplete() {
       <div className="mb-2">
         <p className="text-lg font-bold mb-2">Congratulations</p>
         <p className="text-sm my-5">
-          You've successfully protected your wallet. Remember to keep your seed
-          phrase safe, it's your responsibility!
+          {`You've successfully ${
+            isImport ? "imported" : "protected"
+          } your wallet. Remember to keep your seed
+          phrase safe, it's your responsibility!`}
         </p>
         <a href="" className="text-sm font-bold text-blue-700 underline">
           Leave yourself a hint?
@@ -33,7 +48,7 @@ function SecureComplete() {
       </div>
 
       <ButtonWrapper>
-        <LinkButton type="primary" href="/home">
+        <LinkButton type="primary" href="/home" onClick={handleSetupComplete}>
           Continue
         </LinkButton>
       </ButtonWrapper>

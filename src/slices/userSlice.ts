@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../types/assets";
 
 const initialState: User = {
-  password: "",
+  password: localStorage.getItem("userPassword")
+    ? (localStorage.getItem("userPassword") as string)
+    : "",
   mnemonic: "",
   accounts: [],
   messages: [],
@@ -14,8 +16,15 @@ const initialState: User = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    updatePassword(state, action) {
+      state.password = action.payload;
+      localStorage.setItem("userPassword", state.password);
+    },
+  },
 });
+
+export const { updatePassword } = userSlice.actions;
 
 export default userSlice.reducer;
 

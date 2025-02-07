@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addSetupStep, nextStep } from "../../slices/accountSlice";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Hidden from "../icons/Hidden";
@@ -7,11 +9,32 @@ interface CreatePasswordProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function SeedPhraseHide({ onClick }: CreatePasswordProps) {
+function SeedPhraseHide() {
   const [isRevealPhrase, setIsRevealPhrase] = useState(false);
+  const [seedPhrase] = useState<string[]>([
+    "toy",
+    "flex",
+    "flex",
+    "toy",
+    "flex",
+    "flex",
+    "flex",
+    "flex",
+    "flex",
+    "toy",
+    "flex",
+    "flex",
+  ]);
+
+  const dispatch = useDispatch();
 
   function handleRevealPhrase() {
     setIsRevealPhrase(true);
+  }
+
+  function handleSeedConfirm() {
+    dispatch(nextStep("confirm_seed_phrase"));
+    dispatch(addSetupStep("confirm_seed_phrase"));
   }
 
   return (
@@ -27,12 +50,12 @@ function SeedPhraseHide({ onClick }: CreatePasswordProps) {
 
       <div className="flex mt-8 mb-20 p-4 text-secondary-900 font-semibold relative">
         <ul className="flex flex-wrap gap-4 items-center justify-center relative">
-          {Array.from({ length: 12 }, (_, i) => (
+          {seedPhrase.map((seed, index) => (
             <li
-              key={i}
+              key={index}
               className="w-28 px-2 py-2 bg-secondary-200 text-left rounded"
             >
-              {i + 1}. flex
+              {index + 1}. {seed}
             </li>
           ))}
         </ul>
@@ -56,7 +79,11 @@ function SeedPhraseHide({ onClick }: CreatePasswordProps) {
       </div>
 
       <ButtonWrapper>
-        <Button type="primary" isDisabled={!isRevealPhrase} onClick={onClick}>
+        <Button
+          type="primary"
+          isDisabled={!isRevealPhrase}
+          onClick={handleSeedConfirm}
+        >
           Continue
         </Button>
       </ButtonWrapper>

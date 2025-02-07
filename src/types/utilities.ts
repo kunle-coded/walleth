@@ -1,14 +1,15 @@
-interface Setup {
+interface AccountSetup {
   stepCounter: number;
   setupSteps: { previousStep: string; currentStep: string };
   stepRecord: string[];
   password: string;
   isSkipped: boolean;
-  imported: object;
+  isSkipOptions: boolean;
+  isImport: boolean;
 }
 
 interface Global {
   loginStatus: string;
 }
 
-export type { Setup, Global };
+export type { AccountSetup, Global };

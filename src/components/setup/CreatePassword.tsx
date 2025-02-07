@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useField } from "../../hooks/useField";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import FormInput from "../../ui/FormInput";
 import Terms from "../../ui/Terms";
-import { useAccount } from "../../contexts/AccountContext";
+import { useDispatch } from "react-redux";
+import { nextStep, addPassword, addSetupStep } from "../../slices/accountSlice";
 
-interface CreatePasswordProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
-
-function CreatePassword({ onClick }: CreatePasswordProps) {
+function CreatePassword() {
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useDispatch();
 
-  const { handlePassword } = useAccount();
   const password = useField("password");
   const confirmPassword = useField("password");
   const { value, type, ...passwordProps } = password;
@@ -36,10 +33,11 @@ function CreatePassword({ onClick }: CreatePasswordProps) {
     }
   }, [value, confirmPasswordValue]);
 
-  function handleCreatePassword(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleCreatePassword() {
     if (value === confirmPasswordValue) {
-      handlePassword(value);
-      onClick(event);
+      dispatch(addPassword(value));
+      dispatch(nextStep("secure_wallet"));
+      dispatch(addSetupStep("secure_wallet"));
     }
   }
 

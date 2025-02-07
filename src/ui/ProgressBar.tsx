@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { useAccount } from "../contexts/AccountContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccountSetup, previousStep } from "../slices/accountSlice";
 
 function ProgressBar() {
   const [progressWidth, setProgressWidth] = useState("0%");
-  const { stepCounter, handlePrevious } = useAccount();
+  const { stepCounter } = useSelector(getAccountSetup);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const totalSteps = 3;
@@ -11,10 +14,14 @@ function ProgressBar() {
     setProgressWidth(width);
   }, [stepCounter]);
 
+  const handleBack = () => {
+    dispatch(previousStep());
+  };
+
   return (
     <div className="w-full flex justify-between items-center mb-8">
       {stepCounter <= 1 ? (
-        <button className="appearance-none" onClick={handlePrevious}>
+        <button className="appearance-none" onClick={handleBack}>
           <div className="relative h-[24px] w-[24px] appearance-none">
             <svg
               viewBox="0 0 24 24"
@@ -44,7 +51,7 @@ function ProgressBar() {
           </div>
         </button>
       ) : (
-        <button className="appearance-none" onClick={handlePrevious}>
+        <button className="appearance-none" onClick={handleBack}>
           <div className="relative h-[14px] w-[10px] appearance-none">
             <svg
               viewBox="0 0 6 10"

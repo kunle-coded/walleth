@@ -1,12 +1,17 @@
+import { useDispatch } from "react-redux";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Info from "../icons/Info";
+import { addSetupStep, nextStep } from "../../slices/accountSlice";
 
-interface CreatePasswordProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
+function StartSecure() {
+  const dispatch = useDispatch();
 
-function StartSecure({ onClick }: CreatePasswordProps) {
+  function handleSecureStart() {
+    dispatch(nextStep("hidden_seed_phrase"));
+    dispatch(addSetupStep("hidden_seed_phrase"));
+  }
+
   return (
     <div className="w-full flex flex-col overflow-hidden">
       <div className="mb-2">
@@ -58,7 +63,7 @@ function StartSecure({ onClick }: CreatePasswordProps) {
       </div>
 
       <ButtonWrapper>
-        <Button type="primary" onClick={onClick}>
+        <Button type="primary" onClick={handleSecureStart}>
           Start
         </Button>
       </ButtonWrapper>

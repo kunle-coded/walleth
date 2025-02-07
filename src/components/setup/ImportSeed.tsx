@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useField } from "../../hooks/useField";
 import Button from "../../ui/Button";
-import ButtonWrapper from "../../ui/ButtonWrapper";
 import FormInput from "../../ui/FormInput";
 import Terms from "../../ui/Terms";
-import { useAccount } from "../../contexts/AccountContext";
 import ViewPassword from "../icons/ViewPassword";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addPassword,
+  addSetupStep,
+  getAccountSetup,
+  nextStep,
+  setImportSeed,
+} from "../../slices/accountSlice";
 
-interface ImportSeedProps {
-  isShow: boolean;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
-
-function ImportSeed({ onClick, isShow }: ImportSeedProps) {
+function ImportSeed() {
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isShowSeed, setIsShowSeed] = useState(false);
@@ -21,7 +22,11 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
   const [actualSeedValue, setActualSeedValue] = useState(""); // The actual value
   const [rows, setRows] = useState(1);
 
-  const { handlePassword } = useAccount();
+  const { isImport } = useSelector(getAccountSetup);
+
+  const dispatch = useDispatch();
+
+  // const { handlePassword } = useAccount();
 
   const password = useField("password");
   const confirmPassword = useField("password");
@@ -54,10 +59,12 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
     }
   }, [value, confirmPasswordValue, inputValue]);
 
-  function handleCreatePassword(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleCreatePassword() {
     if (value === confirmPasswordValue) {
-      handlePassword(value);
-      onClick(event);
+      dispatch(addPassword(value));
+      dispatch(nextStep("complete_setup"));
+      dispatch(addSetupStep("complete_setup"));
+      // dispatch(setImportSeed(false));
     }
   }
 
@@ -108,10 +115,10 @@ function ImportSeed({ onClick, isShow }: ImportSeedProps) {
 
   return (
     <div
-      className={`absolute top-[80px] right-0 left-0 px-6 pt-8 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
-        isShow
-          ? "opacity-100 translate-y-0 bottom-0 z-30"
-          : "opacity-0 translate-y-full"
+      className={`absolute  right-0 left-0 px-6 pt-8 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
+        isImport
+          ? "opacity-100 translate-y-0 top-[80px] bottom-0 z-30 h-auto"
+          : "opacity-0 translate-y-full h-0 bottom-0"
       }`}
     >
       <div className="mb-6">

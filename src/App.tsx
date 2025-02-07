@@ -24,11 +24,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <GlobalProvider>
-      <AccountProvider>
-        <PopupProvider>
-          <RouterProvider router={router} />
-        </PopupProvider>
-      </AccountProvider>
+      <PopupProvider>
+        <RouterProvider router={router} />
+      </PopupProvider>
     </GlobalProvider>
   );
 }
