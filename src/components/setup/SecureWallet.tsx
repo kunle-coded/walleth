@@ -11,6 +11,7 @@ import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Terms from "../../ui/Terms";
 import SecureOpen from "../icons/SecureOpen";
+import stopPropagation from "../../helpers/stopPropagation";
 
 function SecureWallet() {
   const [isCheckError, setIsCheckError] = useState(false);
@@ -36,9 +37,7 @@ function SecureWallet() {
   }
 
   function handleSecureSkip() {
-    if (!isChecked) {
-      setIsCheckError(true);
-    } else {
+    if (isChecked) {
       setIsCheckError(false);
       dispatch(setSeedSecureSkipped(true));
       dispatch(nextStep("complete_unsecure"));
@@ -50,10 +49,17 @@ function SecureWallet() {
     setIsChecked((checked) => !checked);
   }
 
+  function handleModalClick() {
+    dispatch(setSeedSecureSkipped(false));
+  }
+
   return (
     <div className="w-full flex flex-col overflow-hidden">
       {(isSkipped || isSkipOptions) && (
-        <div className="absolute top-0 left-0 bottom-0 right-0 bg-black opacity-60 z-20"></div>
+        <div
+          className="goback absolute top-0 left-0 bottom-0 right-0 bg-black opacity-60 z-20"
+          onClick={handleModalClick}
+        ></div>
       )}
       <div className="mb-16">
         <p className="text-lg font-bold mb-2">Secure Your Wallet</p>
@@ -124,6 +130,7 @@ function SecureWallet() {
             ? "opacity-100 translate-y-0 bottom-0 z-30"
             : "opacity-0 translate-y-full"
         }`}
+        onClick={stopPropagation}
       >
         {isSkipOptions && (
           <div>

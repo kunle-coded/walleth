@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useField } from "../../hooks/useField";
 import Button from "../../ui/Button";
 import FormInput from "../../ui/FormInput";
-import Terms from "../../ui/Terms";
 import ViewPassword from "../icons/ViewPassword";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,7 +9,6 @@ import {
   addSetupStep,
   getAccountSetup,
   nextStep,
-  setImportSeed,
 } from "../../slices/accountSlice";
 
 function ImportSeed() {
@@ -113,13 +111,18 @@ function ImportSeed() {
     setIsShowSeed((prevState) => !prevState);
   }
 
+  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.stopPropagation();
+  }
+
   return (
     <div
-      className={`absolute  right-0 left-0 px-6 pt-8 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
+      className={`overlay absolute  right-0 left-0 px-6 pt-8 pb-6 rounded-t-xl bg-white overflow-hidden transform transition-all duration-500 ease-in-out ${
         isImport
           ? "opacity-100 translate-y-0 top-[80px] bottom-0 z-30 h-auto"
           : "opacity-0 translate-y-full h-0 bottom-0"
       }`}
+      onClick={handleClick}
     >
       <div className="mb-6">
         <p className="text-lg font-bold mb-2">Import from seed</p>

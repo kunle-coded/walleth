@@ -1,5 +1,10 @@
-import { useSelector } from "react-redux";
-import { getAccountSetup } from "../slices/accountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAccountSetup,
+  previousStep,
+  setImportSeed,
+  setSeedSkipOptions,
+} from "../slices/accountSlice";
 import Wallet from "../components/icons/Wallet";
 import ImportOption from "../components/setup/ImportOption";
 import CreatePassword from "../components/setup/CreatePassword";
@@ -13,7 +18,19 @@ import NotSecureComplete from "../components/setup/NotSecureComplete";
 import ImportSeed from "../components/setup/ImportSeed";
 
 function Onboarding() {
-  const { stepCounter, setupSteps, isImport } = useSelector(getAccountSetup);
+  const { stepCounter, setupSteps, isSkipOptions } =
+    useSelector(getAccountSetup);
+
+  const dispatch = useDispatch();
+
+  function handleBack() {
+    if (setupSteps.currentStep === "import_seed") {
+      dispatch(previousStep());
+      dispatch(setImportSeed(false));
+    } else if (isSkipOptions) {
+      dispatch(setSeedSkipOptions(false));
+    }
+  }
 
   return (
     <main className="h-full w-full bg-secondary-100 relative">
@@ -23,6 +40,7 @@ function Onboarding() {
             ? "md:min-h-[42rem]"
             : "md:min-h-96"
         }`}
+        onClick={handleBack}
       >
         {setupSteps.currentStep === "import_seed" && (
           <div className="absolute top-0 left-0 bottom-0 right-0 bg-black opacity-60 z-20"></div>

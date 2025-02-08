@@ -9,6 +9,8 @@ import Send from "../components/operations/Send";
 import Settings from "../components/settings/Settings";
 import Swap from "../components/operations/Swap";
 import Notification from "../components/settings/Notification";
+import { useDispatch } from "react-redux";
+import { finishSetup } from "../slices/accountSlice";
 
 function Home() {
   const [urlLocation, setUrlLocation] = useState(window.location.hash);
@@ -19,12 +21,18 @@ function Home() {
   const filterRef = useRef(null);
   const { isTop, calcCoordinates } = usePopupCordinates();
 
+  const dispatch = useDispatch();
+
   function handleAnyPopupClose() {
     hideMenu?.();
     close?.();
     onCloseTokenMenu?.();
     onCloseTokenFilter?.();
   }
+
+  useEffect(() => {
+    dispatch(finishSetup());
+  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {

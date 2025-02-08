@@ -2,12 +2,8 @@ import ButtonWrapper from "../../ui/ButtonWrapper";
 import Secure from "../icons/Secure";
 import LinkButton from "../../ui/LinkButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccountSetup, finishSetup } from "../../slices/accountSlice";
+import { getAccountSetup } from "../../slices/accountSlice";
 import { updatePassword } from "../../slices/userSlice";
-
-// interface CreatePasswordProps {
-//   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-// }
 
 function SecureComplete() {
   const { isImport, password } = useSelector(getAccountSetup);
@@ -15,9 +11,8 @@ function SecureComplete() {
   const dispatch = useDispatch();
 
   function handleSetupComplete() {
-    // localStorage.setItem("userPassword", password);
     dispatch(updatePassword(password));
-    dispatch(finishSetup());
+    // dispatch(finishSetup());
   }
 
   return (

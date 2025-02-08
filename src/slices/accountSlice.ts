@@ -33,7 +33,6 @@ const accountSlice = createSlice({
     addPassword(state, action) {
       state.password = action.payload;
       localStorage.setItem("password", action.payload);
-      // localStorage.setItem("userPassword", action.payload);
     },
     nextStep(state, action) {
       if (
@@ -44,7 +43,10 @@ const accountSlice = createSlice({
       ) {
         state.stepCounter = state.stepCounter + 1;
         localStorage.setItem("stepCounter", JSON.stringify(state.stepCounter));
-      } else if (action.payload === "complete_setup") {
+      } else if (
+        action.payload === "complete_setup" ||
+        action.payload === "complete_unsecure"
+      ) {
         state.stepCounter = state.stepCounter + 2;
         localStorage.setItem("stepCounter", JSON.stringify(state.stepCounter));
       }
@@ -77,9 +79,9 @@ const accountSlice = createSlice({
         currentStep === "complete_unsecure" ||
         currentStep === "confirm_seed_phrase" ||
         currentStep === "secure_wallet" ||
-        currentStep === "create_password"
+        currentStep === "create_password" ||
+        currentStep === "import_seed"
       ) {
-        console.log(currentStep);
         state.stepCounter = state.stepCounter - 1;
         localStorage.setItem("stepCounter", JSON.stringify(state.stepCounter));
       }
