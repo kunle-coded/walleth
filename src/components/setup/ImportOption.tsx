@@ -1,10 +1,6 @@
 // import React from "react";
 import { useDispatch } from "react-redux";
-import {
-  nextStep,
-  addSetupStep,
-  setImportSeed,
-} from "../../slices/accountSlice";
+import { nextStep, addSetupStep, setImportSeed } from "../../slices/setupSlice";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import stopPropagation from "../../helpers/stopPropagation";

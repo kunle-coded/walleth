@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { generateMnemonic } from "@scure/bip39";
+import { wordlist } from "@scure/bip39/wordlists/english";
+import { nextStep, addPassword, addSetupStep } from "../../slices/setupSlice";
 import { useField } from "../../hooks/useField";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import FormInput from "../../ui/FormInput";
 import Terms from "../../ui/Terms";
-import { useDispatch } from "react-redux";
-import { nextStep, addPassword, addSetupStep } from "../../slices/accountSlice";
+import { setMnemonic } from "../../slices/userSlice";
 
 function CreatePassword() {
   const [passwordMatch, setPasswordMatch] = useState(false);
+  const [isPasswordWeak, setIsPasswordWeak] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
   const dispatch = useDispatch();
 
   const password = useField("password");
@@ -25,19 +30,31 @@ function CreatePassword() {
     if (value !== "" && confirmPasswordValue !== "") {
       if (value === confirmPasswordValue) {
         setPasswordMatch(true);
+        setPasswordMessage("");
       } else {
         setPasswordMatch(false);
+        setPasswordMessage("Passwords do not match");
       }
     } else {
-      setPasswordMatch(false);
+      setPasswordMatch(true);
+      setIsPasswordWeak(false);
+      setPasswordMessage("");
     }
   }, [value, confirmPasswordValue]);
 
   function handleCreatePassword() {
-    if (value === confirmPasswordValue) {
+    if (passwordMatch && value.length >= 2) {
       dispatch(addPassword(value));
+      const mnemonic = generateMnemonic(wordlist, 128);
+      dispatch(setMnemonic(mnemonic));
       dispatch(nextStep("secure_wallet"));
       dispatch(addSetupStep("secure_wallet"));
+
+      setIsPasswordWeak(false);
+      setPasswordMessage("");
+    } else {
+      setIsPasswordWeak(true);
+      setPasswordMessage("Password must be at least 8 characters");
     }
   }
 
@@ -68,14 +85,15 @@ function CreatePassword() {
           type={confirmType}
           placeholder="Confirm Password"
           showPasswordStrength={false}
-          info="Must be at least 8 characters"
+          info={passwordMessage}
           isPasswordMatch={passwordMatch}
+          isPasswordWeak={isPasswordWeak}
           {...confirmPasswordProps}
         />
       </div>
 
       <Terms
-        value="I under stand that Walleth cannot recover this password for me."
+        value="I understand that Walleth cannot recover this password for me."
         isMoreInfo
         isChecked={isChecked}
         onToggle={toggleCheck}

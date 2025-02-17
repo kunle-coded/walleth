@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Info from "../icons/Info";
-import { addSetupStep, nextStep } from "../../slices/accountSlice";
+import { addSetupStep, nextStep } from "../../slices/setupSlice";
 
 function StartSecure() {
   const dispatch = useDispatch();

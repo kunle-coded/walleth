@@ -33,36 +33,69 @@ interface Transaction extends BaseType {
   status: string;
 }
 
-interface Preference {
-  general: string;
+interface Preferences {
+  general: object;
+  advanced: object;
+  security: object;
+  notifications: boolean;
+  experimental: object;
 }
 
 interface Message {
   general: string;
 }
 
-interface Contact extends BaseType {
-  address: string;
+interface Address extends BaseType {
+  "": string;
+  chainId: string;
+  memo: string;
+}
+
+interface AddressBook {
+  "*": Address;
+  0x1: Address;
+  0xaa367: Address;
+}
+
+interface Metadata {
+  importTime: number;
+  keyring: string;
+  lastSelected: number;
+  name: string;
+  nameLastUpdated: string;
+  methods: string[];
 }
 
 interface Account {
+  "": string;
   address: string;
   tokens: Token[];
   nfts: NFT[];
   transactions: Transaction[];
   backupStatus: boolean;
-  contacts: Contact[];
-  profileIcon: string;
+  addressBooks: AddressBook[];
+  profileIcon: string; // NOTE might remove
 }
 
 interface User {
-  password: string;
+  name: string;
+  isLogin: boolean;
   mnemonic: string;
   accounts: Account[];
-  preferences: Preference[];
+  preferences: Preferences[];
   messages: Message[];
   networks: Network[];
-  selectedNetwork: string; // NOTE: Might remove thid property
+  selectedNetwork: string; // NOTE: Might remove this property
 }
 
-export type { AccountOverviewProps, TokenType, User };
+// {
+//   "0x805F713677b5752f5Cd2A42bE9e97f977B022B05": {
+//       "address": "0x805F713677b5752f5Cd2A42bE9e97f977B022B05",
+//       "chainId": "0xaa36a7",
+//       "isEns": false,
+//       "memo": "",
+//       "name": ""
+//   }
+// }
+
+export type { AccountOverviewProps, TokenType, User, Address, AddressBook };

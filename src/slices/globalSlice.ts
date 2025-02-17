@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Global } from "../types/utilities";
+import { Global } from "../types/config";
 
 const initialState: Global = {
   loginStatus: "",

@@ -2,17 +2,32 @@ import ButtonWrapper from "../../ui/ButtonWrapper";
 import Secure from "../icons/Secure";
 import LinkButton from "../../ui/LinkButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccountSetup } from "../../slices/accountSlice";
-import { updatePassword } from "../../slices/userSlice";
+import { finishSetup, getAccountSetup } from "../../slices/setupSlice";
+import { getUser, authUser } from "../../slices/userSlice";
+import createAccount from "../../services/createAccount";
 
 function SecureComplete() {
   const { isImport, password } = useSelector(getAccountSetup);
+  const { mnemonic } = useSelector(getUser);
 
   const dispatch = useDispatch();
 
-  function handleSetupComplete() {
-    dispatch(updatePassword(password));
-    // dispatch(finishSetup());
+  async function handleSetupComplete() {
+    if (mnemonic) {
+      await createAccount(password, mnemonic)
+        .then(() => {
+          dispatch(authUser(true));
+          dispatch(finishSetup());
+        })
+        .catch((error) => {
+          console.log("error creating account", error);
+          // dispatch(loginUser(true));
+        });
+    } else {
+      // dispatch(loginUser(true));
+      // dispatch(finishSetup());
+      console.log("Something went wrong. Try again!");
+    }
   }
 
   return (
@@ -43,7 +58,7 @@ function SecureComplete() {
       </div>
 
       <ButtonWrapper>
-        <LinkButton type="primary" href="/home" onClick={handleSetupComplete}>
+        <LinkButton type="primary" href="" onClick={handleSetupComplete}>
           Continue
         </LinkButton>
       </ButtonWrapper>

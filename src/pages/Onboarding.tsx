@@ -4,7 +4,7 @@ import {
   previousStep,
   setImportSeed,
   setSeedSkipOptions,
-} from "../slices/accountSlice";
+} from "../slices/setupSlice";
 import Wallet from "../components/icons/Wallet";
 import ImportOption from "../components/setup/ImportOption";
 import CreatePassword from "../components/setup/CreatePassword";
@@ -33,7 +33,7 @@ function Onboarding() {
   }
 
   return (
-    <main className="h-full w-full bg-secondary-100 relative">
+    <main className="h-full w-full bg-secondary-100 relative transition">
       <div
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pt-6 pb-6 pr-6 pl-6 bg-white  md:min-w-[400px] md:max-w-[450px] rounded-md ${
           setupSteps.currentStep === "import_seed"

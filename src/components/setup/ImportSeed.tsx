@@ -9,7 +9,7 @@ import {
   addSetupStep,
   getAccountSetup,
   nextStep,
-} from "../../slices/accountSlice";
+} from "../../slices/setupSlice";
 
 function ImportSeed() {
   const [passwordMatch, setPasswordMatch] = useState(false);

@@ -1,30 +1,60 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../types/assets";
+import { Auth } from "../types/auth";
 
-const initialState: User = {
-  password: localStorage.getItem("userPassword")
-    ? (localStorage.getItem("userPassword") as string)
-    : "",
-  mnemonic: "",
-  accounts: [],
-  messages: [],
-  networks: [],
-  preferences: [],
-  selectedNetwork: "",
+const initialState: Auth = {
+  isLogin: sessionStorage.getItem("login")
+    ? JSON.parse(sessionStorage.getItem("login") as string)
+    : false,
+  // isLogin: localStorage.getItem("login")
+  //   ? JSON.parse(localStorage.getItem("login") as string)
+  //   : false,
+  mnemonic:
+    localStorage.getItem("mnemonic") !== null
+      ? (localStorage.getItem("mnemonic") as string)
+      : "",
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updatePassword(state, action) {
-      state.password = action.payload;
-      localStorage.setItem("userPassword", state.password);
+    authUser(state, action) {
+      state.isLogin = action.payload;
+      sessionStorage.setItem("login", JSON.stringify(state.isLogin));
+    },
+
+    getUserLogin(state) {
+      state.isLogin = JSON.parse(sessionStorage.getItem("login") as string);
+    },
+
+    logoutUser(state) {
+      state.isLogin = false;
+      sessionStorage.removeItem("login");
+    },
+
+    setMnemonic(state, action) {
+      state.mnemonic = action.payload;
+      localStorage.setItem("mnemonic", state.mnemonic);
+    },
+    getMnemonic(state) {
+      state.mnemonic = localStorage.getItem("mnemonic") as string;
+    },
+
+    deleteMnemonic(state) {
+      state.mnemonic = "";
+      localStorage.removeItem("mnemonic");
     },
   },
 });
 
-export const { updatePassword } = userSlice.actions;
+export const {
+  authUser,
+  getUserLogin,
+  deleteMnemonic,
+  setMnemonic,
+  getMnemonic,
+} = userSlice.actions;
 
 export default userSlice.reducer;
 

@@ -20,6 +20,45 @@
     direction: ltr;
   }
 
+  .spinner_container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0, 0.4);
+    background-color: rgb(255, 255, 255, 0.9);
+    z-index: 15;
+  }
+
+  .spinner {
+    margin: 4.8rem auto;
+    width: 6.4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side, #646cff 94%, #0000) top/10px 10px
+        no-repeat,
+      conic-gradient(#0000 30%, #646cff);
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 10px),
+      #000 0
+    );
+    animation: rotate 1.5s infinite linear;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
   @media (max-height: 475px) {
     .max-h-475-padding {
       padding: 8px;
@@ -175,6 +214,7 @@ a {
   text-decoration: none;
   /* color: rgb(175, 180, 192); */
   /* color: #e88f97; */
+  /* #600: "#5A6072"; - secondary */
   /* color: rgb(175, 180, 192); */
   /* color: rgb(100, 108, 255); brand-500 */
   /* color: rgb(215, 56, 71); error-500 */

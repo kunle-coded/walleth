@@ -6,7 +6,7 @@ import {
   getAccountSetup,
   setSeedSecureSkipped,
   setSeedSkipOptions,
-} from "../../slices/accountSlice";
+} from "../../slices/setupSlice";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Terms from "../../ui/Terms";

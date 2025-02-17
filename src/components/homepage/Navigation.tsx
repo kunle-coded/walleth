@@ -88,7 +88,7 @@ function Navigation() {
         isSingle ? "mb-4" : "mb-0"
       }`}
     >
-      <div className="app-header-contents h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)]">
+      <div className="app-header-contents h-[68px] p-2 pl-4 pr-4 grid grid-cols-[1fr_2fr_1fr] gap-2 items-center bg-white shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] ">
         <div>
           <Modal>
             <Modal.Open opens="network_options">

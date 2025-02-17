@@ -1,32 +1,20 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addSetupStep, nextStep } from "../../slices/accountSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addSetupStep, nextStep } from "../../slices/setupSlice";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import Hidden from "../icons/Hidden";
-
-interface CreatePasswordProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}
+import { getMnemonic, getUser } from "../../slices/userSlice";
 
 function SeedPhraseHide() {
   const [isRevealPhrase, setIsRevealPhrase] = useState(false);
-  const [seedPhrase] = useState<string[]>([
-    "toy",
-    "flex",
-    "flex",
-    "toy",
-    "flex",
-    "flex",
-    "flex",
-    "flex",
-    "flex",
-    "toy",
-    "flex",
-    "flex",
-  ]);
+  const { mnemonic } = useSelector(getUser);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMnemonic());
+  }, [dispatch]);
 
   function handleRevealPhrase() {
     setIsRevealPhrase(true);
@@ -50,7 +38,7 @@ function SeedPhraseHide() {
 
       <div className="flex mt-8 mb-20 p-4 text-secondary-900 font-semibold relative">
         <ul className="flex flex-wrap gap-4 items-center justify-center relative">
-          {seedPhrase.map((seed, index) => (
+          {mnemonic.split(" ").map((seed, index) => (
             <li
               key={index}
               className="w-28 px-2 py-2 bg-secondary-200 text-left rounded"

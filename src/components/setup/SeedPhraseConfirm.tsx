@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import ButtonWrapper from "../../ui/ButtonWrapper";
-import { useDispatch } from "react-redux";
-import { addSetupStep, nextStep } from "../../slices/accountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addSetupStep, nextStep } from "../../slices/setupSlice";
+import { getUser } from "../../slices/userSlice";
+import generateRandomNumArray from "../../helpers/generateRandomNumArray";
+import shuffleArray from "../../helpers/shuffleArray";
 
 function SeedPhraseConfirm() {
   const [isPhraseMatched, setIsPhraseMatched] = useState(false);
-  const [seedPhrase] = useState<string[]>([
-    "toy",
-    "flex",
-    "flex",
-    "toy",
-    "flex",
-    "flex",
-    "flex",
-    "flex",
-    "flex",
-    "toy",
-    "flex",
-    "flex",
-  ]);
-  const [wordsToMatch] = useState<number[]>([1, 8, 12]);
+  const { mnemonic } = useSelector(getUser);
+  const [shuffledMnemonic, setShuffledMnemonic] = useState<string[]>([]);
+  const [wordsToMatch, setWordsToMatch] = useState<number[]>(
+    generateRandomNumArray(mnemonic.split(" ").length)
+  );
   const [matchedIndices, setMatchedIndices] = useState<number[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (mnemonic) {
+      setShuffledMnemonic(shuffleArray(mnemonic.split(" ")));
+    }
+  }, [mnemonic]);
 
   useEffect(() => {
     if (matchedIndices.length === 3 && selected.length === 3) {
@@ -32,12 +31,11 @@ function SeedPhraseConfirm() {
 
       wordsToMatch.forEach((value, index) => {
         // Ensure value is a valid index for seedPhrase NOTE Remove the minus 1s after generating 3 numbers btw 0 and 11
-        if (value - 1 < seedPhrase.length && index < selected.length) {
-          const seedValue = seedPhrase[value - 1];
+        if (value < mnemonic.split(" ").length && index < selected.length) {
+          const seedValue = mnemonic.split(" ")[value - 1];
           const selectedValue = selected[index];
-          const selectedIndex = matchedIndices[index];
 
-          if (seedValue === selectedValue && value === selectedIndex) {
+          if (seedValue === selectedValue) {
             matchedCount++;
           }
         }
@@ -45,7 +43,7 @@ function SeedPhraseConfirm() {
 
       setIsPhraseMatched(matchedCount === 3);
     }
-  }, [matchedIndices, seedPhrase, selected, wordsToMatch]);
+  }, [matchedIndices, mnemonic, selected, wordsToMatch]);
 
   function handleWordSelection(item: React.MouseEvent<HTMLLIElement>) {
     if (selected.length === 3) return;
@@ -62,6 +60,8 @@ function SeedPhraseConfirm() {
     const target = value.target as HTMLElement;
 
     if (target.textContent === "Try again" && !isPhraseMatched) {
+      setWordsToMatch(generateRandomNumArray(mnemonic.split(" ").length));
+      setShuffledMnemonic(shuffleArray(mnemonic.split(" ")));
       setMatchedIndices(() => []);
       setSelected(() => []);
       setIsPhraseMatched(false);
@@ -82,10 +82,10 @@ function SeedPhraseConfirm() {
         <ul className="flex justify-between gap-5 mt-5 text-sm">
           <li
             className={`py-2 w-full rounded-lg text-center ${
-              seedPhrase[wordsToMatch[0] - 1] === selected[0] &&
-              matchedIndices[0] === wordsToMatch[0]
+              mnemonic.split(" ")[wordsToMatch[0] - 1] === selected[0]
                 ? "bg-success-200 text-green-700"
-                : selected.length >= 1 && matchedIndices[0] !== wordsToMatch[0]
+                : selected.length >= 1 &&
+                  mnemonic.split(" ")[wordsToMatch[0] - 1] !== selected[0]
                 ? "bg-red-300 text-red-900"
                 : "border border-dashed border-secondary-400"
             }`}
@@ -94,10 +94,10 @@ function SeedPhraseConfirm() {
           </li>
           <li
             className={`py-2 w-full rounded-lg text-center ${
-              seedPhrase[wordsToMatch[1] - 1] === selected[1] &&
-              matchedIndices[1] === wordsToMatch[1]
+              mnemonic.split(" ")[wordsToMatch[1] - 1] === selected[1]
                 ? "bg-success-200 text-green-700"
-                : selected.length >= 2 && matchedIndices[1] !== wordsToMatch[1]
+                : selected.length >= 2 &&
+                  mnemonic.split(" ")[wordsToMatch[1] - 1] !== selected[1]
                 ? "bg-red-300 text-red-900"
                 : "border border-dashed border-secondary-400"
             }`}
@@ -106,12 +106,10 @@ function SeedPhraseConfirm() {
           </li>
           <li
             className={`py-2 w-full rounded-lg text-center ${
-              seedPhrase[wordsToMatch[2] - 1] === selected[2] &&
-              matchedIndices[2] === wordsToMatch[2]
+              mnemonic.split(" ")[wordsToMatch[2] - 1] === selected[2]
                 ? "bg-success-200 text-green-700"
                 : selected.length >= 3 &&
-                  matchedIndices[2] !== wordsToMatch[2] &&
-                  selected.length
+                  mnemonic.split(" ")[wordsToMatch[2] - 1] !== selected[2]
                 ? "bg-red-300 text-red-900"
                 : "border border-dashed border-secondary-400"
             }`}
@@ -123,15 +121,15 @@ function SeedPhraseConfirm() {
 
       <div className="flex mt-8 mb-16 p-4 text-secondary-900 font-normal relative">
         <ul className="flex flex-wrap gap-4 items-center justify-center relative">
-          {seedPhrase.map((value, i) => (
+          {shuffledMnemonic.map((value, i) => (
             <li
               key={i}
               data-index={i + 1}
               className={`w-28 px-2 py-2 text-center rounded ${
                 matchedIndices.includes(i + 1)
-                  ? "bg-[#FBFBFB] text-[#DDDFE4]"
+                  ? "bg-[#FBFBFB] text-[#DDDFE4] cursor-not-allowed"
                   : "bg-secondary-100 cursor-pointer"
-              }`}
+              } ${selected.length === 3 && "cursor-auto"}`}
               onClick={handleWordSelection}
             >
               {value}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccountSetup, previousStep } from "../slices/accountSlice";
+import { getAccountSetup, previousStep } from "../slices/setupSlice";
 
 function ProgressBar() {
   const [progressWidth, setProgressWidth] = useState("0%");

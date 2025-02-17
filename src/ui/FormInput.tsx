@@ -10,6 +10,7 @@ interface FormInputProps {
   info?: string;
   showPasswordStrength?: boolean;
   isPasswordMatch?: boolean;
+  isPasswordWeak?: boolean;
 }
 
 function FormInput({
@@ -19,6 +20,7 @@ function FormInput({
   info,
   showPasswordStrength,
   isPasswordMatch,
+  isPasswordWeak,
   ...props
 }: FormInputProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -68,27 +70,31 @@ function FormInput({
             toggleShowPassword={toggleShowPassword}
           />
         )}
-        {type === "password" && isPasswordMatch && <Check />}
+        {type === "password" && isPasswordMatch && value && <Check />}
       </div>
-      {type === "password" && (
-        <p className="text-xs pl-4 text-secondary-400">
-          {showPasswordStrength && value ? "Password strength:" : info}
-          {showPasswordStrength && value && (
-            <span
-              className={
-                strength === "Poor"
-                  ? "text-orange-400"
-                  : strength === "Good"
-                  ? "text-green-500"
-                  : "text-green-700"
-              }
-            >
-              {" "}
-              {strength}
-            </span>
-          )}
-        </p>
-      )}
+      {type === "password" &&
+        (showPasswordStrength ? (
+          <p className="text-xs pl-4 text-secondary-400">
+            {!value && info}
+            {value && "Password strength:"}
+            {value && (
+              <span
+                className={
+                  strength === "Poor"
+                    ? "text-orange-400"
+                    : strength === "Good"
+                    ? "text-green-500"
+                    : "text-green-700"
+                }
+              >
+                {" "}
+                {strength}
+              </span>
+            )}
+          </p>
+        ) : !isPasswordMatch || isPasswordWeak ? (
+          <p className="text-xs pl-4 text-error-500">{info}</p>
+        ) : null)}
     </div>
   );
 }

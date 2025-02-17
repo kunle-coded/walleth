@@ -9,14 +9,15 @@ import Send from "../components/operations/Send";
 import Settings from "../components/settings/Settings";
 import Swap from "../components/operations/Swap";
 import Notification from "../components/settings/Notification";
-import { useDispatch } from "react-redux";
-import { finishSetup } from "../slices/accountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../slices/userSlice";
 
 function Home() {
   const [urlLocation, setUrlLocation] = useState(window.location.hash);
   const popupContext = useContext(PopupContext);
   const close = popupContext?.close;
   const { onCloseTokenMenu, onCloseTokenFilter, hideMenu } = useGlobal();
+  const { isLogin } = useSelector(getUser);
 
   const filterRef = useRef(null);
   const { isTop, calcCoordinates } = usePopupCordinates();
@@ -31,10 +32,6 @@ function Home() {
   }
 
   useEffect(() => {
-    dispatch(finishSetup());
-  }, []);
-
-  useEffect(() => {
     const handleHashChange = () => {
       setUrlLocation(window.location.hash);
     };
@@ -45,6 +42,10 @@ function Home() {
       window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
+
+  // if (!isLogin) {
+  //   return null;
+  // }
 
   return (
     <div

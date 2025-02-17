@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountSetup } from "../types/utilities";
-import { updatePassword } from "./userSlice";
+import { AccountSetup } from "../types/config";
 
 const initialState: AccountSetup = {
   stepCounter: localStorage.getItem("stepCounter")
@@ -26,7 +25,7 @@ const initialState: AccountSetup = {
     : false,
 };
 
-const accountSlice = createSlice({
+const setupSlice = createSlice({
   name: "accountSetup",
   initialState,
   reducers: {
@@ -121,16 +120,15 @@ const accountSlice = createSlice({
       localStorage.setItem("importSeed", JSON.stringify(state.isImport));
     },
 
-    finishSetup(state) {
-      updatePassword(state.password);
-      // localStorage.clear();
-      localStorage.removeItem("password");
-      localStorage.removeItem("stepCounter");
-      localStorage.removeItem("steps");
-      localStorage.removeItem("stepsList");
-      localStorage.removeItem("seedSecureSkipped");
-      localStorage.removeItem("seedSecureSkipOptions");
-      localStorage.removeItem("importSeed");
+    finishSetup() {
+      localStorage.clear();
+      // localStorage.removeItem("password");
+      // localStorage.removeItem("stepCounter");
+      // localStorage.removeItem("steps");
+      // localStorage.removeItem("stepsList");
+      // localStorage.removeItem("seedSecureSkipped");
+      // localStorage.removeItem("seedSecureSkipOptions");
+      // localStorage.removeItem("importSeed");
       return initialState;
     },
   },
@@ -145,9 +143,9 @@ export const {
   setSeedSkipOptions,
   setImportSeed,
   finishSetup,
-} = accountSlice.actions;
+} = setupSlice.actions;
 
-export default accountSlice.reducer;
+export default setupSlice.reducer;
 
 export const getAccountSetup = (state: { accountSetup: AccountSetup }) =>
   state.accountSetup;

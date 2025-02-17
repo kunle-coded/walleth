@@ -1,3 +1,7 @@
+import { useDispatch, useSelector } from "react-redux";
+import { finishSetup, getAccountSetup } from "../../slices/setupSlice";
+import { authUser, getUser } from "../../slices/userSlice";
+import createAccount from "../../services/createAccount";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import UnSecure from "../icons/UnSecure";
 import LinkButton from "../../ui/LinkButton";
@@ -7,6 +11,30 @@ import LinkButton from "../../ui/LinkButton";
 // }
 
 function NotSecureComplete() {
+  const { isImport, password } = useSelector(getAccountSetup);
+  const { mnemonic } = useSelector(getUser);
+
+  const dispatch = useDispatch();
+
+  async function completeSetup() {
+    if (mnemonic) {
+      await createAccount(password, mnemonic)
+        .then(() => {
+          dispatch(authUser(true));
+          dispatch(finishSetup());
+        })
+        .catch((error) => {
+          console.log("error creating account", error);
+          // dispatch(loginUser(true));
+          // dispatch(finishSetup());
+        });
+    } else {
+      // dispatch(loginUser(true));
+      // dispatch(finishSetup());
+      console.log("Something went wrong. Try again!");
+    }
+  }
+
   return (
     <div className="w-full flex flex-col overflow-hidden">
       <div className="block mt-8">
@@ -30,7 +58,7 @@ function NotSecureComplete() {
       </div>
 
       <ButtonWrapper>
-        <LinkButton type="primary" href="/home">
+        <LinkButton type="primary" href="/home" onClick={completeSetup}>
           Continue
         </LinkButton>
       </ButtonWrapper>
