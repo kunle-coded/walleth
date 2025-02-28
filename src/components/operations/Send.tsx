@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addressFormatter } from "../../helpers/addressFormatter";
 import Icon from "../../ui/Icon";
 import AccountAvatar from "../../ui/AccountAvatar";
@@ -6,19 +6,99 @@ import Modal from "../modal/Modal";
 import Account from "../popups/Account";
 import AssetPicker from "../asset/AssetPicker";
 import AddressPicker from "../asset/AddressPicker";
-import SearchInput from "../../ui/SearchInput";
 import Tabbed from "../../ui/Tabbed";
+import { useSelector } from "react-redux";
+import { getConfig } from "../../slices/configSlice";
+import selectAccount from "../../db/selectAccount";
+import { AccountType, Address } from "../../types/config";
+import AccountPickerWindow from "../popups/AccountPickerWindow";
+import ApiServes from "../../services/ApiServices";
+import AddressListItem from "../lists/AddressListItem";
 
 function Send() {
   const [isInputFocus, setIsInputFocus] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [hasContact, setHasContact] = useState(false);
-  const [isPositiveBalance, setIsPositiveBalance] = useState(false);
+  const [hasContact, setHasContact] = useState(true);
+  const [isNegativeBalance, setIsNegativeBalance] = useState(false);
   const [isReceiverAddressSelected, setIsReceiverAddressSelected] =
     useState(false);
   const [isCurrencyToggle, setIsCurrencyToggle] = useState(false);
+  const [sendValue, setSendValue] = useState<number | null>(null);
+  const [receiveValue, setReceiveValue] = useState("0");
+  const [accountBalance, setAccountBalance] = useState("");
+  const [receiverAddressValue, setReceiverAddressValue] = useState("");
+  const [isReceiverAddress, setIsReceiverAddress] = useState(false);
 
-  const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
+  const { selectedAccount, accounts, addressBook } = useSelector(getConfig);
+
+  const [accountFrom, setAccountFrom] = useState(selectedAccount);
+  const [accountTo, setAccountTo] = useState<AccountType>({} as AccountType);
+
+  useEffect(() => {
+    if (accountFrom.address) {
+      async function fetchBalance() {
+        const balance = new ApiServes();
+        const accountBalance = await balance.getBalance(accountFrom.address);
+        setAccountBalance(accountBalance);
+      }
+
+      fetchBalance();
+    }
+  }, [accountFrom.address]);
+
+  useEffect(() => {
+    if (accountBalance !== "" && sendValue !== null) {
+      const balance = Number(accountBalance);
+
+      if (balance - sendValue) {
+        setIsNegativeBalance(true);
+      } else {
+        setIsNegativeBalance(false);
+      }
+    }
+  }, [accountBalance, sendValue]);
+
+  useEffect(() => {
+    if (receiverAddressValue.length === 42) {
+      setIsReceiverAddress(true);
+    } else {
+      setIsReceiverAddress(false);
+    }
+  }, [receiverAddressValue.length]);
+
+  async function handleAccountFromSelection(account: AccountType) {
+    // await selectAccount(accountId);
+    // onCloseModal?.();
+    setAccountFrom(account);
+  }
+
+  async function handleAccountToSelection(account: AccountType) {
+    // await selectAccount(accountId);
+    // onCloseModal?.();
+    setAccountTo(account);
+    setIsReceiverAddressSelected(true);
+  }
+  async function handleAddressToSelection(address: Address) {
+    // await selectAccount(accountId);
+    // onCloseModal?.();
+
+    const receipient: AccountType = {
+      address: address.address,
+      id: address.id,
+      metadata: {
+        importTime: 0,
+        keyring: "",
+        lastSelected: 0,
+        name: address.name,
+        nameLastUpdated: "",
+      },
+      methods: [],
+      options: {},
+      type: "",
+    };
+    setAccountTo(receipient);
+    setIsReceiverAddressSelected(true);
+  }
 
   function handleFocus() {
     setIsInputFocus(true);
@@ -36,12 +116,33 @@ function Send() {
     setIsCurrencyToggle((prevState) => !prevState);
   }
 
-  function handleReceiverAddress() {
-    setIsReceiverAddressSelected(true);
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = Number(e.target.value);
+    setSendValue(value);
+    setReceiveValue(value.toString());
+  }
+
+  function handleReceiverAddressInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setReceiverAddressValue(value);
   }
 
   function removeReceiverAddress() {
-    setIsReceiverAddressSelected(false);
+    if (isReceiverAddressSelected) {
+      setIsReceiverAddressSelected(false);
+      setAccountTo({} as AccountType);
+      setSendValue(null);
+      setIsNegativeBalance(false);
+    } else if (isReceiverAddress) {
+      setSendValue(null);
+      setIsReceiverAddress(false);
+      setReceiverAddressValue("");
+      setIsNegativeBalance(false);
+    }
+  }
+
+  function handleBack() {
+    window.location.hash = "";
   }
 
   return (
@@ -49,7 +150,10 @@ function Send() {
       <div className="flex flex-col h-full w-[408px] bg-white">
         <div className="flex justify-center w-full p-4">
           <div className="min-w-6">
-            <button className="inline-flex justify-center items-center w-6 h-6 min-w-6 p-0 bg-transparent text-secondary-600 cursor-pointer border-none rounded-lg hover:bg-secondary-200">
+            <button
+              className="inline-flex justify-center items-center w-6 h-6 min-w-6 p-0 bg-transparent text-secondary-600 cursor-pointer border-none rounded-lg hover:bg-secondary-200"
+              onClick={handleBack}
+            >
               <Icon imgUrl="src/assets/images/arrow-left.svg" />
             </button>
           </div>
@@ -70,7 +174,10 @@ function Send() {
             <Modal>
               <Modal.Open opens="account_selections">
                 <div>
-                  <AddressPicker address={address} account="Account 1" />
+                  <AddressPicker
+                    address={accountFrom.address}
+                    account={accountFrom.metadata.name}
+                  />
                 </div>
               </Modal.Open>
               <Modal.Window
@@ -80,22 +187,22 @@ function Send() {
                 iconUrl="src/assets/images/add.svg"
                 isFullWidth
               >
-                <div className="overflow-auto scrollbar-custom">
-                  <SearchInput placeholderText="Search accounts" padding />
-                  <Account current index={0} />
-                  <Account current={false} index={1} />
-                  <Account current={false} index={2} />
-                  <Account current={false} index={3} />
-                </div>
+                <AccountPickerWindow
+                  accountFrom={accountFrom}
+                  onSelect={handleAccountFromSelection}
+                />
               </Modal.Window>
             </Modal>
           </div>
-          {isReceiverAddressSelected && (
+          {(isReceiverAddressSelected || isReceiverAddress) && (
             <AssetPicker
-              isError={isPositiveBalance}
+              isError={isNegativeBalance}
               onToggle={toggleCurrency}
               isCurrencyToggle={isCurrencyToggle}
               purpose="send"
+              sendValue={sendValue}
+              tokenBalance={Number(accountBalance)}
+              onChange={handleInput}
             />
           )}
           <div className="mt-6">
@@ -103,15 +210,19 @@ function Send() {
               <label className="inline-flex items-center pb-2 text-secondary-900 text-sm leading-snug font-medium md:text-[1rem] md:leading-6">
                 To
               </label>
-              {isReceiverAddressSelected ? (
+              {isReceiverAddressSelected || isReceiverAddress ? (
                 <div className="flex flex-row flex-nowrap">
                   <div className="flex flex-row flex-nowrap flex-auto items-center h-[62px] w-0 py-0 px-3 bg-white border border-solid border-[rgb(175,180,192,0.4)] rounded-lg transition-[border-color] duration-150 ease-in-out">
                     <div className="flex flex-row flex-nowrap items-center flex-auto w-0 border-0 outline-none text-brand-500 text-xs leading-[140%]">
                       <AccountAvatar border margin="0" />
                       <div className="ml-3 text-start ps-1 text-secondary-900 text-sm leading-[140%] font-medium text-ellipsis whitespace-[inherit] break-words overflow-hidden">
-                        Account 2
+                        {isReceiverAddressSelected
+                          ? accountTo.metadata.name
+                          : addressFormatter(receiverAddressValue)}
                         <p className="text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
-                          {addressFormatter(address)}
+                          {isReceiverAddressSelected
+                            ? addressFormatter(accountTo.address)
+                            : addressFormatter(receiverAddressValue)}
                         </p>
                       </div>
                     </div>
@@ -140,6 +251,7 @@ function Send() {
                       className="flex-auto w-0 border-0 outline-none bg-white text-secondary-900 text-sm leading-[140%]"
                       onFocus={handleFocus}
                       onBlur={handleBlur}
+                      onChange={handleReceiverAddressInput}
                     />
                     <button
                       aria-label="Scan QR code"
@@ -151,15 +263,16 @@ function Send() {
                 </div>
               )}
             </div>
-            {isReceiverAddressSelected && (
+            {(isReceiverAddressSelected || isReceiverAddress) && (
               <AssetPicker
                 isCurrencyToggle={isCurrencyToggle}
                 onToggle={toggleCurrency}
                 purpose="receive"
+                receiveValue={receiveValue}
               />
             )}
             {/* Tabs start */}
-            {!isReceiverAddressSelected && (
+            {!isReceiverAddressSelected && !isReceiverAddress && (
               <div className="w-full pb-0">
                 <div className="flex-row">
                   <Tabbed
@@ -171,15 +284,16 @@ function Send() {
                   <div className="flex-row">
                     {activeTab === 0 && (
                       <div className="flex flex-col pb-4">
-                        <Account
-                          current
-                          index={0}
-                          noEdit
-                          onSelect={handleReceiverAddress}
-                        />
-                        <Account current={false} index={1} noEdit />
-                        <Account current={false} index={2} noEdit />
-                        <Account current={false} index={3} noEdit />
+                        {accounts.map((acount, i) => (
+                          <Account
+                            key={i}
+                            account={acount}
+                            isCurrent={acount.id === accountTo?.id}
+                            index={i}
+                            noEdit
+                            onSelect={() => handleAccountToSelection(acount)}
+                          />
+                        ))}
                       </div>
                     )}
                     {activeTab === 1 &&
@@ -187,21 +301,17 @@ function Send() {
                         <div className="flex flex-col pb-4">
                           <div className="">
                             <div className=""></div>
-                            <button className="flex items-center w-full p-4 cursor-pointer border-none bg-transparent hover:bg-secondary-200">
-                              <AccountAvatar />
-                              <div className="flex flex-col overflow-hidden">
-                                <p className="w-full p-0 text-secondary-900 text-left text-sm leading-snug font-medium md:text-[14px] md:leading-6 text-ellipsis whitespace-nowrap overflow-hidden">
-                                  Ade
-                                </p>
-                                <div className="flex text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
-                                  <div>
-                                    <div className="inline">
-                                      {addressFormatter(address)}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </button>
+                            {addressBook.map((address, index) => (
+                              <AddressListItem
+                                key={address.id}
+                                address={address}
+                                index={index}
+                                onClick={() =>
+                                  handleAddressToSelection(address)
+                                }
+                              />
+                            ))}
+                            {/* NOTE will adjust address to contact address */}
                           </div>
                         </div>
                       ) : (
@@ -238,7 +348,7 @@ function Send() {
           </button>
           <div className="inline-flex basis-6/12">
             <button
-              disabled
+              disabled={!isNegativeBalance || !isReceiverAddress}
               className="inline-flex justify-center items-center w-full h-[48px] p-0 px-4 relative align-middle select-none cursor-pointer text-white bg-brand-500 text-sm leading-snug font-medium md:text-[1rem] md:leading-6 border-none rounded-full hover:shadow-[0_2px_8px_0_rgba(100,108,255,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue

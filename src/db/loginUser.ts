@@ -38,7 +38,6 @@ export default async function loginUser(password: string) {
 
         try {
           await decryptData(identifierId, profileId, password, data);
-          console.log("login successfull");
           resolve(true); // Login successful
         } catch (error) {
           reject(new Error("Incorrect password"));

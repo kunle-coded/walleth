@@ -1,14 +1,39 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../ui/Icon";
 import SystemButton from "../../ui/SystemButton";
 
 interface AddContactProps {
+  onSave: (name: string, address: string) => void;
   onCancel: () => void;
 }
 
-function AddContact({ onCancel }: AddContactProps) {
+function AddContact({ onSave, onCancel }: AddContactProps) {
+  const [contactName, setContactName] = useState("");
+  const [contactAddress, setContactAddress] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [isTwoFocus, setIsTwoFocus] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    if (contactName && contactAddress) {
+      if (contactAddress.length === 42) {
+        setIsDisabled(false);
+      } else {
+        setIsDisabled(true);
+      }
+    } else {
+      setIsDisabled(true);
+    }
+  }, [contactAddress, contactName]);
+
+  function handleContactName(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setContactName(value);
+  }
+  function handleContactAddress(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setContactAddress(value);
+  }
 
   function handleFocus() {
     setIsFocus(true);
@@ -42,9 +67,11 @@ function AddContact({ onCancel }: AddContactProps) {
                 type="text"
                 placeholder="Add alias"
                 autoComplete="off"
+                value={contactName}
                 className="block w-full h-[1.1876em] min-w-0 m-0 pt-[3px] pb-[7px] px-0 box-content leading-6 text-ellipsis whitespace-nowrap border-none bg-none focus-visible:outline-none text-secondary-900"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                onChange={handleContactName}
               />
             </div>
           </div>
@@ -66,9 +93,11 @@ function AddContact({ onCancel }: AddContactProps) {
                 placeholder="Enter public address (0x) or domain name"
                 dir="auto"
                 spellCheck="false"
+                value={contactAddress}
                 className="flex-auto w-0 border-0 outline-none bg-white text-secondary-900 text-sm leading-[140%]"
                 onFocus={handleTwoFocus}
                 onBlur={handleTwoBlur}
+                onChange={handleContactAddress}
               />
               <button
                 aria-label="Scan QR code"
@@ -89,7 +118,13 @@ function AddContact({ onCancel }: AddContactProps) {
             margin="mr-4"
             onClick={onCancel}
           />
-          <SystemButton label="Save" noHeight type="primary" isDisabled />
+          <SystemButton
+            label="Save"
+            noHeight
+            type="primary"
+            isDisabled={isDisabled}
+            onClick={() => onSave(contactName, contactAddress)}
+          />
         </footer>
       </div>
     </div>

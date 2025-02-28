@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { finishSetup, getAccountSetup } from "../../slices/setupSlice";
 import { authUser, getUser } from "../../slices/userSlice";
-import createAccount from "../../services/createAccount";
+import createAccount from "../../db/createAccount";
 import ButtonWrapper from "../../ui/ButtonWrapper";
 import UnSecure from "../icons/UnSecure";
 import LinkButton from "../../ui/LinkButton";
@@ -18,7 +18,7 @@ function NotSecureComplete() {
 
   async function completeSetup() {
     if (mnemonic) {
-      await createAccount(password, mnemonic)
+      await createAccount(password, mnemonic, false)
         .then(() => {
           dispatch(authUser(true));
           dispatch(finishSetup());

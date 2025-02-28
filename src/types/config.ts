@@ -14,31 +14,39 @@ interface Authentication {
   profile: object;
 }
 
+interface Onboarding {
+  completedOnboarding: boolean;
+  firstTimeFlowType: string;
+  seedPhraseBackedUp: boolean;
+}
+
 // User info types
 
 interface Data {
   name: string;
   AccountController: {
     internalAccount: {
-      accounts: { [id: string]: Account };
+      accounts: { [id: string]: AccountType };
       selectedAccount: string;
     };
     externalAccount?: {
-      accounts: { [id: string]: Account };
+      accounts: { [id: string]: AccountType };
     };
   };
   AccountTrackerController: object[];
-  AddressBookController: object;
+  AddressBookController: {
+    addressBook: AddressBook;
+  };
   AuthenticationController: object;
   CurrencyController: object;
   GasFeeController: object;
   LoggingController: object;
   MultichainBalancesController: object;
   MultichainRatesController: object;
-  NetworkController: object;
+  NetworkController: NetworkType;
   NftController: object;
   NotificationServicesController: object;
-  OnboardingController: object;
+  OnboardingController: Onboarding;
   PermissionController: object;
   PreferencesController: object;
   SelectedNetworkController: object;
@@ -76,7 +84,7 @@ interface AccountMetadata {
   nameLastUpdated: string;
 }
 
-interface Account {
+interface AccountType {
   address: string;
   id: string;
   metadata: AccountMetadata;
@@ -85,8 +93,72 @@ interface Account {
   type: string;
 }
 
+interface UserConfig {
+  accounts: AccountType[];
+  selectedAccount: AccountType;
+  addressBook: Address[];
+}
+
+// Receiver account type
+interface ReceipientAccount {
+  id: string;
+  address: string;
+  name: string;
+}
+
+// Address Book type
+interface Address {
+  [address: string]: string;
+  chainId: string;
+  id: string;
+  memo: string;
+  name: string;
+}
+
+interface AddressBook {
+  [chainId: string]: { [address: string]: Address };
+}
+
+// Network type
+interface RpcEndpoint {
+  networkClientId: string;
+  type: string;
+  url: string;
+}
+
+interface Network {
+  blockExplorerUrls: string[];
+  chainId: string;
+  defaultBlockExplorerUrlIndex: number;
+  defaultRpcEndpointIndex: number;
+  name: string;
+  nativeCurrency: string;
+  rpcEndpoints: RpcEndpoint[];
+}
+
+interface NetworkType {
+  networkConfigurationByChainId: {
+    [chainId: string]: Network;
+  };
+  networksMetadata: object;
+  selectedNetwork: string;
+}
+
 interface Global {
   loginStatus: string;
 }
 
-export type { AccountSetup, Config, Session, Data, Account, Global };
+export type {
+  AccountSetup,
+  Config,
+  Session,
+  Data,
+  AccountType,
+  Onboarding,
+  AddressBook,
+  Address,
+  UserConfig,
+  ReceipientAccount,
+  Network,
+  Global,
+};

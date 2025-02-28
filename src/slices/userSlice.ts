@@ -6,9 +6,6 @@ const initialState: Auth = {
   isLogin: sessionStorage.getItem("login")
     ? JSON.parse(sessionStorage.getItem("login") as string)
     : false,
-  // isLogin: localStorage.getItem("login")
-  //   ? JSON.parse(localStorage.getItem("login") as string)
-  //   : false,
   mnemonic:
     localStorage.getItem("mnemonic") !== null
       ? (localStorage.getItem("mnemonic") as string)

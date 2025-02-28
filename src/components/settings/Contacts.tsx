@@ -1,22 +1,37 @@
 import React, { Dispatch, useState } from "react";
+import { useSelector } from "react-redux";
 import AddressListItem from "../lists/AddressListItem";
 import AddressDetailItem from "../lists/AddressDetailItem";
 import AddContact from "../forms/AddContact";
 import EditContact from "../forms/EditContact";
+import addAddressBook from "../../db/addAddressBook";
+import { getConfig } from "../../slices/configSlice";
+import { Address } from "../../types/config";
 
 interface ContactsProps {
-  onContactDetail: Dispatch<React.SetStateAction<boolean>>;
+  onContactDetail: (address: Address) => void;
+  onContactDetailCancel: () => void;
   onAddContact: Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Contacts({ onContactDetail, onAddContact }: ContactsProps) {
+function Contacts({
+  onContactDetail,
+  onContactDetailCancel,
+  onAddContact,
+}: ContactsProps) {
   const [isContactList, setIsContactList] = useState(true);
   const [isContactDetail, setIsContactDetail] = useState(false);
   const [isAddContact, setIsAddContact] = useState(false);
   const [isEditContact, setIsEditContact] = useState(false);
+  const [selectedContactDetail, setSelectedContactDetail] = useState<Address>(
+    {} as Address
+  );
 
-  function handleContactDetail() {
-    onContactDetail(true);
+  const { addressBook } = useSelector(getConfig);
+
+  function handleContactDetail(address: Address) {
+    onContactDetail(address);
+    setSelectedContactDetail(address);
     setIsContactDetail(true);
     setIsContactList(false);
   }
@@ -31,6 +46,8 @@ function Contacts({ onContactDetail, onAddContact }: ContactsProps) {
   function handleCancel() {
     setIsAddContact(false);
     setIsContactList(true);
+    setIsEditContact(false);
+    onContactDetailCancel();
   }
 
   function handleEdit() {
@@ -40,24 +57,45 @@ function Contacts({ onContactDetail, onAddContact }: ContactsProps) {
     // setIsContactList(true);
   }
 
+  async function handleSaveContact(alias: string, address: string) {
+    await addAddressBook(alias, address);
+  }
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-[0.4_1_100%]">
         {isContactDetail && (
           <div className="p-0 pt-4">
-            <AddressDetailItem onEdit={handleEdit} />
+            <AddressDetailItem
+              address={selectedContactDetail}
+              onEdit={handleEdit}
+            />
           </div>
         )}
         {isContactList && (
           <div className="">
             <div className="">
               <div className="flex flex-col flex-nowrap"></div>
-              <AddressListItem onClick={handleContactDetail} />
+              {addressBook.map((address, index) => (
+                <AddressListItem
+                  key={address.id}
+                  address={address}
+                  index={index}
+                  onClick={() => handleContactDetail(address)}
+                />
+              ))}
             </div>
           </div>
         )}
-        {isAddContact && <AddContact onCancel={handleCancel} />}
-        {isEditContact && <EditContact onCancel={handleCancel} />}
+        {isAddContact && (
+          <AddContact onSave={handleSaveContact} onCancel={handleCancel} />
+        )}
+        {isEditContact && (
+          <EditContact
+            address={selectedContactDetail}
+            onCancel={handleCancel}
+          />
+        )}
       </div>
       {!isContactDetail && !isAddContact && !isEditContact && (
         <button

@@ -3,6 +3,7 @@ interface NetworkAvatarProps {
   logoLink: string;
   networkName: string;
   borderColor?: boolean;
+  type?: string;
 }
 
 function NetworkAvatar({
@@ -10,12 +11,13 @@ function NetworkAvatar({
   logoLink,
   networkName,
   borderColor,
+  type,
 }: NetworkAvatarProps) {
   return (
     <div
-      className={`flex justify-center items-center text-primary-500 text-xs leading-5 md:text-sm md:leading-snug  border-solid rounded-[50%] overflow-hidden uppercase  ${
-        borderColor ? "border-transparent" : "border-white border"
-      } ${
+      className={`flex justify-center items-center text-primary-500 text-xs leading-5 md:text-sm md:leading-snug  border-solid overflow-hidden uppercase ${
+        type === "square" ? "rounded-md" : "rounded-[50%]"
+      } ${borderColor ? "border-transparent" : "border-white border"} ${
         size === "large"
           ? "w-[32px] h-[32px] max-w-[32px] flex-[0_0_32px]"
           : size === "big"

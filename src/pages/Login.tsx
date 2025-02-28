@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { bytesToHex } from "@noble/hashes/utils";
-import loginUser from "../services/loginUser";
-import { decryptData } from "../helpers/encryption";
-import arrayBufferEquals from "../helpers/arrayBufferEquals";
-import { authUser, getUser } from "../slices/userSlice";
+import loginUser from "../db/loginUser";
+import { authUser } from "../slices/userSlice";
 
 import Modal from "../components/modal/Modal";
 import NetworkAvatar from "../ui/NetworkAvatar";
@@ -13,15 +10,13 @@ import Icon from "../ui/Icon";
 import SearchInput from "../ui/SearchInput";
 import Networks from "../components/popups/Networks";
 import BrandSmall from "../components/icons/BrandSmall";
-import changeLocation from "../helpers/changeLocation";
-import getNewUserStatus from "../services/getNewUserStatus";
 
 function Login() {
   const [password, setPassword] = useState("");
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isInputFocus, setIsInputFocus] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { isLogin } = useSelector(getUser);
+  // const { isLogin } = useSelector(getUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,8 +38,6 @@ function Login() {
         setIsPasswordError(false);
       })
       .catch((error) => {
-        console.log("error loging in", error);
-
         console.log((error as Error).message);
         setErrorMessage((error as Error).message);
         setIsPasswordError(true);

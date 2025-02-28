@@ -1,4 +1,5 @@
 import React from "react";
+import { AccountType } from "./config";
 
 interface AccountOverviewProps {
   filterRef: React.RefObject<HTMLDivElement>;
@@ -45,18 +46,6 @@ interface Message {
   general: string;
 }
 
-interface Address extends BaseType {
-  "": string;
-  chainId: string;
-  memo: string;
-}
-
-interface AddressBook {
-  "*": Address;
-  0x1: Address;
-  0xaa367: Address;
-}
-
 interface Metadata {
   importTime: number;
   keyring: string;
@@ -66,22 +55,25 @@ interface Metadata {
   methods: string[];
 }
 
-interface Account {
-  "": string;
-  address: string;
-  tokens: Token[];
-  nfts: NFT[];
-  transactions: Transaction[];
-  backupStatus: boolean;
-  addressBooks: AddressBook[];
-  profileIcon: string; // NOTE might remove
+// interface Account {
+//   name: string;
+//   address: string;
+//   tokens: Token[];
+//   nfts: NFT[];
+//   transactions: Transaction[];
+//   backupStatus: boolean;
+//   addressBooks: AddressBook[];
+// }
+
+interface UserAccount {
+  accounts: object;
+  selectedAccount: string;
 }
 
 interface User {
-  name: string;
   isLogin: boolean;
   mnemonic: string;
-  accounts: Account[];
+  accounts: AccountType[];
   preferences: Preferences[];
   messages: Message[];
   networks: Network[];
@@ -98,4 +90,4 @@ interface User {
 //   }
 // }
 
-export type { AccountOverviewProps, TokenType, User, Address, AddressBook };
+export type { AccountOverviewProps, TokenType, UserAccount, User };

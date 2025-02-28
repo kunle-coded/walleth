@@ -6,32 +6,20 @@ import { GlobalProvider } from "./contexts/GlobalContext";
 import { PopupProvider } from "./contexts/PopupContext";
 import Login from "./pages/Login";
 import Protected from "./pages/Protected";
-import init from "./services/init";
-import SetupGuard from "./pages/SetupGuard";
-import getNewUserStatus from "./services/getNewUserStatus";
+import init from "./db/init";
 import LoginGuard from "./pages/LoginGuard";
-import deleteUser from "./services/deleteUser";
+import deleteUser from "./db/deleteUser";
 
 // deleteUser();
-
-const userExists = await getNewUserStatus();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <SetupGuard isNewUser={userExists}>
-        <Welcome />
-      </SetupGuard>
-    ),
+    element: <Welcome />,
   },
   {
     path: `/setup`,
-    element: (
-      <SetupGuard isNewUser={userExists}>
-        <Onboarding />
-      </SetupGuard>
-    ),
+    element: <Onboarding />,
   },
   {
     path: "/unlock",

@@ -16,12 +16,29 @@ import SeedPhraseConfirm from "../components/setup/SeedPhraseConfirm";
 import SecureComplete from "../components/setup/SecureComplete";
 import NotSecureComplete from "../components/setup/NotSecureComplete";
 import ImportSeed from "../components/setup/ImportSeed";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import getNewUserStatus from "../db/getNewUserStatus";
 
 function Onboarding() {
+  const [isNewUser, setIsNewUser] = useState(false);
   const { stepCounter, setupSteps, isSkipOptions } =
     useSelector(getAccountSetup);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function checkUserStatus() {
+      const userStatus = await getNewUserStatus();
+      setIsNewUser(userStatus);
+      if (!userStatus) {
+        navigate("/home");
+      }
+    }
+
+    checkUserStatus();
+  }, [navigate]);
 
   function handleBack() {
     if (setupSteps.currentStep === "import_seed") {
@@ -30,6 +47,10 @@ function Onboarding() {
     } else if (isSkipOptions) {
       dispatch(setSeedSkipOptions(false));
     }
+  }
+
+  if (!isNewUser) {
+    return null;
   }
 
   return (

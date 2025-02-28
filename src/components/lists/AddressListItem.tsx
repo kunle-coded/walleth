@@ -1,13 +1,16 @@
 import { addressFormatter } from "../../helpers/addressFormatter";
+import { Address } from "../../types/config";
 import AccountAvatar from "../../ui/AccountAvatar";
+import AddressTooltip from "../../ui/AddressTooltip";
+import { OpenTooltip, TooltipWindow } from "../modal/TooltipModal";
 
 interface AddressListItemProps {
-  onClick: () => void;
+  address: Address;
+  index: number;
+  onClick?: () => void;
 }
 
-function AddressListItem({ onClick }: AddressListItemProps) {
-  const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
-
+function AddressListItem({ address, index, onClick }: AddressListItemProps) {
   return (
     <button
       className="flex items-center w-full p-4 bg-transparent border-none cursor-pointer hover:bg-secondary-200"
@@ -16,13 +19,18 @@ function AddressListItem({ onClick }: AddressListItemProps) {
       <AccountAvatar />
       <div className="flex flex-col overflow-hidden">
         <p className="w-full text-left p-0 text-secondary-900 text-sm leading-snug md:text-[1rem] md:leading-6 font-medium text-ellipsis whitespace-nowrap overflow-hidden">
-          Unknown address
+          {address.name}
         </p>
         <div className="flex text-secondary-500 text-xs leading-5 md:text-sm md:leading-snug text-ellipsis whitespace-nowrap overflow-hidden">
           <div>
-            <div aria-describedby="tooltip_5" className="inline">
-              {addressFormatter(address)}
-            </div>
+            <OpenTooltip opens={`tooltip_addy-${index}`}>
+              <div aria-describedby="tooltip_addy" className="inline">
+                {addressFormatter(address.address)}
+              </div>
+            </OpenTooltip>
+            <TooltipWindow name={`tooltip_addy-${index}`}>
+              <AddressTooltip tooltipContent={address.address} />
+            </TooltipWindow>
           </div>
         </div>
       </div>

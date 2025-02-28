@@ -4,20 +4,23 @@ import LinkButton from "../../ui/LinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import { finishSetup, getAccountSetup } from "../../slices/setupSlice";
 import { getUser, authUser } from "../../slices/userSlice";
-import createAccount from "../../services/createAccount";
+import createAccount from "../../db/createAccount";
+import { useNavigate } from "react-router-dom";
 
 function SecureComplete() {
   const { isImport, password } = useSelector(getAccountSetup);
   const { mnemonic } = useSelector(getUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function handleSetupComplete() {
     if (mnemonic) {
-      await createAccount(password, mnemonic)
+      await createAccount(password, mnemonic, true)
         .then(() => {
           dispatch(authUser(true));
           dispatch(finishSetup());
+          navigate("/home");
         })
         .catch((error) => {
           console.log("error creating account", error);

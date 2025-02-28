@@ -17,7 +17,7 @@ function AssetOption() {
   return (
     <div
       role="dialog"
-      className=" min-w-56 max-w-56 overflow-hidden p-0 bg-white border rounded-lg border-solid border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] z-[1051]"
+      className=" w-[225] overflow-hidden p-0 bg-white border rounded-lg border-solid border-[rgba(187,192,197,0.4)] shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] z-[1051]"
       style={popupStyle}
     >
       <div

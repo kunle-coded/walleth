@@ -3,24 +3,33 @@ import { Open, Window } from "../modal/PopupModal";
 import Icon from "../../ui/Icon";
 import AccountOption from "./AccountOption";
 import AccountAvatar from "../../ui/AccountAvatar";
+import { AccountType } from "../../types/config";
+import { addressFormatter } from "../../helpers/addressFormatter";
 
 interface AccountProps {
-  current: boolean;
+  account: AccountType;
+  isCurrent: boolean;
   index: number;
   noEdit?: boolean;
   onSelect?: () => void;
 }
 
-function Account({ current, index, noEdit, onSelect }: AccountProps) {
+function Account({
+  isCurrent,
+  account,
+  index,
+  noEdit,
+  onSelect,
+}: AccountProps) {
   return (
     <div className="block">
       <div
         className={`flex justify-center w-full p-4 relative text-primary-500 cursor-pointer transition-[background-color] ease-linear ${
-          current ? "bg-brand-100" : "bg-transparent hover:bg-secondary-200"
+          isCurrent ? "bg-brand-100" : "bg-transparent hover:bg-secondary-200"
         }`}
         onClick={onSelect}
       >
-        {current && (
+        {isCurrent && (
           <div className="absolute left-1 top-1 w-1 h-[calc(100%_-_8px)] bg-brand-500 rounded-[9999px]"></div>
         )}
         <div className="hidden"></div>
@@ -32,7 +41,7 @@ function Account({ current, index, noEdit, onSelect }: AccountProps) {
             <div className="flex justify-between">
               <div className="flex items-center gap-2 me-2 min-w-20 max-w-40">
                 <button className="w-full p-0 text-sm font-semibold text-left text-inherit text-ellipsis whitespace-nowrap overflow-hidden bg-transparent border-none cursor-pointer">
-                  Account {index + 1}
+                  {account?.metadata.name}
                 </button>
               </div>
               <div className="flex flex-row justify-end items-center self-end min-w-[60px] max-w-[130px] text-inherit text-end text-sm text-ellipsis whitespace-nowrap overflow-hidden">
@@ -50,7 +59,7 @@ function Account({ current, index, noEdit, onSelect }: AccountProps) {
           <div className="flex justify-between">
             <div className="flex items-center">
               <p className="text-xs font-medium text-secondary-500 md:text-sm">
-                0x2b5A8...f760F
+                {addressFormatter(account?.address)}
               </p>
             </div>
             <div className="flex justify-center items-center gap-1">

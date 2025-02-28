@@ -1,5 +1,3 @@
-import BrandSmall from "../components/icons/BrandSmall";
-
 function Loader() {
   return (
     <div className="spinner_container">

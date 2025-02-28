@@ -9,13 +9,43 @@ import Modal from "../modal/Modal";
 import Icon from "../../ui/Icon";
 import ReceiveQRCode from "../qrcodes/ReceiveQRCode";
 import { writeClipboardText } from "../../helpers/writeClipboardText";
-import changeLocation from "../../helpers/changeLocation";
+import changeUrlLocation from "../../helpers/changeUrlLocation";
+import { useSelector } from "react-redux";
+import { getConfig } from "../../slices/configSlice";
+import ApiServes from "../../services/ApiServices";
+import { useEffect, useState } from "react";
 
 function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
+  const [accountBalance, setAccountBalance] = useState("");
+  const [isAddressCopied, setIsAddressCopied] = useState(false);
+  const { selectedAccount } = useSelector(getConfig);
   const { overviewActiveTab } = useGlobal();
+
+  useEffect(() => {
+    async function fetchBalance() {
+      const balance = new ApiServes();
+      const accountBalance = await balance.getBalance(selectedAccount.address);
+      setAccountBalance(accountBalance);
+    }
+
+    fetchBalance();
+  }, [selectedAccount.address]);
+
+  useEffect(() => {
+    if (isAddressCopied) {
+      const timeoutID = setTimeout(() => {
+        setIsAddressCopied(false);
+      }, 8000);
+
+      return () => {
+        clearTimeout(timeoutID);
+      };
+    }
+  }, [isAddressCopied]);
 
   async function handleAddressCopy(address: string) {
     await writeClipboardText(address);
+    setIsAddressCopied(true);
     // await readClipboardText();
   }
 
@@ -30,7 +60,7 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
                   <div className="flex flex-nowrap justify-center items-center max-w-[inherit]">
                     <div className="contents">
                       <span className="text-ellipsis overflow-hidden whitespace-nowrap text-4xl font-bold text-secondary-900">
-                        4.8729
+                        {accountBalance}
                       </span>
                       <span className="text-4xl font-bold text-secondary-900 ms-2">
                         ETH
@@ -40,7 +70,7 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
                   <div className="flex flex-nowrap justify-center items-center w-full max-w-[inherit]">
                     <div className="contents">
                       <p className="text-ellipsis overflow-hidden whitespace-pre text-xl font-medium text-secondary-900">
-                        $8,391.14
+                        $0.0
                       </p>
                       <p className="flex items-center text-xl font-medium text-success-500 ms-3">
                         <span
@@ -53,7 +83,7 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
                             maskPosition: "center",
                           }}
                         ></span>
-                        9.97%
+                        0.0%
                       </p>
                     </div>
                   </div>
@@ -66,25 +96,25 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
               <ActionButton
                 text="Buy & Sell"
                 iconUrl="src/assets/images/plus-minus.svg"
-                onClick={() => changeLocation("buy-sell")}
+                onClick={() => changeUrlLocation("buy-sell")}
               />
 
               <ActionButton
                 text="Swap"
                 iconUrl="src/assets/images/swap.svg"
-                onClick={() => changeLocation("swap")}
+                onClick={() => changeUrlLocation("swap")}
               />
 
               <ActionButton
                 text="Bridge"
                 iconUrl="src/assets/images/bridge.svg"
-                onClick={() => changeLocation("bridge")}
+                onClick={() => changeUrlLocation("bridge")}
               />
 
               <ActionButton
                 text="Send"
                 iconUrl="src/assets/images/send.svg"
-                onClick={() => changeLocation("send")}
+                onClick={() => changeUrlLocation("send")}
               />
 
               <Modal>
@@ -108,24 +138,31 @@ function MainAssets({ filterRef, isTop }: AccountOverviewProps) {
                         <div className="qr-code-logo inline-block relative z-[1] border border-solid border-brand-400 rounded-2xl bg-white"></div>
                       </div>
                       <p className="mb-4 text-secondary-900 text-center leading-6 font-semibold md:text-[1.125rem] ">
-                        Account 1
+                        {selectedAccount.metadata.name}
                       </p>
                       <p className="w-[240px] mb-4 text-secondary-900 text-sm leading-snug text-center break-all md:text-[1rem] md:leading-6">
-                        0x2b5a
+                        {selectedAccount.address.slice(0, 6)}
                         <span className="inline text-secondary-400 text-sm leading-snug md:text-[1rem] md:leading-6">
-                          8cd7f3bf420619a68b46d9e5088ca63
+                          {selectedAccount.address.slice(
+                            6,
+                            selectedAccount.address.length - 5
+                          )}
                         </span>
-                        f760f
+                        {selectedAccount.address.slice(
+                          selectedAccount.address.length - 5
+                        )}
                       </p>
                       <div
                         className="flex items-center gap-2 mb-4 text-brand-500 cursor-pointer"
                         onClick={() =>
-                          handleAddressCopy(
-                            "0x2b5a8cd7f3bf420619a68b46d9e5088ca63f760f"
-                          )
+                          handleAddressCopy(selectedAccount.address)
                         }
                       >
-                        <Icon imgUrl="src/assets/images/copy.svg" />
+                        {isAddressCopied ? (
+                          <Icon imgUrl="src/assets/images/copy-success.svg" />
+                        ) : (
+                          <Icon imgUrl="src/assets/images/copy.svg" />
+                        )}
                         Copy address
                       </div>
                     </div>

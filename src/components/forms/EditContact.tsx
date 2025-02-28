@@ -1,15 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import SystemButton from "../../ui/SystemButton";
 import AccountAvatar from "../../ui/AccountAvatar";
+import { Address } from "../../types/config";
 
 interface AddContactProps {
+  address: Address;
   onCancel: () => void;
 }
 
-function EditContact({ onCancel }: AddContactProps) {
+function EditContact({ address, onCancel }: AddContactProps) {
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isAddressFocus, setIsAddressFocus] = useState(false);
   const [isMemoFocus, setIsMemoFocus] = useState(false);
+  const [aliasValue, setAliasValue] = useState(
+    address.name ? address.name : "Unknown address"
+  );
+  const [addressValue, setAddressValue] = useState(address.address);
 
   function handleUsernameFocus() {
     setIsUsernameFocus(true);
@@ -33,13 +39,20 @@ function EditContact({ onCancel }: AddContactProps) {
     setIsMemoFocus(false);
   }
 
+  function handleAlias(e: React.ChangeEvent<HTMLInputElement>) {
+    setAliasValue(e.target.value);
+  }
+  function handleAddress(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setAddressValue(e.target.value);
+  }
+
   return (
     <div className="contact_form flex flex-col flex-nowrap h-full p-0 pt-4 pb-0 ">
       <div className="flex justify-between items-center w-full px-6">
         <div className="flex items-center pr-2 overflow-hidden">
           <AccountAvatar width="40" margin="m-0" />
           <p className="ms-4 text-left p-0 text-secondary-900 leading-6 md:text-[1.125rem] font-semibold text-ellipsis whitespace-nowrap overflow-hidden">
-            Unknown address
+            {address.name ? address.name : "Unknown address"}
           </p>
         </div>
         <div className="p-0 leading-[140%]">
@@ -68,11 +81,12 @@ function EditContact({ onCancel }: AddContactProps) {
               <input
                 type="text"
                 placeholder="Add alias"
-                value="Unknown address"
+                value={aliasValue}
                 autoComplete="off"
                 className="block w-full h-[1.1876em] min-w-0 m-0 pt-[3px] pb-[7px] px-0 box-content leading-6 text-ellipsis whitespace-nowrap border-none bg-none focus-visible:outline-none text-secondary-900"
                 onFocus={handleUsernameFocus}
                 onBlur={handleUsernameBlur}
+                onChange={handleAlias}
               />
             </div>
           </div>
@@ -95,9 +109,10 @@ function EditContact({ onCancel }: AddContactProps) {
                 rows={4}
                 dir="auto"
                 className="block w-full min-w-0 h-auto pt-2.5 p-0 bg-none text-secondary-900 box-content resize-none focus:outline-0 border-0"
-                value="0x2b5a8cd7f3bf420619a68b46d9e5088ca63f760f"
+                value={addressValue}
                 onFocus={handleAddressFocus}
                 onBlur={handleAddressBlur}
+                onChange={handleAddress}
               ></textarea>
             </div>
           </div>

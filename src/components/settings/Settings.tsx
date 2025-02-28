@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonWithIcon from "../../ui/ButtonWithIcon";
 import Icon from "../../ui/Icon";
 import General from "./General";
 import Advanced from "./Advanced";
 import Contacts from "./Contacts";
 import SecurityPrivacy from "./SecurityPrivacy";
-import Notification from "./Notification";
-import changeLocation from "../../helpers/changeLocation";
+import changeUrlLocation from "../../helpers/changeUrlLocation";
 import Experimental from "./Experimental";
 import About from "./About";
 import EmptyContact from "./EmptyContact";
+import { useSelector } from "react-redux";
+import { getConfig } from "../../slices/configSlice";
+import { Address } from "../../types/config";
+import updateUrlLocation from "../../helpers/updateUrlLocation";
 
 const tabItems = [
   { id: 0, label: "General", iconUrl: "src/assets/images/settings.svg" },
@@ -38,7 +41,21 @@ function Settings() {
   const [activeTab, setActiveTab] = useState(0);
   const [isContactDetail, setIsContactDetail] = useState(false);
   const [isAddContact, setIsAddContact] = useState(false);
-  const [isContactEmpty, setIsContactEmpty] = useState(true);
+  const [selectedContactDetail, setSelectedContactDetail] = useState<Address>(
+    {} as Address
+  );
+
+  const { addressBook } = useSelector(getConfig);
+
+  useEffect(() => {
+    if (activeTab === 0 && window.location.hash !== "#settings") {
+      window.location.hash = "#settings";
+    }
+  }, [activeTab]);
+
+  function handleCloseSettings() {
+    window.location.hash = "";
+  }
 
   function handleFocus() {
     setIsFocus(true);
@@ -48,14 +65,31 @@ function Settings() {
     setIsFocus(false);
   }
 
-  function handleTabSelection(tabItem: number) {
+  function handleTabSelection(tabItem: number, tabName: string) {
     if (tabItem === 4) {
-      changeLocation("notifications/settings");
+      changeUrlLocation("notifications/settings");
       return;
     }
     setActiveTab(tabItem);
     setIsContactDetail(false);
     setIsAddContact(false);
+
+    const urlParam = tabName.toLowerCase();
+    if (urlParam.includes("&")) {
+      const updatedUrlParams = urlParam.split(" ")[0];
+      updateUrlLocation(updatedUrlParams);
+    } else {
+      updateUrlLocation(urlParam);
+    }
+  }
+
+  function handleContactDetail(contact: Address) {
+    setIsContactDetail(true);
+    setSelectedContactDetail(contact);
+  }
+
+  function handleCancelContactDetail() {
+    setIsContactDetail(false);
   }
 
   return (
@@ -92,6 +126,7 @@ function Settings() {
           <ButtonWithIcon
             iconUrl="src/assets/images/close.svg"
             margin="ml-auto"
+            onClick={handleCloseSettings}
           />
         </div>
       </div>
@@ -104,7 +139,7 @@ function Settings() {
                 className={`flex flex-row flex-nowrap flex-[0_0_auto] items-center w-full min-w-0 max-h-[50px] px-4 py-5 relative border-none text-secondary-900 leading-[140%] text-start box-border transition-colors duration-200 ease-linear opacity-100 ${
                   activeTab === tab.id ? "bg-brand-100" : "bg-[unset]"
                 }`}
-                onClick={() => handleTabSelection(tab.id)}
+                onClick={() => handleTabSelection(tab.id, tab.label)}
               >
                 {activeTab === tab.id && (
                   <div className="hidden absolute top-1 left-1 w-1 h-[calc(100%_-_8px)] bg-brand-500 rounded-full settings-tabs-active-marker-display-block"></div>
@@ -146,19 +181,23 @@ function Settings() {
             {isContactDetail && (
               <div className="sub-header w-full max-w-[calc(100%_-_125px_-_85px)] ms-1 text-ellipsis whitespace-nowrap overflow-hidden">
                 <span> {">"} </span>
-                Unknown address
+                {selectedContactDetail.name
+                  ? selectedContactDetail.name
+                  : "Unknown address"}
               </div>
             )}
           </div>
+
           {activeTab === 0 && <General />}
           {activeTab === 1 && <Advanced />}
-          {activeTab === 2 && !isContactEmpty && (
+          {activeTab === 2 && addressBook.length >= 1 && (
             <Contacts
-              onContactDetail={setIsContactDetail}
+              onContactDetail={handleContactDetail}
               onAddContact={setIsAddContact}
+              onContactDetailCancel={handleCancelContactDetail}
             />
           )}
-          {activeTab === 2 && isContactEmpty && (
+          {activeTab === 2 && addressBook.length === 0 && (
             <EmptyContact onAddContact={setIsAddContact} />
           )}
           {activeTab === 3 && <SecurityPrivacy />}

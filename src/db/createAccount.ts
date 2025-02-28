@@ -2,8 +2,8 @@ import { mnemonicToSeed } from "@scure/bip39";
 import { HDKey } from "@scure/bip32";
 import { bytesToHex } from "@noble/hashes/utils";
 import { encryptData } from "../helpers/encryption";
-import { Account, Config, Data } from "../types/config";
 import { keccak256 } from "ethers";
+import prepareData from "../helpers/prepareData";
 
 // Create user account
 
@@ -23,7 +23,8 @@ import { keccak256 } from "ethers";
 
 export default async function createAccount(
   password: string,
-  mnemonic: string
+  mnemonic: string,
+  seedBackedup: boolean
 ) {
   const seed = await mnemonicToSeed(mnemonic);
   const hdWallet = HDKey.fromMasterSeed(seed);
@@ -46,14 +47,6 @@ export default async function createAccount(
       console.log(error?.message);
     };
 
-    // configDBRequest.onupgradeneeded = (event) => {
-    //   const db = (event.target as IDBOpenDBRequest).result;
-
-    //   if (!db.objectStoreNames.contains("PUDWDB")) {
-    //     db.createObjectStore("PUDWDB", { keyPath: "id" });
-    //   }
-    // };
-
     configDBRequest.onsuccess = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
       const transaction = db.transaction("PUDWDB", "readwrite");
@@ -69,14 +62,8 @@ export default async function createAccount(
 
       getConfigRequest.onsuccess = (event) => {
         const result = (event.target as IDBRequest).result;
-        console.log("config result", result);
+
         if (result) {
-          console.log("no config yet", result);
-          // const configPUDWDBData: Config = {
-          //   data: encrypted,
-          //   id: "config",
-          //   metadata: { identifierId: iv.buffer, profileId: salt.buffer },
-          // };
           result.data = encrypted;
           result.metadata = { identifierId: iv.buffer, profileId: salt.buffer };
 
@@ -92,13 +79,6 @@ export default async function createAccount(
       getSessionRequest.onsuccess = (event) => {
         const result = (event.target as IDBRequest).result;
         if (result) {
-          const { id } = result;
-          console.log("session result", result);
-          console.log("session data", id);
-
-          // const newSession = { ...result, isFirstWallethSetup: false };
-
-          // result = {}
           result.isFirstWallethSetup = false;
 
           const updatedSession = store.put(result);
@@ -123,7 +103,6 @@ export default async function createAccount(
     wallethDBRequest.onerror = (event) => {
       const error = (event.target as IDBRequest).error;
       console.log(error?.message);
-      localStorage.setItem("userStatus", "error_creating_account");
     };
 
     wallethDBRequest.onupgradeneeded = (event) => {
@@ -151,66 +130,10 @@ export default async function createAccount(
         const publicKeyHash = publicKey ? keccak256(publicKey) : null;
         const address = `0x${publicKeyHash?.slice(-40)}`;
 
-        const account: Account = {
-          address,
-          id: crypto.randomUUID(),
-          metadata: {
-            importTime: Date.now(),
-            keyring: "HD key tree",
-            lastSelected: Date.now(),
-            name: "Account 1",
-            nameLastUpdated: Date.now().toLocaleString(),
-          },
-          methods: [],
-          options: {},
-          type: "eip155:eoa",
-        };
-
-        const data: Data = {
-          name: "data",
-          AccountController: {
-            internalAccount: {
-              accounts: { [account.id]: account },
-              selectedAccount: account.id,
-            },
-          },
-          AccountTrackerController: [
-            {
-              id: account.id,
-              name: account.metadata.name,
-              createdAt: account.metadata.importTime,
-              type: account.type,
-            },
-          ],
-          AddressBookController: {},
-          AuthenticationController: {},
-          CurrencyController: {},
-          GasFeeController: {},
-          LoggingController: {},
-          MultichainBalancesController: {},
-          MultichainRatesController: {},
-          NetworkController: {},
-          NftController: {},
-          NotificationServicesController: {},
-          OnboardingController: {},
-          PermissionController: {},
-          PreferencesController: {},
-          SelectedNetworkController: {},
-          TokenBalancesController: {},
-          TokenListController: {},
-          TokenRatesController: {},
-          TokensController: {},
-          TransactionController: {},
-          firstTimeInfo: { date: Date.now(), version: "0.0.0" },
-        };
+        const data = prepareData(address, seedBackedup);
 
         if (!result) {
           store.add(data);
-          // localStorage.setItem("mnemonic", mnemonic);
-          localStorage.setItem("userStatus", "success");
-        } else {
-          localStorage.setItem("userStatus", "account_exists");
-          console.log(localStorage.getItem("userStatus"));
         }
       };
 
@@ -223,6 +146,5 @@ export default async function createAccount(
     };
   } else {
     console.log("No private key found.");
-    localStorage.setItem("userStatus", "no_account_found");
   }
 }

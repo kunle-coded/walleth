@@ -5,7 +5,6 @@ import {
 } from "../../helpers/writeClipboardText";
 import Modal from "../modal/Modal";
 import NetworkAvatar from "../../ui/NetworkAvatar";
-import Account from "../popups/Account";
 import SearchInput from "../../ui/SearchInput";
 import Networks from "../popups/Networks";
 import Icon from "../../ui/Icon";
@@ -13,7 +12,10 @@ import MenuItem from "../../ui/MenuItem";
 import { addressFormatter } from "../../helpers/addressFormatter";
 import AccountAvatarOne from "../icons/AccountAvatarOne";
 import { useGlobal } from "../../contexts/GlobalContext";
-import changeLocation from "../../helpers/changeLocation";
+import changeUrlLocation from "../../helpers/changeUrlLocation";
+import { useSelector } from "react-redux";
+import { getConfig } from "../../slices/configSlice";
+import AccountWindow from "../popups/AccountWindow";
 
 function Navigation() {
   const [isCopied, setIsCopied] = useState(false);
@@ -22,9 +24,9 @@ function Navigation() {
   const [isNotification, setIsNotification] = useState(true);
   const [isSingle, setIsSingle] = useState(false);
 
+  const { selectedAccount } = useSelector(getConfig);
   const { isShowGlobalMenu, showMenu } = useGlobal();
 
-  const address = "0x2b5A8CD7f3bf420619a68B46d9e5088cA63f760F";
   const network = "Ethereum Mainnet";
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function Navigation() {
   useEffect(() => {
     const fetchClipboardText = async () => {
       const clipboardText = await readClipboardText();
-      if (clipboardText === address) {
+      if (clipboardText === selectedAccount?.address) {
         setIsCopied(true);
       } else {
         setIsCopied(false);
@@ -54,7 +56,7 @@ function Navigation() {
     const intervalID = setInterval(fetchClipboardText, 30000);
 
     return () => clearInterval(intervalID);
-  }, [address]);
+  }, [selectedAccount?.address]);
 
   function onAddressEnter() {
     setIsShowTooltip(true);
@@ -67,7 +69,7 @@ function Navigation() {
 
   async function handleCopyClipboard() {
     try {
-      writeClipboardText(address);
+      writeClipboardText(selectedAccount?.address);
       setIsCopied(true);
       setIsShowTooltip(true);
       setIsDelay(true);
@@ -139,7 +141,7 @@ function Navigation() {
                     </div>
                   </div>
                   <span className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">
-                    Account 1
+                    {selectedAccount.metadata.name}
                   </span>
                 </span>
                 <Icon imgUrl="src/assets/images/arrow-down.svg" margin="ms-1" />
@@ -153,13 +155,7 @@ function Navigation() {
               buttonText="Add account or hardware wallet"
               iconUrl="src/assets/images/add.svg"
             >
-              <div className="overflow-auto scrollbar-custom">
-                <SearchInput placeholderText="Search accounts" padding />
-                <Account current index={0} />
-                <Account current={false} index={1} />
-                <Account current={false} index={2} />
-                <Account current={false} index={3} />
-              </div>
+              <AccountWindow />
             </Modal.Window>
           </Modal>
           <div className="flex items-center relative">
@@ -187,7 +183,7 @@ function Navigation() {
               >
                 <span className="flex items-center gap-2 text-primary-500 text-ellipsis whitespace-nowrap overflow-hidden">
                   <span className="text-sm leading-6 font-medium text-secondary-500 text-ellipsis whitespace-nowrap overflow-hidden">
-                    {addressFormatter(address)}
+                    {addressFormatter(selectedAccount.address)}
                   </span>
                 </span>
                 {isCopied ? (
@@ -257,7 +253,7 @@ function Navigation() {
                   <MenuItem
                     menuText="Settings"
                     iconUrl="src/assets/images/settings.svg"
-                    onClick={() => changeLocation("settings")}
+                    onClick={() => changeUrlLocation("settings")}
                   />
 
                   <MenuItem

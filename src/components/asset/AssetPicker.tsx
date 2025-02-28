@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Icon from "../../ui/Icon";
 import NetworkAvatar from "../../ui/NetworkAvatar";
 import SearchInput from "../../ui/SearchInput";
@@ -8,15 +8,23 @@ import Modal from "../modal/Modal";
 
 interface AssetPickerProps {
   purpose: string;
+  sendValue?: number | null;
+  receiveValue?: string;
+  tokenBalance?: number;
   isCurrencyToggle: boolean;
   isError?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onToggle: () => void;
 }
 
 function AssetPicker({
   purpose,
+  sendValue,
+  receiveValue,
+  tokenBalance,
   isError,
   isCurrencyToggle,
+  onChange,
   onToggle,
 }: AssetPickerProps) {
   const [activeTab, setActiveTab] = useState(0);
@@ -140,23 +148,56 @@ function AssetPicker({
         </Modal>
         <div className="float-right flex flex-row flex-nowrap items-center flex-grow min-h-[54px] p-2 relative border-none leading-[140%] rounded bg-white text-secondary-900 font-medium">
           <div className="flex flex-col flex-nowrap flex-[1_0_auto]">
-            <div
-              className="items-center ml-auto pb-0.5 max-w-[138px] text-ellipsis whitespace-nowrap"
-              style={{ display: "inherit" }}
-            >
-              <input
-                type="number"
-                placeholder="0"
-                dir="ltr"
-                min={0}
-                step="any"
-                // value={0}
-                className="w-[1.5ch] max-w-[15ch] min-w-0 h-4 text-right text-sm leading-[140%] text-secondary-900 font-medium border-none bg-transparent text-ellipsis  outline-none appearance-none"
-              />
-              <div className="ml-1 text-secondary-900 text-sm leading-[140%] font-medium">
-                {isCurrencyToggle ? "USD" : "ETH"}
+            {purpose === "send" ? (
+              <div
+                title={sendValue !== null ? `${sendValue}` : undefined}
+                className="items-center ml-auto pb-0.5 max-w-[138px] text-ellipsis whitespace-nowrap"
+                style={{ display: "inherit" }}
+              >
+                <input
+                  type="number"
+                  placeholder="0"
+                  dir="ltr"
+                  min={0}
+                  step="any"
+                  value={sendValue ?? ""}
+                  autoFocus={purpose === "send"}
+                  className="max-w-[15ch] min-w-0 h-4 text-right text-sm leading-[140%] text-secondary-900 font-medium border-none bg-transparent text-ellipsis  outline-none appearance-none placeholder:text-secondary-600"
+                  style={{
+                    width: sendValue
+                      ? `${sendValue.toString().length}ch`
+                      : "1.5ch",
+                  }}
+                  onChange={onChange}
+                />
+                <div className="ml-1 text-secondary-900 text-sm leading-[140%] font-medium">
+                  {isCurrencyToggle ? "USD" : "ETH"}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div
+                title={`${receiveValue}`}
+                className="items-center ml-auto pb-0.5 max-w-[138px] text-ellipsis whitespace-nowrap"
+                style={{ display: "inherit" }}
+              >
+                <input
+                  type="number"
+                  dir="ltr"
+                  min={0}
+                  step="any"
+                  value={receiveValue}
+                  aria-disabled
+                  disabled
+                  className="max-w-[15ch] min-w-0 h-4 text-right text-sm leading-[140%] text-secondary-900 font-medium border-none bg-transparent text-ellipsis  outline-none appearance-none placeholder:text-secondary-600"
+                  style={{
+                    width: receiveValue ? `${receiveValue.length}ch` : "1.5ch",
+                  }}
+                />
+                <div className="ml-1 text-secondary-900 text-sm leading-[140%] font-medium">
+                  {isCurrencyToggle ? "USD" : "ETH"}
+                </div>
+              </div>
+            )}
             <div className="flex items-center flex-nowrap ml-auto pl-px max-w-[138px] text-xs leading-[140%] text-ellipsis whitespace-nowrap overflow-hidden">
               <span className="w-max text-secondary-500 text-ellipsis whitespace-nowrap overflow-hidden">
                 {isCurrencyToggle ? 0 : `$0.00`}
@@ -177,7 +218,7 @@ function AssetPicker({
           </button>
         </div>
       </div>
-      {isError && (
+      {isError && purpose === "send" && (
         <div className="flex">
           <div className="flex">
             <p className="mr-1 p-0 self-baseline text-error-500 text-xs leading-5 md:leading-snug">
@@ -185,7 +226,7 @@ function AssetPicker({
             </p>
             <div className="flex items-center flex-wrap self-baseline text-xs">
               <span className="p-0 self-baseline text-error-500 text-xs leading-5 text-ellipsis whitespace-nowrap overflow-hidden md:leading-snug">
-                0
+                {tokenBalance}
               </span>
             </div>
             <p className="p-0 self-baseline text-error-500 text-xs leading-5 md:leading-snug">

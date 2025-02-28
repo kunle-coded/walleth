@@ -1,9 +1,6 @@
-import { generateMnemonic, mnemonicToSeed } from "@scure/bip39";
-import { wordlist } from "@scure/bip39/wordlists/english";
 import { HDKey } from "@scure/bip32";
-import { bytesToHex } from "@noble/hashes/utils";
 import { decryptData } from "../helpers/encryption";
-import { Account } from "../types/config";
+import { AccountType } from "../types/config";
 import { keccak256 } from "ethers";
 
 // Create new wallet account account
@@ -98,10 +95,9 @@ export default async function createNewAccount(password: string) {
 
           const publicKeyHash = publicKey ? keccak256(publicKey) : null;
           const address = `0x${publicKeyHash?.slice(-40)}`;
-          console.log("new address: ", address);
 
           // new account
-          const newAccount: Account = {
+          const newAccount: AccountType = {
             address,
             id: crypto.randomUUID(),
             metadata: {

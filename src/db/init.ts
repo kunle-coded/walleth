@@ -52,9 +52,8 @@ export default async function init() {
 
     getConfigRequest.onsuccess = (event) => {
       const result = (event.target as IDBRequest).result;
-      console.log("config result", result);
+
       if (!result) {
-        console.log("no config yet", result);
         const config = {
           id: "config",
         };

@@ -1,12 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import Brand from "../components/icons/Brand";
 import LinkButton from "../ui/LinkButton";
+import { useEffect, useState } from "react";
+import getNewUserStatus from "../db/getNewUserStatus";
 
 function Welcome() {
+  const [isNewUser, setIsNewUser] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function checkUserStatus() {
+      const userStatus = await getNewUserStatus();
+      setIsNewUser(userStatus);
+      if (!userStatus) {
+        navigate("/unlock");
+      }
+    }
+
+    checkUserStatus();
+  }, [navigate]);
 
   function startSetup() {
     navigate("/setup");
+  }
+
+  if (!isNewUser) {
+    return null;
   }
 
   return (

@@ -20,6 +20,7 @@ function SystemButton({
 }: ButtonProps) {
   return (
     <button
+      aria-disabled={isDisabled}
       className={`flex justify-center items-center w-full px-4 py-3 box-border text-sm leading-[140%] font-semibold border border-solid rounded-[100px] appearance-none will-change-[box-shadow] transition-[box-shadow] ease-[cubic-bezier(0.6,_-0.28,_0.735,_0.045)] ${
         isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       } ${noHeight ? "" : "min-h-[54px]"} ${margin ? margin : ""} ${
